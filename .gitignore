@@ -1,0 +1,11 @@
+/sandbox
+/_resources
+/resources
+/safe
+/src/api/AMMS/AMMS.Domain/bin
+/src/api/AMMS/AMMS.Domain/obj
+/src/api/AMMS/AMMS.Service.Host/obj
+/src/api/AMMS/AMMS.Service.Host/bin
+/src/api/AMMS/AMMS.Test.Integration/obj
+/src/api/AMMS/AMMS.Test.Integration/bin
+/third_party

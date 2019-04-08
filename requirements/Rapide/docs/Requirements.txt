@@ -1,0 +1,99 @@
+UserRoles
+ - Admin
+ - Manager
+ - Technician
+ - PartsMan (manages inventory, parts issues)
+ - Accounting 1
+ - Accounting 2 
+
+Sales
+ - Manager
+ - PartsMan
+
+Repair
+ - Tech
+
+Accounting
+ - Sales Record (Reports)
+   - Completed Sales (Customer, Customer Type, Amount, Sales Invoice, OR, Date, Amount)
+   - Unpaid Sales () 	
+
+Cutomers Types
+ - Private Owned (Private)
+ - Company Owned (Company)
+ - Groups (UGB, TNVS)
+   - Predefined Services
+
+Company
+ - Company Name
+ - Address
+ - Terms
+
+Payment Modes (Invocing)
+ - Cash
+ - Credit Card (Requires Card Number)
+ - Check
+
+Terms
+  - (Terms)
+    - (Will be considered as sales)
+    - Payment Due
+  - (Fleet PO)
+    - (Will be considered sales only if PO Number is filled)
+    - PO Number
+    - Approving Officer (Optional - Contact Person)
+    - Payment Due
+  - Credit Terms
+    - Payment Due
+
+
+Transaction Stages
+ - Receiving (Creation of record is new customer)
+ - Inspection (VIR - Vehicle Inspection/Diagnosis Report)
+ - Estimate (Repair Estimate Form) 
+   - Independent of VIR
+   - Can reference to VIR
+ - PO (if parts are not available )
+ - Invoiced
+ - Paid
+ - Complete
+
+
+PartsMan
+ - Purchase Orders
+ - Parts Issues
+
+
+Package Template
+ - Parts and Services
+
+
+Job Order
+ - PO can be linked to Job Order
+ - PO items (Parts) could sometime is not defined in the master list yet. In this case, purchase order will initially don't have price..
+ - A JO can have multiple PO.
+
+Product Movement
+ - 
+
+
+Entry
+ - VIR
+ - Estimate
+ - Parts Issued (Parts Man, Parts Disposition, PO)
+ - 
+
+
+
+To Follow: 
+1. PartsMan
+2. Accounting 
+3. Back Job (fundings auto deduct to used parts/company funds(PO) ex.. change oil, plastic)
+4. Waranty (waranty for parts (supplier)/ warranty for service)
+5. Petty Cash 
+  - Petty Cash Parts
+  - Petty Cash Misc
+6. Used Parts
+
+
+
