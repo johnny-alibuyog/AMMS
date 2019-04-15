@@ -5,15 +5,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Customers\" />
-    <Folder Include="PurchaseOrders\" />
-    <Folder Include="Orders\" />
-    <Folder Include="Vehicles\" />
+    <Compile Remove="Customers\**" />
+    <Compile Remove="Orders\**" />
+    <Compile Remove="PurchaseOrders\**" />
+    <Compile Remove="Vehicles\**" />
+    <EmbeddedResource Remove="Customers\**" />
+    <EmbeddedResource Remove="Orders\**" />
+    <EmbeddedResource Remove="PurchaseOrders\**" />
+    <EmbeddedResource Remove="Vehicles\**" />
+    <None Remove="Customers\**" />
+    <None Remove="Orders\**" />
+    <None Remove="PurchaseOrders\**" />
+    <None Remove="Vehicles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\Pipes\Auth\AuthRule.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="FluentValidation" Version="8.2.2" />
+    <PackageReference Include="JWT" Version="5.0.1" />
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.8.0" />

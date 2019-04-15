@@ -1,6 +1,4 @@
-﻿using MediatR.Pipeline;
-
-namespace AMMS.Domain.Common.Pipes
+﻿namespace AMMS.Domain.Common.Pipes.Generics
 {
     //public class ConstrainedRequestPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse> where TRequest : Ping
     //{

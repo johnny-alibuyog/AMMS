@@ -1,6 +1,8 @@
 ﻿using AMMS.Domain;
-using AMMS.Domain.Common.Pipes;
-using AMMS.Domain.Users.Messages;
+using AMMS.Domain.Common.Pipes.Auth;
+using AMMS.Domain.Common.Pipes.Generics;
+using AMMS.Domain.Common.Pipes.Validation;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using Lamar;
 using MediatR;
@@ -11,12 +13,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using static AMMS.Domain.Users.Messages.CreateMessage;
 
 namespace AMMS.Service.Host
 {
@@ -40,7 +47,11 @@ namespace AMMS.Service.Host
 
             services.ConfigureServiceIoc();
 
-            services.Configure<DbConfig>(this._config.GetSection(nameof(DbConfig)));
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.Configure<DbConfig>(_config.GetSection(nameof(DbConfig)));
+
+            services.Configure<SecretConfig>(_config.GetSection(nameof(SecretConfig)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +90,17 @@ namespace AMMS.Service.Host
                     Title = "AMMS",
                     Description = "AMMS Documentation"
                 });
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
+                {
+                    { "Bearer", new string[] { } },
+                });
                 options.IncludeXmlComments(xmlPath);
                 options.DescribeAllEnumsAsStrings();
                 options.CustomSchemaIds(x => x.FullName);
@@ -108,14 +130,15 @@ namespace AMMS.Service.Host
 
             service.AddSingleton(Log.Logger);
 
+            service.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             service.ConfigureMediatR();
 
-            // Also exposes Lamar specific registrations and functionality
-            service.Scan(scanner =>
-            {
-                scanner.TheCallingAssembly();
-                scanner.WithDefaultConventions();
-            });
+            service.ConfigureLamar();
+
+            service.ConfigureAuthorization();
+
+            service.ConfigureAutoMapper();
         }
 
         private static void ConfigureMediatR(this ServiceRegistry registry)
@@ -131,14 +154,62 @@ namespace AMMS.Service.Host
             //Pipeline
             registry.For(typeof(IPipelineBehavior<,>)).Add(typeof(RequestPreProcessorBehavior<,>));
             registry.For(typeof(IPipelineBehavior<,>)).Add(typeof(RequestPostProcessorBehavior<,>));
+            registry.For(typeof(IPipelineBehavior<,>)).Add(typeof(AuthBehavior<,>));
+            registry.For(typeof(IPipelineBehavior<,>)).Add(typeof(ValidaltionBehavior<,>));
             registry.For(typeof(IPipelineBehavior<,>)).Add(typeof(GenericPipelineBehavior<,>));
-            registry.For(typeof(IPipelineBehavior<,>)).Add(typeof(GenericValidaltionBehavior<,>));
             registry.For(typeof(IRequestPreProcessor<>)).Add(typeof(GenericRequestPreProcessor<>));
             registry.For(typeof(IRequestPostProcessor<,>)).Add(typeof(GenericRequestPostProcessor<,>));
 
             // This is the default but let's be explicit. At most we should be container scoped.
             registry.For<IMediator>().Use<Mediator>().Transient();
             registry.For<ServiceFactory>().Use(ctx => ctx.GetInstance);
+        }
+
+        private static void ConfigureLamar(this ServiceRegistry registry)
+        {
+            // Also exposes Lamar specific registrations and functionality
+            registry.Scan(scanner =>
+            {
+                scanner.TheCallingAssembly();
+                scanner.WithDefaultConventions();
+            });
+        }
+
+        private static void ConfigureAutoMapper(this ServiceRegistry registry)
+        {
+            // AutoMapper Configurations
+            var config = new MapperConfiguration(x => x.AddProfiles(typeof(TransformProfile).Assembly));
+
+            registry.AddSingleton(config.CreateMapper());
+        }
+
+        private static void ConfigureAuthorization(this ServiceRegistry registry)
+        {
+            registry.For<ITokenProvider>().Use<TokenProvider>().Scoped();
+
+            registry.For<IContextProvider>().Use<ContextProvider>().Scoped();
+
+            registry.For<IAuthProvider>().Use<AuthProvider>().Scoped();
+
+            registry.For<IContext>().Use(GetContext).Scoped();
+
+            registry.For<Token>().Use(ParseToken).Scoped();
+
+            registry.Scan(scanner =>
+            {
+                scanner.AssemblyContainingType(typeof(IAccessControl<>));
+                scanner.ConnectImplementationsToTypesClosing(typeof(IAccessControl<>));
+            });
+
+            IContext GetContext(IServiceContext context) => context.GetInstance<IContextProvider>().GetContext();
+
+            Token ParseToken(IServiceContext context)
+            {
+                var http = context.GetInstance<IHttpContextAccessor>();
+                var authHeader = http.HttpContext.Request.Headers["Authorization"];
+                var token = authHeader.ToString().Split(" ").LastOrDefault();
+                return token;
+            }
         }
     }
 }

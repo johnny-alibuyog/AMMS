@@ -1,9 +1,10 @@
-﻿using MongoDB.Bson.Serialization;
+﻿using AMMS.Domain.Common.Kernel;
+using MongoDB.Bson.Serialization;
 using System;
 
-namespace AMMS.Domain.Common.Entities
+namespace AMMS.Domain.Common.Models
 {
-    public class Person
+    public class Person : ValueObject<Person>
     {
         public string FirstName { get; protected set; }
 
@@ -11,7 +12,7 @@ namespace AMMS.Domain.Common.Entities
 
         public string MiddleName { get; protected set; }
 
-        public Nullable<DateTime> BirthDate { get; protected set; }
+        public DateTime? BirthDate { get; protected set; }
 
         public static string Fullname(Person person) => person.FirstName + " " + person.LastName;
 

@@ -1,9 +1,10 @@
-﻿using MongoDB.Bson.Serialization;
+﻿using AMMS.Domain.Common.Kernel;
+using MongoDB.Bson.Serialization;
 using System;
 
-namespace AMMS.Domain.Common.Entities
+namespace AMMS.Domain.Common.Models
 {
-    public class Address
+    public class Address : ValueObject<Address>
     {
         public string Street { get; private set; }
 

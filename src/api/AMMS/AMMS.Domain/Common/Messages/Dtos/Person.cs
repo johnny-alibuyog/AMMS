@@ -2,7 +2,7 @@
 using FluentValidation;
 using System;
 
-namespace AMMS.Domain.Common.Messages.Models
+namespace AMMS.Domain.Common.Messages.Dtos
 {
     public class Person
     {
@@ -15,11 +15,6 @@ namespace AMMS.Domain.Common.Messages.Models
         public string Fullname => $"{this.FirstName} {this.LastName}";
 
         public DateTime? BirthDate { get; set; }
-
-        static Person()
-        {
-            Mapper.Initialize(config => config.CreateMap<Models.Person, Entities.Person>());
-        }
     }
 
     public class PersonValidator : AbstractValidator<Person>
@@ -30,6 +25,14 @@ namespace AMMS.Domain.Common.Messages.Models
             RuleFor(x => x.MiddleName);
             RuleFor(x => x.LastName).NotNull().NotEmpty();
             RuleFor(x => x.BirthDate);
+        }
+    }
+
+    public class PersonProfile : Profile
+    {
+        public PersonProfile()
+        {
+            CreateMap<Models.Person, Dtos.Person>();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AMMS.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Serilog;
 using System.Collections.Generic;
 
 namespace AMMS.Service.Host.Controllers

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 
-namespace AMMS.Domain.Common.Messages.Models
+namespace AMMS.Domain.Common.Messages.Dtos
 {
     public class Address
     {
@@ -18,11 +18,6 @@ namespace AMMS.Domain.Common.Messages.Models
         public string Country { get; set; }
 
         public string ZipCode { get; set; }
-
-        static Address()
-        {
-            Mapper.Initialize(config => config.CreateMap<Models.Address, Entities.Address>());
-        }
     }
 
     public class AddressValidator : AbstractValidator<Address>
@@ -36,6 +31,14 @@ namespace AMMS.Domain.Common.Messages.Models
             RuleFor(x => x.Region);
             RuleFor(x => x.Country);
             RuleFor(x => x.ZipCode);
+        }
+    }
+
+    public class AddressProfile : Profile
+    {
+        public AddressProfile()
+        {
+            CreateMap<Models.Address, Dtos.Address>();
         }
     }
 }

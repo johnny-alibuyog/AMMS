@@ -1,6 +1,7 @@
 ﻿using AMMS.Domain.Common;
 using AMMS.Domain.Users;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
@@ -15,11 +16,21 @@ namespace AMMS.Domain
         static DbContext()
         {
             ConventionRegistry.Register(
-                name: "camelCase",
+                name: "CamelCase",
                 filter: x => true,
                 conventions: new ConventionPack()
                 {
                     new CamelCaseElementNameConvention(),
+                }
+            );
+
+            // not working https://stackoverflow.com/questions/6996399/storing-enums-as-strings-in-mongodb
+            ConventionRegistry.Register(
+                name: "EnumStringConvention",
+                filter: x => true,
+                conventions: new ConventionPack
+                {
+                    new EnumRepresentationConvention(BsonType.String)
                 }
             );
         }

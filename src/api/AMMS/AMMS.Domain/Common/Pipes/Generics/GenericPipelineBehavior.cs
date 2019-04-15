@@ -3,7 +3,7 @@ using Serilog;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Common.Pipes
+namespace AMMS.Domain.Common.Pipes.Generics
 {
     public class GenericPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {

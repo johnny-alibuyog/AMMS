@@ -1,8 +1,9 @@
-﻿using AMMS.Domain.Common.Entities;
-using AMMS.Domain.Users.Entities;
+﻿using AMMS.Domain.Common.Models;
+using AMMS.Domain.Users.Models;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AMMS.Domain.Users
@@ -13,8 +14,6 @@ namespace AMMS.Domain.Users
 
         public IMongoCollection<Role> Roles { get; }
 
-        public IMongoCollection<Permission> Permissions { get; }
-
         static UserContext()
         {
             BsonClassMap.RegisterClassMap(PermissionMap.Map);
@@ -24,54 +23,61 @@ namespace AMMS.Domain.Users
 
         public UserContext(IMongoDatabase database)
         {
-            this.Users = database.GetCollection<User>("users");
-            this.Roles = database.GetCollection<Role>("roles");
-            this.Permissions = database.GetCollection<Permission>("permissions");
+            Users = database.GetCollection<User>("users");
+            Roles = database.GetCollection<Role>("roles");
 
-            if (!this.Users.AsQueryable().Any())
-            {
-                this.Users.InsertMany(
-                    Enumerable.Range(0, 21)
-                        .Select(x => new User(
-                            username: $"username{x}",
-                            person: new Person(
-                                firstName: $"firstName{x}",
-                                lastName: $"lastName{x}",
-                                middleName: $"middleName{x}",
-                                birthDate: DateTime.UtcNow
-                            ),
-                            homeAddress: new Address(
-                                street: $"street{x}",
-                                barangay: $"barangay{x}",
-                                city: $"city{x}",
-                                province: $"province{x}",
-                                region: $"region{x}",
-                                country: $"country{x}",
-                                zipCode: $"zipCode{x}"
-                            )
-                        ))
-                        .ToList()
-                );
-            }
+            var admin = new Role(
+                name: "Admin",
+                permissions: new List<Permission>()
+                {
+                    new Permission(
+                        area: Area.Users,
+                        accessRights: new Access[]
+                        {
+                            Access.Create,
+                            Access.Update,
+                            Access.Read,
+                            Access.Delete
+                        }
+                    )
+                }
+            );
 
             if (!this.Roles.AsQueryable().Any())
             {
-                this.Roles.InsertMany(
-                    Enumerable.Range(0, 10)
-                        .Select(x => new Role($"role{x}"))
-                        .ToList()
-                );
+                
+
+                Roles.InsertOne(admin);
             }
 
-            if (!this.Permissions.AsQueryable().Any())
+            if (!Users.AsQueryable().Any())
             {
-                this.Permissions.InsertMany(
-                    Enumerable.Range(0, 10)
-                        .Select(x => new Permission($"permission{x}"))
-                        .ToList()
+                Users.InsertMany(Enumerable
+                    .Range(0, 21)
+                    .Select(x => new User(
+                        tenantId: null,
+                        branchId: null,
+                        username: $"username{x}",
+                        person: new Person(
+                            firstName: $"firstName{x}",
+                            lastName: $"lastName{x}",
+                            middleName: $"middleName{x}",
+                            birthDate: DateTime.UtcNow
+                        ),
+                        homeAddress: new Address(
+                            street: $"street{x}",
+                            barangay: $"barangay{x}",
+                            city: $"city{x}",
+                            province: $"province{x}",
+                            region: $"region{x}",
+                            country: $"country{x}",
+                            zipCode: $"zipCode{x}"
+                        ),
+                        roleIds: new[] { admin.Id }
+                    ))
+                    .ToList()
                 );
             }
-            
         }
     }
 }

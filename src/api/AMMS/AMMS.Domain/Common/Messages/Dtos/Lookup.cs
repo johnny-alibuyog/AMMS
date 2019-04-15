@@ -1,4 +1,4 @@
-﻿namespace AMMS.Domain.Common.Messages
+﻿namespace AMMS.Domain.Common.Messages.Dtos
 {
     public class Lookup<TId> 
     {

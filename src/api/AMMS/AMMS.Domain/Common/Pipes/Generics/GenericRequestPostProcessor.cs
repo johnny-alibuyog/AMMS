@@ -2,7 +2,7 @@
 using Serilog;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Common.Pipes
+namespace AMMS.Domain.Common.Pipes.Generics
 {
     public class GenericRequestPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse>
     {
