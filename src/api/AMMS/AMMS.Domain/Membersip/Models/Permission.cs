@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AMMS.Domain.Users.Models
+namespace AMMS.Domain.Membership.Models
 {
     public enum Area
     {
-        Users
+        User,
+        UserPassword,
     }
 
     public enum Access
@@ -45,11 +46,14 @@ namespace AMMS.Domain.Users.Models
 
         public static (Area area, Access access) To(Area area, Access access) => (area, access);
 
-        public static readonly Permission User = new Permission(Area.Users, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
+        public static readonly Permission User = new Permission(Area.User, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
+
+        public static readonly Permission UserPassword = new Permission(Area.User, new Access[] { Access.Update });
 
         public static readonly IEnumerable<Permission> Template = new List<Permission>()
         {
             Permission.User,
+            Permission.UserPassword
         };
     }
 

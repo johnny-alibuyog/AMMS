@@ -1,10 +1,11 @@
 ﻿using AMMS.Domain.Common.Kernel;
 using AMMS.Domain.Common.Models;
+using AMMS.Domain.Common.Pipes.Auth;
 using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
 
-namespace AMMS.Domain.Users.Models
+namespace AMMS.Domain.Membership.Models
 {
     public class User : Entity, IAggregateRoot
     {
@@ -13,6 +14,10 @@ namespace AMMS.Domain.Users.Models
         public string BranchId { get; protected set; }
 
         public string Username { get; protected set; }
+
+        public string PasswordHash { get; protected set; }
+
+        public string PasswordSalt { get; protected set; }
 
         public Person Person { get; protected set; }
 
@@ -36,6 +41,16 @@ namespace AMMS.Domain.Users.Models
             Person = person;
             HomeAddress = homeAddress;
             RoleIds = roleIds;
+        }
+
+        internal bool VerifyPassword(IHashProvider hashProvider, string password)
+        {
+            return hashProvider.VerifyHashString(password, this.PasswordHash, this.PasswordSalt);
+        }
+
+        internal void SetPassword(IHashProvider hashProvider, string password)
+        {
+            (PasswordHash, PasswordSalt) = hashProvider.GenerateHashAndSaltString(password);
         }
     }
 

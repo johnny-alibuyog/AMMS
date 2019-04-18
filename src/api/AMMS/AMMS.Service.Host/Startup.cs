@@ -1,7 +1,9 @@
 ﻿using AMMS.Domain;
+using AMMS.Domain.Common.Messages;
 using AMMS.Domain.Common.Pipes.Auth;
 using AMMS.Domain.Common.Pipes.Generics;
 using AMMS.Domain.Common.Pipes.Validation;
+using AMMS.Service.Host.Common.Auth;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Lamar;
@@ -14,16 +16,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using static AMMS.Domain.Users.Messages.CreateMessage;
+using static AMMS.Domain.Membership.Messages.Users.CreateMessage;
 
 namespace AMMS.Service.Host
 {
@@ -163,6 +163,14 @@ namespace AMMS.Service.Host
             // This is the default but let's be explicit. At most we should be container scoped.
             registry.For<IMediator>().Use<Mediator>().Transient();
             registry.For<ServiceFactory>().Use(ctx => ctx.GetInstance);
+
+            registry.For<IHandlerDependencyHolder>().Use<HandlerDependencyHolder>();
+
+            // this will be 
+            registry.Policies.SetAllProperties(policy =>
+            {
+                policy.TypeMatches((x) => x == typeof(IContext));
+            });
         }
 
         private static void ConfigureLamar(this ServiceRegistry registry)
@@ -185,6 +193,8 @@ namespace AMMS.Service.Host
 
         private static void ConfigureAuthorization(this ServiceRegistry registry)
         {
+            registry.For<ITokenExtractor>().Use<BearerTokenExtractor>().Scoped();
+
             registry.For<ITokenProvider>().Use<TokenProvider>().Scoped();
 
             registry.For<IContextProvider>().Use<ContextProvider>().Scoped();
@@ -193,8 +203,6 @@ namespace AMMS.Service.Host
 
             registry.For<IContext>().Use(GetContext).Scoped();
 
-            registry.For<Token>().Use(ParseToken).Scoped();
-
             registry.Scan(scanner =>
             {
                 scanner.AssemblyContainingType(typeof(IAccessControl<>));
@@ -202,14 +210,6 @@ namespace AMMS.Service.Host
             });
 
             IContext GetContext(IServiceContext context) => context.GetInstance<IContextProvider>().GetContext();
-
-            Token ParseToken(IServiceContext context)
-            {
-                var http = context.GetInstance<IHttpContextAccessor>();
-                var authHeader = http.HttpContext.Request.Headers["Authorization"];
-                var token = authHeader.ToString().Split(" ").LastOrDefault();
-                return token;
-            }
         }
     }
 }

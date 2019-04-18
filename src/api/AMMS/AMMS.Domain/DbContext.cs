@@ -1,17 +1,20 @@
 ﻿using AMMS.Domain.Common;
-using AMMS.Domain.Users;
+using AMMS.Domain.Membership;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Events;
+using Serilog;
+using System;
 
 namespace AMMS.Domain
 {
     public class DbContext
     {
-        public CommonContext CommonContext { get; }
+        public CommonContext Common { get; }
 
-        public UserContext UserContext { get; }
+        public MembershipContext Membership { get; }
 
         static DbContext()
         {
@@ -28,20 +31,50 @@ namespace AMMS.Domain
             ConventionRegistry.Register(
                 name: "EnumStringConvention",
                 filter: x => true,
-                conventions: new ConventionPack
+                conventions: new ConventionPack()
                 {
                     new EnumRepresentationConvention(BsonType.String)
                 }
             );
         }
 
-        public DbContext(IOptions<DbConfig> dbConfig)
+        public DbContext(IOptions<DbConfig> dbConfig, ILogger log)
         {
+            var settings = new MongoClientSettings()
+            {
+                Server = new MongoServerAddress("localhost"),
+                ClusterConfigurator = cb =>
+                {
+                    cb.Subscribe<CommandSucceededEvent>(e =>
+                    {
+                        if (e.Duration == TimeSpan.FromMilliseconds(100))
+                        {
+                            log.Warning($"Command {e.CommandName} is taking too long ({e.Duration.Seconds} seconds) with result {e.Reply.ToJson()}");
+                        }
+                    });
+
+                    cb.Subscribe<CommandFailedEvent>(e =>
+                    {
+                        log.Warning("Command {commandName} failed wiht an exception {@exception}", e.CommandName, e.Failure);
+                    });
+                }
+            };
+
             var database = new MongoClient(dbConfig.Value.ConnectionString)
                 .GetDatabase(dbConfig.Value.Database);
 
-            this.CommonContext = new CommonContext();
-            this.UserContext = new UserContext(database);
+            Common = new CommonContext(database);
+
+            Membership = new MembershipContext(database);
+
+            SeedData();
+        }
+
+        public void SeedData()
+        {
+            var common = Common.Seed();
+
+            Membership.Seed(common);
         }
     }
 

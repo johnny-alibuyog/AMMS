@@ -6,9 +6,9 @@ namespace AMMS.Domain.Common.Pipes.Auth
 {
     public interface IHashProvider
     {
-        (byte[] hash, byte[] salt) GetHashAndSalt(byte[] data);
+        (byte[] hash, byte[] salt) GenerateHashAndSalt(byte[] data);
 
-        (string hash, string salt) GetHashAndSaltString(string data);
+        (string hash, string salt) GenerateHashAndSaltString(string data);
 
         bool VerifyHash(byte[] data, byte[] hash, byte[] salt);
 
@@ -39,7 +39,7 @@ namespace AMMS.Domain.Common.Pipes.Auth
             return _hashAlgorithm.ComputeHash(buffer);
         }
 
-        public (byte[] hash, byte[] salt) GetHashAndSalt(byte[] data)
+        public (byte[] hash, byte[] salt) GenerateHashAndSalt(byte[] data)
         {
             var salt = new byte[_salthLength];
             new RNGCryptoServiceProvider().GetNonZeroBytes(salt);
@@ -47,9 +47,9 @@ namespace AMMS.Domain.Common.Pipes.Auth
             return (hash, salt);
         }
 
-        public (string hash, string salt) GetHashAndSaltString(string data)
+        public (string hash, string salt) GenerateHashAndSaltString(string data)
         {
-            var (hashByte, saltByte) = GetHashAndSalt(Encoding.UTF8.GetBytes(data));
+            var (hashByte, saltByte) = GenerateHashAndSalt(Encoding.UTF8.GetBytes(data));
             var hash = Convert.ToBase64String(hashByte);
             var salt = Convert.ToBase64String(saltByte);
             return (hash, salt);

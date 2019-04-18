@@ -32,15 +32,25 @@
 
     public class ContextProvider : IContextProvider
     {
-        private readonly Token _token;
         private readonly ITokenProvider _tokenProvider;
+        private readonly ITokenExtractor _tokenExtractor;
 
-        public ContextProvider(Token token, ITokenProvider tokenProvider)
+        public ContextProvider(ITokenProvider tokenProvider, ITokenExtractor tokenExtractor)
         {
-            _token = token;
             _tokenProvider = tokenProvider;
+            _tokenExtractor = tokenExtractor;
         }
 
-        public IContext GetContext() => _tokenProvider.Decode<Context>(_token);
+        public IContext GetContext()
+        {
+            var token = _tokenExtractor.Extract();
+
+            if (token == null)
+            {
+                return new Context(null, null, null);
+            }
+
+            return _tokenProvider.Decode<Context>(token);
+        }
     }
 }

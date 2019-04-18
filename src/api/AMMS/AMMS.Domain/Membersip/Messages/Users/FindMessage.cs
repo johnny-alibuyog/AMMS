@@ -1,7 +1,7 @@
 ﻿using AMMS.Domain.Common.Messages;
 using AMMS.Domain.Common.Messages.Dtos;
 using AMMS.Domain.Common.Pipes.Auth;
-using AMMS.Domain.Users.Models;
+using AMMS.Domain.Membership.Models;
 using AutoMapper;
 using MediatR;
 using MongoDB.Driver;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Users.Messages
+namespace AMMS.Domain.Membership.Messages.Users
 {
     //https://stackoverflow.com/questions/50530363/aggregate-lookup-with-c-sharp
     //https://stackoverflow.com/questions/50530363/aggregate-lookup-with-c-sharp
@@ -24,7 +24,7 @@ namespace AMMS.Domain.Users.Messages
 
         public class Auth : AccessControl<Request>
         {
-            public Auth() => With(Models.Permission.To(Area.Users, Access.Read));
+            public Auth() => With(Permission.To(Area.User, Access.Read));
         }
 
         public class TransformProfile : Profile
@@ -34,12 +34,12 @@ namespace AMMS.Domain.Users.Messages
 
         public class Handler : AbstractRequestHandler<Request, Response>
         {
-            public Handler(DbContext db, ILogger log, IMapper mapper) : base(db, log, mapper) { }
+            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var users = await _db.UserContext
-                    .Users.AsQueryable()
+                var users = await Db.Membership.Users.AsQueryable()
+                    .Where(x => x.TenantId == Context.TenantId)
                     .Select(x => new Lookup<string>()
                     {
                         Id = x.Id,
@@ -49,7 +49,7 @@ namespace AMMS.Domain.Users.Messages
                     })
                     .ToListAsync();
 
-                return _mapper.Map<Response>(users);
+                return Mapper.Map<Response>(users);
             }
         }
     }

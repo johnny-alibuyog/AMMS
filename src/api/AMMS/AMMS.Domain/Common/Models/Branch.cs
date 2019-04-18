@@ -8,13 +8,13 @@ namespace AMMS.Domain.Common.Models
     {
         public string Name { get; protected set; }
 
-        public Tenant Tenant { get; protected set; }
+        public string TenantId { get; protected set; }
 
-        public Branch(string name, Tenant tenant, string id = null)
+        public Branch(string name, string tenantId, string id = null)
         {
             Id = id;
             Name = name;
-            Tenant = tenant;
+            TenantId = tenantId;
         }
     }
 
@@ -27,10 +27,10 @@ namespace AMMS.Domain.Common.Models
             map.MapMember(x => x.Name)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.Tenant)
+            map.MapMember(x => x.TenantId)
                 .SetIsRequired(true);
 
-            map.MapCreator(x => new Branch(x.Name, x.Tenant, x.Id));
+            map.MapCreator(x => new Branch(x.Name, x.TenantId, x.Id));
         };
     }
 }

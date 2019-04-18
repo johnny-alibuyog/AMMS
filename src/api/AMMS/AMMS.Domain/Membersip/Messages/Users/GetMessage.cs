@@ -1,7 +1,7 @@
 ﻿using AMMS.Domain.Common.Messages;
 using AMMS.Domain.Common.Messages.Dtos;
 using AMMS.Domain.Common.Pipes.Auth;
-using AMMS.Domain.Users.Models;
+using AMMS.Domain.Membership.Models;
 using AutoMapper;
 using MediatR;
 using MongoDB.Driver;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Users.Messages
+namespace AMMS.Domain.Membership.Messages.Users
 {
     public class GetMessage
     {
@@ -21,7 +21,7 @@ namespace AMMS.Domain.Users.Messages
 
         public class Auth : AccessControl<Request>
         {
-            public Auth() => With(Models.Permission.To(Area.Users, Access.Read));
+            public Auth() => With(Models.Permission.To(Area.User, Access.Read));
         }
 
         public class TransformProfile : Profile
@@ -31,14 +31,14 @@ namespace AMMS.Domain.Users.Messages
 
         public class Handler : AbstractRequestHandler<Request, Response>
         {
-            public Handler(DbContext db, ILogger log, IMapper mapper) : base(db, log, mapper) { }
+            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationtoken)
             {
-                var user = await this._db.UserContext.Users.AsQueryable()
+                var user = await this.Db.Membership.Users.AsQueryable()
                     .FirstOrDefaultAsync(x => x.Id == request.Id);
 
-                return _mapper.Map<Response>(user);
+                return Mapper.Map<Response>(user);
             }
         }
     }

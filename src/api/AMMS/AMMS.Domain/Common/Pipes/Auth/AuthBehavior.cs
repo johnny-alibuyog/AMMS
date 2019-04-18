@@ -1,4 +1,4 @@
-﻿using AMMS.Domain.Users.Models;
+﻿using AMMS.Domain.Membership.Models;
 using MediatR;
 using Serilog;
 using System;

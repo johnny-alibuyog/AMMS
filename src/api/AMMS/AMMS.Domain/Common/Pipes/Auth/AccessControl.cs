@@ -1,4 +1,4 @@
-﻿using AMMS.Domain.Users.Models;
+﻿using AMMS.Domain.Membership.Models;
 
 namespace AMMS.Domain.Common.Pipes.Auth
 {

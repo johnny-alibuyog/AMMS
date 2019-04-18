@@ -1,14 +1,17 @@
 ﻿using AMMS.Domain.Common.Messages;
 using AMMS.Domain.Common.Messages.Dtos;
 using AMMS.Domain.Common.Pipes.Auth;
-using AMMS.Domain.Users.Models;
+using AMMS.Domain.Membership.Models;
 using AutoMapper;
 using MediatR;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Serilog;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
-namespace AMMS.Domain.Users.Messages
+namespace AMMS.Domain.Membership.Messages.Users
 {
     public class CreateMessage
     {
@@ -18,7 +21,7 @@ namespace AMMS.Domain.Users.Messages
 
         public class Auth : AccessControl<Request>
         {
-            public Auth() => With(Permission.To(Area.Users, Access.Create));
+            public Auth() => With(Permission.To(Area.User, Access.Create));
         }
 
         public class TransformProfile : Profile
@@ -32,15 +35,21 @@ namespace AMMS.Domain.Users.Messages
 
         public class Handler : AbstractRequestHandler<Request, Response>
         {
-            public Handler(DbContext db, ILogger log, IMapper mapper) : base(db, log, mapper) { }
+            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var entity = _mapper.Map<User>(request);
+                var user = Mapper.Map<User>(request);
 
-                await this._db.UserContext.Users.InsertOneAsync(entity);
+                //var settings = _db.CommonContext.Settings.AsQueryable()
+                //    .OfType<UserSettings>()
+                //    .FirstOrDefaultAsync(x => x.TenantId == )
 
-                return _mapper.Map<Response>(entity);
+                user.SetPassword(new HashProvider(), "sample");
+
+                await Db.Membership.Users.InsertOneAsync(user);
+
+                return Mapper.Map<Response>(user);
             }
         }
     }

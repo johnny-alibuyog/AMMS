@@ -1,4 +1,4 @@
-﻿using AMMS.Domain.Users;
+﻿using AMMS.Domain.Membership;
 using MongoDB.Driver;
 using Serilog;
 using System;
@@ -17,13 +17,13 @@ namespace AMMS.Domain.Common.Pipes.Auth
     {
         private readonly ILogger _log;
         private readonly IContext _context;
-        private readonly UserContext _userContext;
+        private readonly MembershipContext _membershipContext;
 
         public AuthProvider(ILogger log, IContext context, DbContext dbContext)
         {
             _log = log;
             _context = context;
-            _userContext = dbContext.UserContext;
+            _membershipContext = dbContext.Membership;
         }
 
         public void Evaluate(IEnumerable<IAccessControl> accessControls)
@@ -31,7 +31,7 @@ namespace AMMS.Domain.Common.Pipes.Auth
             if (accessControls == null || !accessControls.Any())
                 return;
 
-            var user = _userContext
+            var user = _membershipContext
                 .Users.AsQueryable()
                 .Where(x =>
                     x.Id == _context.UserId &&
@@ -43,17 +43,17 @@ namespace AMMS.Domain.Common.Pipes.Auth
             if (user == null)
                 throw new AuthenticationException();
 
-            var permissions = _userContext
-                .Roles.AsQueryable()
-                .Where(x => user.RoleIds.Contains(x.Id))
-                .SelectMany(x => x.Permissions)
-                .ToArray();
+            var roles = _membershipContext.Roles.AsQueryable().Where(x => user.RoleIds.Contains(x.Id)).ToArray();
+
+            var permissions = roles.SelectMany(x => x.Permissions).ToArray();
 
             foreach (var accessControl in accessControls)
             {
-                if (permissions.Any(perms => !perms.HasPermission(accessControl.Area, accessControl.Access)))
+                var allowed = permissions.Any(perms => perms.HasPermission(accessControl.Area, accessControl.Access));
+
+                if (!allowed)
                 {
-                    throw new UnauthorizedAccessException($"You don not have {accessControl.Access} to {accessControl.Area}");
+                    throw new UnauthorizedAccessException($"You don not have {accessControl.Access} access to {accessControl.Area}");
                 }
             }
         }

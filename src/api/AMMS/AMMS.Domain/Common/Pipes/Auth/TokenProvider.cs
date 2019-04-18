@@ -23,6 +23,11 @@ namespace AMMS.Domain.Common.Pipes.Auth
         public static implicit operator Token(string value) => new Token(value);
     }
 
+    public interface ITokenExtractor
+    {
+        Token Extract();
+    }
+
     public interface ITokenProvider
     {
         TPayload Decode<TPayload>(Token token);
@@ -39,7 +44,7 @@ namespace AMMS.Domain.Common.Pipes.Auth
             _secret = secret.Value;
         }
 
-        private JsonNetSerializer GetSerializer()
+        private IJsonSerializer GetJsonSerializer()
         {
             var serializer = new JsonSerializer();
 
@@ -61,33 +66,46 @@ namespace AMMS.Domain.Common.Pipes.Auth
             return new JsonNetSerializer(serializer);
         }
 
+        private IJwtAlgorithm GetAlgorithm() => new HMACSHA256Algorithm();
+
+        private IBase64UrlEncoder GetEncoder() => new JwtBase64UrlEncoder();
+
+        private IDateTimeProvider GetDateTimeProvider() => new UtcDateTimeProvider();
+
         public Token Encode<TPayload>(TPayload payload)
         {
             var encoder = new JwtEncoder(
-                jsonSerializer: GetSerializer(), 
-                algorithm: new HMACSHA256Algorithm(), 
-                urlEncoder: new JwtBase64UrlEncoder()
+                jsonSerializer: GetJsonSerializer(), 
+                algorithm: GetAlgorithm(), 
+                urlEncoder: GetEncoder()
             );
 
-            var token = encoder.Encode(payload: payload, key: _secret.Key);
+            var token = encoder.Encode(
+                payload: payload, 
+                key: _secret.Key
+            );
 
             return token;
         }
 
         public TPayload Decode<TPayload>(Token token)
         {
-            var serializer = GetSerializer();
+            var jsonSerializer = GetJsonSerializer();
 
             var decoder = new JwtDecoder(
-                jsonSerializer: serializer, 
+                jsonSerializer: jsonSerializer, 
                 jwtValidator: new JwtValidator(
-                    jsonSerializer: serializer, 
-                    dateTimeProvider: new UtcDateTimeProvider()
+                    jsonSerializer: jsonSerializer, 
+                    dateTimeProvider: GetDateTimeProvider()
                 ), 
-                urlEncoder: new JwtBase64UrlEncoder()
+                urlEncoder: GetEncoder()
             );
 
-            var payload = decoder.DecodeToObject<TPayload>(token: token, key: _secret.Key, verify: true);
+            var payload = decoder.DecodeToObject<TPayload>(
+                token: token, 
+                key: _secret.Key, 
+                verify: true
+            );
 
             return payload;
         }

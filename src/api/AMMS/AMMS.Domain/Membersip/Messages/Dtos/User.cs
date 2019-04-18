@@ -3,7 +3,7 @@ using AutoMapper;
 using FluentValidation;
 using System.Collections.Generic;
 
-namespace AMMS.Domain.Users.Messages.Dtos
+namespace AMMS.Domain.Membership.Messages.Dtos
 {
     public class User
     {
@@ -19,7 +19,7 @@ namespace AMMS.Domain.Users.Messages.Dtos
 
         public Address HomeAddress { get; set; }
 
-        public IEnumerable<string> RoleIds { get; protected set; }
+        public List<string> RoleIds { get; set; }
     }
 
     public class UserValidator : AbstractValidator<User>
@@ -40,7 +40,9 @@ namespace AMMS.Domain.Users.Messages.Dtos
     {
         public UserProfile()
         {
-            CreateMap<Models.User, Dtos.User>();
+            CreateMap<Dtos.User, Models.User>()
+                .ForMember(x => x.PasswordHash, x => x.Ignore())
+                .ForMember(x => x.PasswordSalt, x => x.Ignore());
         }
     }
 }

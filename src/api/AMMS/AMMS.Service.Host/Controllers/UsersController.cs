@@ -1,4 +1,4 @@
-﻿using AMMS.Domain.Users.Messages;
+﻿using AMMS.Domain.Membership.Messages.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace AMMS.Service.Host.Controllers
             return _mediator.Send(request ?? new CreateMessage.Request());
         }
 
-        [HttpPut()]
+        [HttpPut("{request.id}")]
         public Task<UpdateMessage.Response> Handle([FromBody]UpdateMessage.Request request)
         {
             return _mediator.Send(request ?? new UpdateMessage.Request());
@@ -41,5 +41,12 @@ namespace AMMS.Service.Host.Controllers
         {
             return _mediator.Send(request ?? new DeleteMessage.Request());
         }
+
+        [HttpPost("~/login")]
+        public Task<LoginMessage.Response> Handle([FromBody]LoginMessage.Request request)
+        {
+            return _mediator.Send(request ?? new LoginMessage.Request());
+        }
+
     }
 }

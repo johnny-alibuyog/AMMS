@@ -9,3 +9,5 @@
 /src/api/AMMS/AMMS.Test.Integration/obj
 /src/api/AMMS/AMMS.Test.Integration/bin
 /third_party
+/src/api/AMMS/AMMS.Seeder/bin
+obj
