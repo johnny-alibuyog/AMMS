@@ -1,4 +1,5 @@
 ﻿using AMMS.Domain.Common.Kernel;
+using AMMS.Domain.Common.Models;
 using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,13 @@ namespace AMMS.Domain.Membership.Models
             Name = name;
             Permissions = permissions;
         }
+
+        public static Role SuperRole => new Role(
+            id: "5cbc74db806b7db3b78dcc53",
+            name: "Super Role",
+            tenantId: Tenant.SuperTenant.Id,
+            permissions: new[] { Permission.Super }
+        );
     }
 
     public class RoleMap

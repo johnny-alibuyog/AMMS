@@ -1,5 +1,7 @@
 ﻿using AMMS.Domain.Common.Kernel;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,9 @@ namespace AMMS.Domain.Membership.Models
 {
     public enum Area
     {
+        All,
+        Tenant,
+        Branch,
         User,
         UserPassword,
     }
@@ -17,20 +22,26 @@ namespace AMMS.Domain.Membership.Models
         Read,
         Create,
         Update,
-        Delete
+        Delete,
+        Super,
     }
 
     public class Permission : ValueObject<Permission>
     {
         public Area Area { get; protected set; }
 
-        //[BsonRepresentation(BsonType.String)] TODO: https://stackoverflow.com/questions/47313022/mongodb-c-sharp-driver-serializing-listenum-as-string
+        [BsonRepresentation(BsonType.String)] // TODO: https://stackoverflow.com/questions/47313022/mongodb-c-sharp-driver-serializing-listenum-as-string
         public IEnumerable<Access> AccessRights { get; protected set; }
 
         public Permission(Area area, IEnumerable<Access> accessRights)
         {
             Area = area;
             AccessRights = accessRights;
+        }
+
+        public bool IsSuperPermission()
+        {
+            return Area == Area.All && AccessRights.Contains(Access.Super);
         }
 
         public bool HasPermission(Area area, Access access)
@@ -46,12 +57,16 @@ namespace AMMS.Domain.Membership.Models
 
         public static (Area area, Access access) To(Area area, Access access) => (area, access);
 
+        public static readonly Permission Super = new Permission(Area.All, new Access[] { Access.Super });
+        public static readonly Permission Tenant = new Permission(Area.Tenant, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
+        public static readonly Permission Branch = new Permission(Area.Branch, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
         public static readonly Permission User = new Permission(Area.User, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
-
-        public static readonly Permission UserPassword = new Permission(Area.User, new Access[] { Access.Update });
+        public static readonly Permission UserPassword = new Permission(Area.UserPassword, new Access[] { Access.Update });
 
         public static readonly IEnumerable<Permission> Template = new List<Permission>()
         {
+            Permission.Tenant,
+            Permission.Branch,
             Permission.User,
             Permission.UserPassword
         };

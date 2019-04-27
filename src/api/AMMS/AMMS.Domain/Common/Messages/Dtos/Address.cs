@@ -25,11 +25,17 @@ namespace AMMS.Domain.Common.Messages.Dtos
         public AddressValidator()
         {
             RuleFor(x => x.Street);
+
             RuleFor(x => x.Barangay);
+
             RuleFor(x => x.City);
+
             RuleFor(x => x.Province);
+
             RuleFor(x => x.Region);
+
             RuleFor(x => x.Country);
+
             RuleFor(x => x.ZipCode);
         }
     }

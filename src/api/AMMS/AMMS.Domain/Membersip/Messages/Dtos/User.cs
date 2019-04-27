@@ -11,8 +11,6 @@ namespace AMMS.Domain.Membership.Messages.Dtos
 
         public string TenantId { get; set; }
 
-        public string BranchId { get; set; }
-
         public string Username { get; set; }
 
         public Person Person { get; set; }
@@ -20,6 +18,8 @@ namespace AMMS.Domain.Membership.Messages.Dtos
         public Address HomeAddress { get; set; }
 
         public List<string> RoleIds { get; set; }
+
+        public List<string> BranchIds { get; set; }
     }
 
     public class UserValidator : AbstractValidator<User>
@@ -27,12 +27,22 @@ namespace AMMS.Domain.Membership.Messages.Dtos
         public UserValidator(PersonValidator personValidator, AddressValidator addressValidator)
         {
             RuleFor(x => x.Id);
+
             RuleFor(x => x.TenantId);
-            RuleFor(x => x.BranchId);
-            RuleFor(x => x.Username).NotNull().NotEmpty();
-            RuleFor(x => x.Person).NotNull().SetValidator(personValidator);
-            RuleFor(x => x.HomeAddress).NotNull().SetValidator(addressValidator);
-            RuleFor(x => x.RoleIds);
+
+            RuleFor(x => x.Username)
+                .NotNull().NotEmpty();
+
+            RuleFor(x => x.Person)
+                .NotNull().SetValidator(personValidator);
+
+            RuleFor(x => x.HomeAddress)
+                .NotNull().SetValidator(addressValidator);
+
+            RuleFor(x => x.RoleIds)
+                .NotEmpty();
+
+            RuleFor(x => x.BranchIds);
         }
     }
 

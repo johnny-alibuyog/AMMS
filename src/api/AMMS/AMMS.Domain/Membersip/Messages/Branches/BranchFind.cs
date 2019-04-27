@@ -6,25 +6,21 @@ using AutoMapper;
 using MediatR;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Serilog;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Membership.Messages.Users
+namespace AMMS.Domain.Membership.Messages.Branches
 {
-    //https://stackoverflow.com/questions/50530363/aggregate-lookup-with-c-sharp
-    //https://stackoverflow.com/questions/50530363/aggregate-lookup-with-c-sharp
-    public class FindMessage
+    public class BranchFind
     {
         public class Request : IRequest<Response> { }
 
-        public class Response : List<Lookup<string>> { }
+        public class Response : List<Dtos.Branch> { }
 
         public class Auth : AccessControl<Request>
         {
-            public Auth() => With(Permission.To(Area.User, Access.Read));
+            public Auth() => With(Permission.To(Area.Branch, Access.Read));
         }
 
         public class TransformProfile : Profile
@@ -38,18 +34,11 @@ namespace AMMS.Domain.Membership.Messages.Users
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var users = await Db.Membership.Users.AsQueryable()
+                var branches = await Db.Membership.Branches.AsQueryable()
                     .Where(x => x.TenantId == Context.TenantId)
-                    .Select(x => new Lookup<string>()
-                    {
-                        Id = x.Id,
-                        Name =
-                            x.Person.FirstName + " " +
-                            x.Person.LastName
-                    })
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
 
-                return Mapper.Map<Response>(users);
+                return Mapper.Map<Response>(branches);
             }
         }
     }

@@ -21,9 +21,14 @@ namespace AMMS.Domain.Common.Messages.Dtos
     {
         public PersonValidator()
         {
-            RuleFor(x => x.FirstName).NotNull().NotEmpty();
+            RuleFor(x => x.FirstName)
+                .NotNull().NotEmpty();
+
             RuleFor(x => x.MiddleName);
-            RuleFor(x => x.LastName).NotNull().NotEmpty();
+
+            RuleFor(x => x.LastName)
+                .NotNull().NotEmpty();
+
             RuleFor(x => x.BirthDate);
         }
     }

@@ -1,8 +1,9 @@
 ﻿using AMMS.Domain.Membership.Messages.Users;
-using AMMS.Seeder.Common.RestApi;
+using AMMS.Service.Client;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace AMMS.Seeder
 {
@@ -12,18 +13,30 @@ namespace AMMS.Seeder
         // https://stackoverflow.com/questions/39231951/how-do-i-access-configuration-in-any-class-in-asp-net-core
         static void Main(string[] args)
         {
+            Test();
+
+            Console.ReadLine();
+        }
+
+        private static async Task Test()
+        {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var api = new ApiBase(config["ApiEndpoint"]);
+            var api = new Api(
+                endpoint: config["ApiEndpoint"],
+                loginCredentials: new UserLogin.Request()
+                {
+                    Username = "admin",
+                    Password = "sample"
+                }
+            );
 
-            var id = "dffdff";
+            var user = await api.Users.Send(new UserGet.Request() { Id = "5cb7613a83501529a448cac0" });
 
-            api.Get($"users/{id}", new GetMessage.Request() { Id = id }).ContinueWith(x => Console.WriteLine(x));
-
-            Console.Read();
+            Console.WriteLine(user);
         }
     }
 }

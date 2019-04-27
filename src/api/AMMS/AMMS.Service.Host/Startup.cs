@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using static AMMS.Domain.Membership.Messages.Users.CreateMessage;
+using static AMMS.Domain.Membership.Messages.Users.UserCreate;
 
 namespace AMMS.Service.Host
 {

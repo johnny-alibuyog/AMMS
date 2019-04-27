@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using AMMS.Domain.Common.Pipes.Auth;
+using AMMS.Domain.Membership.Messages.Users;
+using MediatR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -11,11 +13,17 @@ namespace AMMS.Seeder.Common.RestApi
     // https://github.com/restsharp/RestSharp
     // https://stackoverflow.com/questions/43849892/can-i-set-a-custom-jsonserializer-to-restsharp-restclient
     // https://gist.github.com/alexeyzimarev/c00b79c11c8cce6f6208454f7933ad24
-    public class ApiBase
+    public class RestClientFacade
     {
-        private readonly RestClient _client;
+        private readonly IRestClient _client;
+        private readonly LoginMessage.Request _loginCredentials;
+        private Token _authToken;
 
-        public ApiBase(string endpoint) => _client = new RestClient(endpoint);
+        public RestClientFacade(string endpoint, LoginMessage.Request loginCredentials)
+        {
+            _client = new RestClient(endpoint);
+            _loginCredentials = loginCredentials;
+        }
 
         private IRestRequest CreateRestRequest(string resource, Method method)
         {
@@ -24,16 +32,48 @@ namespace AMMS.Seeder.Common.RestApi
                 JsonSerializer = new JsonNetSerializer()
             };
 
+            if (_authToken != null)
+            {
+                request.AddHeader("Authorization", $"Bearer {_authToken.Value}");
+            }
+
             return request;
+        }
+
+        private async Task EnsureAuth()
+        {
+            if (_authToken == null)
+            {
+                var request = CreateRestRequest("login/", Method.POST);
+
+                request.AddJsonBody(_loginCredentials);
+
+                var response = await _client.PostAsync<LoginMessage.Response>(request);
+
+                _authToken = response.Token;
+            }
         }
 
         public async Task<TResponse> Get<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
         {
+            await EnsureAuth();
+
             var restRequest = CreateRestRequest(resource, Method.GET);
 
             restRequest.AddObject(request);
 
             return await _client.GetAsync<TResponse>(restRequest);
+        }
+
+        public async Task<TResponse> Post<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
+        {
+            await EnsureAuth();
+
+            var restRequest = CreateRestRequest(resource, Method.POST);
+
+            restRequest.AddJsonBody(request);
+
+            return await _client.PostAsync<TResponse>(restRequest);
         }
 
         public class JsonNetSerializer : IRestSerializer

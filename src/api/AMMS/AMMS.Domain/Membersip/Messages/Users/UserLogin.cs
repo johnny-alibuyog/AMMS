@@ -1,11 +1,9 @@
 ﻿using AMMS.Domain.Common.Messages;
 using AMMS.Domain.Common.Pipes.Auth;
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Serilog;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading;
@@ -13,13 +11,19 @@ using System.Threading.Tasks;
 
 namespace AMMS.Domain.Membership.Messages.Users
 {
-    public class LoginMessage
+    public class UserLogin
     {
         public class Request : IRequest<Response>
         {
+            public string Location { get; set; }
+
             public string Username { get; set; }
 
             public string Password { get; set; }
+
+            internal string TenantCode => Location.Split('/').First();
+
+            internal string BranchCode => Location.Split('/').Last();
         }
 
         public class Response
@@ -31,7 +35,13 @@ namespace AMMS.Domain.Membership.Messages.Users
         {
             public Validator()
             {
+                var locationCompositionMessage = $"{nameof(Request.Location)} should be composed of tenant code and branch code (ex tenant/branch).";
+
+                RuleFor(x => x.Location).NotEmpty().NotNull()
+                    .Must(x => x.Contains("/")).WithMessage(locationCompositionMessage);
+
                 RuleFor(x => x.Username).NotEmpty().NotNull();
+
                 RuleFor(x => x.Password).NotEmpty().NotNull();
             }
         }
@@ -45,17 +55,29 @@ namespace AMMS.Domain.Membership.Messages.Users
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var user = await this.Db.Membership.Users.AsQueryable()
-                    .FirstOrDefaultAsync(x => x.Username == request.Username);
+                var tenant = await Db.Membership.Tenants.AsQueryable()
+                    .FirstOrDefaultAsync(x => x.Code == request.TenantCode);
+
+                var branch = await Db.Membership.Branches.AsQueryable()
+                    .FirstOrDefaultAsync(x => x.Code == request.BranchCode);
+
+                var user = await this.Db.Membership
+                    .Users.AsQueryable()
+                    .FirstOrDefaultAsync(x => 
+                        x.Username == request.Username &&
+                        x.TenantId == tenant.Id &&
+                        x.BranchIds.Contains(branch.Id), 
+                        cancellationToken
+                    );
 
                 var verified = user?.VerifyPassword(new HashProvider(), request.Password);
 
                 if (verified != true)
                 {
-                    throw new InvalidCredentialException("Username or Password is incorrect");
+                    throw new InvalidCredentialException("Location, Username or Password is incorrect");
                 }
 
-                var token = _tokenProvider.Encode(new Context(user.TenantId, user.BranchId, user.Id));
+                var token = _tokenProvider.Encode(new Context(tenant.Id, branch.Id, user.Id));
 
                 return new Response() { Token = token.Value };
             }

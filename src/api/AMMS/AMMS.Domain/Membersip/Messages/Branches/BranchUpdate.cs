@@ -1,25 +1,28 @@
 ﻿using AMMS.Domain.Common.Messages;
-using AMMS.Domain.Common.Messages.Dtos;
 using AMMS.Domain.Common.Pipes.Auth;
 using AMMS.Domain.Membership.Models;
 using AutoMapper;
 using MediatR;
 using MongoDB.Driver;
-using Serilog;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Membership.Messages.Users
+namespace AMMS.Domain.Membership.Messages.Branches
 {
-    public class DeleteMessage
+    public class BranchUpdate
     {
-        public class Request : WithStringId, IRequest<Response> { }
+        public class Request : Dtos.Branch, IRequest<Response> { }
 
         public class Response { }
 
         public class Auth : AccessControl<Request>
         {
-            public Auth() => With(Models.Permission.To(Area.User, Access.Delete));
+            public Auth() => With(Permission.To(Area.Branch, Access.Read));
+        }
+
+        public class TransformProfile : Profile
+        {
+            public TransformProfile() => CreateMap<Request, Models.Branch>();
         }
 
         public class Handler : AbstractRequestHandler<Request, Response>
@@ -28,7 +31,9 @@ namespace AMMS.Domain.Membership.Messages.Users
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                await Db.Membership.Users.DeleteOneAsync(x => x.Id == request.Id);
+                var branch = Mapper.Map<Models.Branch>(request);
+
+                await Db.Membership.Branches.ReplaceOneAsync(x => x.Id == branch.Id, branch, new UpdateOptions(), cancellationToken);
 
                 return new Response();
             }

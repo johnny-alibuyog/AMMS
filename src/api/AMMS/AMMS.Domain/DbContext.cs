@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 using Serilog;
 using System;
+using System.Threading.Tasks;
 
 namespace AMMS.Domain
 {
@@ -67,14 +68,19 @@ namespace AMMS.Domain
 
             Membership = new MembershipContext(database);
 
-            SeedData();
+            SeedSuper().Wait();
         }
 
-        public void SeedData()
-        {
-            var common = Common.Seed();
+        //public async Task SeedData()
+        //{
+        //    var common = await Common.Seed();
 
-            Membership.Seed(common);
+        //    Membership.Seed(common);
+        //}
+
+        public async Task SeedSuper()
+        {
+            await Membership.SeedSuper(Common.Settings);
         }
     }
 

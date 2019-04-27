@@ -5,31 +5,29 @@ using AMMS.Domain.Membership.Models;
 using AutoMapper;
 using MediatR;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
-using Serilog;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
-namespace AMMS.Domain.Membership.Messages.Users
+namespace AMMS.Domain.Membership.Messages.Branches
 {
-    public class CreateMessage
+    public class BranchCreate
     {
-        public class Request : Dtos.User, IRequest<Response> { }
+        public class Request : Dtos.Branch, IRequest<Response> { }
 
         public class Response : WithStringId { }
 
         public class Auth : AccessControl<Request>
         {
-            public Auth() => With(Permission.To(Area.User, Access.Create));
+            public Auth() => With(Permission.To(Area.Branch, Access.Create));
         }
 
         public class TransformProfile : Profile
         {
             public TransformProfile()
             {
-                CreateMap<Models.User, Response>();
-                CreateMap<Models.User, Request>();
+                CreateMap<Models.Branch, Response>();
+
+                CreateMap<Models.Branch, Request>();
             }
         }
 
@@ -39,17 +37,11 @@ namespace AMMS.Domain.Membership.Messages.Users
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var user = Mapper.Map<User>(request);
+                var branch = Mapper.Map<Branch>(request);
 
-                //var settings = _db.CommonContext.Settings.AsQueryable()
-                //    .OfType<UserSettings>()
-                //    .FirstOrDefaultAsync(x => x.TenantId == )
+                await Db.Membership.Branches.InsertOneAsync(branch, new InsertOneOptions(), cancellationToken);
 
-                user.SetPassword(new HashProvider(), "sample");
-
-                await Db.Membership.Users.InsertOneAsync(user);
-
-                return Mapper.Map<Response>(user);
+                return Mapper.Map<Response>(branch);
             }
         }
     }

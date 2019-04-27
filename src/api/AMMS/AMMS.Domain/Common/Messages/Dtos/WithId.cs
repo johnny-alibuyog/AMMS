@@ -21,7 +21,8 @@ namespace AMMS.Domain.Common.Messages.Dtos
     {
         public WithStringIdValidator()
         {
-            RuleFor(x => x.Id).NotNull().NotEmpty();
+            RuleFor(x => x.Id)
+                .NotNull().NotEmpty();
         }
     }
 
@@ -29,7 +30,8 @@ namespace AMMS.Domain.Common.Messages.Dtos
     {
         public WithIntIdValidator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Id)
+                .GreaterThan(0);
         }
     }
 }

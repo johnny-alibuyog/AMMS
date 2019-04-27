@@ -1,4 +1,5 @@
 ﻿using AMMS.Domain.Membership;
+using AMMS.Domain.Membership.Models;
 using MongoDB.Driver;
 using Serilog;
 using System;
@@ -35,8 +36,8 @@ namespace AMMS.Domain.Common.Pipes.Auth
                 .Users.AsQueryable()
                 .Where(x =>
                     x.Id == _context.UserId &&
-                    x.BranchId == _context.BranchId &&
-                    x.TenantId == _context.TenantId
+                    x.TenantId == _context.TenantId &&
+                    x.BranchIds.Contains(_context.BranchId)
                 )
                 .FirstOrDefault();
 
@@ -47,11 +48,14 @@ namespace AMMS.Domain.Common.Pipes.Auth
 
             var permissions = roles.SelectMany(x => x.Permissions).ToArray();
 
+            if (permissions.Any(x => x.IsSuperPermission()))
+                return;
+
             foreach (var accessControl in accessControls)
             {
-                var allowed = permissions.Any(perms => perms.HasPermission(accessControl.Area, accessControl.Access));
+                var hasAccess = permissions.Any(perms => perms.HasPermission(accessControl.Area, accessControl.Access));
 
-                if (!allowed)
+                if (!hasAccess)
                 {
                     throw new UnauthorizedAccessException($"You don not have {accessControl.Access} access to {accessControl.Area}");
                 }

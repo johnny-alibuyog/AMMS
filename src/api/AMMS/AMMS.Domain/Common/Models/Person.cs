@@ -48,8 +48,8 @@ namespace AMMS.Domain.Common.Models
             map.MapCreator(x =>
                 new Person(
                     x.FirstName,
-                    x.MiddleName,
                     x.LastName,
+                    x.MiddleName,
                     x.BirthDate
                 )
             );

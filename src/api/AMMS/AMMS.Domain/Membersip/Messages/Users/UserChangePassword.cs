@@ -6,7 +6,7 @@ using MediatR;
 
 namespace AMMS.Domain.Membership.Messages.Users
 {
-    public class ChangePasswordMessage
+    public class UserChangePassword
     {
         public class Request : IRequest<Response>
         {
