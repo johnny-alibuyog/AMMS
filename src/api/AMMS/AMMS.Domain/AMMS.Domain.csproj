@@ -25,8 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
-    <PackageReference Include="FluentValidation" Version="8.2.2" />
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="Bogus" Version="26.0.2" />
+    <PackageReference Include="FluentValidation" Version="8.3.0" />
     <PackageReference Include="JWT" Version="5.0.1" />
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />

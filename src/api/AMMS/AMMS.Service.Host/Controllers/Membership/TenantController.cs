@@ -41,5 +41,17 @@ namespace AMMS.Service.Host.Controllers.Membership
         {
             return _mediator.Send(request ?? new TenantDelete.Request());
         }
+
+        [HttpPost("environments")]
+        public async Task<ActionResult<TenantEnvironmentCreate.Response>> Handle([FromBody]TenantEnvironmentCreate.Request request)
+        {
+            return await _mediator.Send(request ?? new TenantEnvironmentCreate.Request());
+        }
+
+        [HttpDelete("environments/{request.tenantId}")]
+        public async Task<ActionResult<TenantEnvironmentDelete.Response>> Handle([FromQuery]TenantEnvironmentDelete.Request request)
+        {
+            return await _mediator.Send(request ?? new TenantEnvironmentDelete.Request());
+        }
     }
 }

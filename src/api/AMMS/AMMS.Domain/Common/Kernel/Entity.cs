@@ -111,15 +111,15 @@ namespace AMMS.Domain.Common.Kernel
         #endregion
     }
 
-    public static class EntityMap
+    public class EntityMap : ClassMap<Entity>
     {
-        public static Action<BsonClassMap<Entity>> Map = (map) =>
+        public override void Map(BsonClassMap<Entity> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.SetIdMember(map.GetMemberMap(x => x.Id)
+            cm.SetIdMember(cm.GetMemberMap(x => x.Id)
                 .SetSerializer(new StringSerializer(BsonType.ObjectId))
                 .SetIdGenerator(StringObjectIdGenerator.Instance));
-        };
+        }
     }
 }

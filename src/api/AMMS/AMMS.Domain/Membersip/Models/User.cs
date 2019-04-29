@@ -43,15 +43,25 @@ namespace AMMS.Domain.Membership.Models
             BranchIds = branchIds;
         }
 
-        internal bool VerifyPassword(IHashProvider hashProvider, string password)
+        internal bool VerifyPassword(string password, IHashProvider hashProvider = null)
         {
+            hashProvider = new HashProvider();
+
             return hashProvider.VerifyHashString(password, this.PasswordHash, this.PasswordSalt);
         }
 
-        internal void SetPassword(IHashProvider hashProvider, string password)
+        internal void SetPassword(string password, IHashProvider hashProvider = null)
         {
+            hashProvider = new HashProvider();
+
             (PasswordHash, PasswordSalt) = hashProvider.GenerateHashAndSaltString(password);
         }
+
+        internal void SetTenant(string tenantId) => TenantId = tenantId;
+
+        internal void SetRoles(string[] roleIds) => RoleIds = roleIds;
+
+        internal void SetBranches(string[] branchIds) => BranchIds = branchIds;
 
         public static User SuperUser => new Func<User>(() =>
         {
@@ -60,61 +70,63 @@ namespace AMMS.Domain.Membership.Models
                 tenantId: Tenant.SuperTenant.Id,
                 username: "super_user",
                 person: new Person(
-                    firstName: "User",
-                    lastName: "Super",
-                    middleName: "",
-                    birthDate: DateTime.UtcNow
+                    firstName: "Johnny",
+                    lastName: "Alibuyog",
+                    middleName: "Asprec",
+                    gender: Gender.Male,
+                    birthDate: new DateTime(1982, 03, 28)
                 ),
                 homeAddress: new Address(
-                    street: "Street",
-                    barangay: "Barangay",
-                    city: "City",
-                    province: "Province",
-                    region: "Region",
-                    country: "Country",
-                    zipCode: "ZipCode"
+                    unit: "#13",
+                    street: "Rosal St",
+                    subdivision: "Tres Hernamans Ville",
+                    district: "Mayamot",
+                    municipality: "Antipolo City",
+                    province: "Rizal",
+                    country: "Philippines",
+                    zipCode: "1870"
                 ),
                 roleIds: new[] { Role.SuperRole.Id },
                 branchIds: new[] { Branch.SuperBranch.Id }
             );
 
-            instance.SetPassword(new HashProvider(), "123!@#qweQWE");
+            instance.SetPassword("123!@#qweQWE");
 
             return instance;
-        })(); 
+        })();
     }
 
-    public static class UserMap
+    public class UserMap : ClassMap<User>
     {
-        public static Action<BsonClassMap<User>> Map = (map) =>
+        public override void Map(BsonClassMap<User> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.MapMember(x => x.TenantId);
+            cm.MapMember(x => x.TenantId);
 
-            map.MapMember(x => x.Username)
+            cm.MapMember(x => x.Username)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.Person)
+            cm.MapMember(x => x.Person)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.HomeAddress);
+            cm.MapMember(x => x.HomeAddress);
 
-            map.MapMember(x => x.RoleIds);
+            cm.MapMember(x => x.RoleIds);
 
-            map.MapMember(x => x.BranchIds);
+            cm.MapMember(x => x.BranchIds);
 
-            map.MapCreator(x => 
+            cm.MapCreator(x =>
                 new User(
-                    x.TenantId, 
-                    x.Username, 
-                    x.Person, 
-                    x.HomeAddress, 
+                    x.TenantId,
+                    x.Username,
+                    x.Person,
+                    x.HomeAddress,
                     x.RoleIds,
                     x.BranchIds,
                     x.Id
                 )
             );
-        };
+        }
     }
 }

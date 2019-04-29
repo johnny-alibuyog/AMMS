@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AMMS.Domain.Membership.Messages.Dtos
 {
-    public class User
+    public class User : Equatable<User>
     {
         public string Id { get; set; }
 
@@ -39,10 +39,21 @@ namespace AMMS.Domain.Membership.Messages.Dtos
             RuleFor(x => x.HomeAddress)
                 .NotNull().SetValidator(addressValidator);
 
-            RuleFor(x => x.RoleIds)
-                .NotEmpty();
+            RuleFor(x => x.RoleIds);
 
             RuleFor(x => x.BranchIds);
+        }
+    }
+
+    public class UserFaker : Bogus.Faker<User>
+    {
+        public UserFaker(PersonFaker personFaker, AddressFaker addressFaker)
+        {
+            RuleFor(x => x.Username, (x, y) => x.Person.UserName);
+
+            RuleFor(x => x.Person, (x, y) => personFaker.Generate());
+
+            RuleFor(x => x.HomeAddress, (x, y) => addressFaker.Generate());
         }
     }
 

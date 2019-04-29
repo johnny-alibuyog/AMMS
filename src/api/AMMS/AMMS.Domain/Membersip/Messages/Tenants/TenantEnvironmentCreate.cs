@@ -1,8 +1,7 @@
 ﻿using AMMS.Domain.Common.Messages;
-using AMMS.Domain.Common.Models;
 using AMMS.Domain.Common.Pipes.Auth;
 using AMMS.Domain.Membership.Models;
-using AutoMapper;
+using FluentValidation;
 using MediatR;
 using MongoDB.Driver;
 using System.Threading;
@@ -14,18 +13,36 @@ namespace AMMS.Domain.Membership.Messages.Tenants
     {
         public class Request : IRequest<Response>
         {
-            public string TenantCode { get; set; }
+            public Dtos.Tenant Tenant { get; set; }
 
-            public string TenantName { get; set; }
+            public Dtos.Branch Branch { get; set; }
+
+            public Dtos.User User { get; set; }
+
+            public string DefaultPassword { get; set; }
         }
 
         public class Response
         {
-            public Dtos.Tenant Tenant { get; set; }
+            public string TenantId { get; set; }
 
-            public string AdminUserame { get; set; }
+            public string BranchId { get; set; }
 
-            public string AdminPassword { get; set; }
+            public string UserId { get; set; }
+        }
+
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator(Dtos.TenantValidator tenantValidator, Dtos.BranchValidator branchValidator, Dtos.UserValidator userValidator)
+            {
+                RuleFor(x => x.Tenant).SetValidator(tenantValidator);
+
+                RuleFor(x => x.Branch).SetValidator(branchValidator);
+
+                RuleFor(x => x.User).SetValidator(userValidator);
+
+                RuleFor(x => x.DefaultPassword).NotNull().NotEmpty();
+            }
         }
 
         public class Auth : AccessControl<Request>
@@ -39,25 +56,49 @@ namespace AMMS.Domain.Membership.Messages.Tenants
 
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var tenant = new Tenant(request.TenantCode, request.TenantName);
+                var tenant = Mapper.Map<Tenant>(request.Tenant);
 
                 await Db.Membership.Tenants.InsertOneAsync(tenant, new InsertOneOptions(), cancellationToken);
 
-                var adminRole = new Role(tenant.Id, $"{tenant.Name} Admin Role", permissions: Permission.Template);
+                var branch = Mapper.Map<Branch>(request.Branch);
 
-                await Db.Membership.Roles.InsertOneAsync(adminRole);
+                branch.SetTenantId(tenant.Id);
 
-                //var admin = new User(
-                //    tenantId: tenant.Id,
-                //    branchId: null,
-                //    username: $"{tenant.Name.ToLowerInvariant()}_admin",
-                //    person: new Person(tenant.Name, "Admin", null, null),
-                //    homeAddress: new Address("Street", "Barangay", "City", "Province", "Region", "Country", "ZipCode"),
-                //    roleIds: new[] { adminRole.Id }
-                //);
+                await Db.Membership.Branches.InsertOneAsync(branch, new InsertOneOptions(), cancellationToken);
 
+                var adminRole = new Role(
+                    tenantId: tenant.Id, 
+                    name: $"{tenant.Name} Admin Role", 
+                    permissions: Permission.Template
+                );
 
-                return Mapper.Map<Response>(tenant);
+                await Db.Membership.Roles.InsertOneAsync(adminRole, new InsertOneOptions(), cancellationToken);
+
+                var userSettings = new UserSettings(
+                    tenantId: tenant.Id,
+                    defaultPassword: request.DefaultPassword
+                );
+
+                await Db.Common.Settings.InsertOneAsync(userSettings, new InsertOneOptions(), cancellationToken);
+
+                var admin = Mapper.Map<User>(request.User);
+
+                admin.SetPassword(userSettings.DefaultPassword);
+
+                admin.SetTenant(tenant.Id);
+
+                admin.SetRoles(new[] { adminRole.Id });
+
+                admin.SetBranches(new[] { branch.Id });
+
+                await Db.Membership.Users.InsertOneAsync(admin, new InsertOneOptions(), cancellationToken);
+
+                return new Response()
+                {
+                    TenantId = tenant.Id,
+                    BranchId = branch.Id,
+                    UserId = admin.Id
+                };
             }
         }
     }

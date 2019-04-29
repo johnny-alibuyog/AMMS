@@ -15,8 +15,4 @@
     <ProjectReference Include="..\AMMS.Domain\AMMS.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Common\" />
-  </ItemGroup>
-
 </Project>

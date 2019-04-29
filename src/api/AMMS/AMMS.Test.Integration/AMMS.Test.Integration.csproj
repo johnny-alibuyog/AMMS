@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
     <PackageReference Include="Bogus" Version="26.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AMMS.Domain\AMMS.Domain.csproj" />
+    <ProjectReference Include="..\AMMS.Seeder\AMMS.Seeder.csproj" />
     <ProjectReference Include="..\AMMS.Service.Client\AMMS.Service.Client.csproj" />
   </ItemGroup>
 

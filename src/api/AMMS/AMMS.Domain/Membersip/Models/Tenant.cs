@@ -1,6 +1,5 @@
 ﻿using AMMS.Domain.Common.Kernel;
 using MongoDB.Bson.Serialization;
-using System;
 
 namespace AMMS.Domain.Membership.Models
 {
@@ -26,16 +25,19 @@ namespace AMMS.Domain.Membership.Models
         );
     }
 
-    public static class TenantMap
+    public class TenantMap : ClassMap<Tenant>
     {
-        public static Action<BsonClassMap<Tenant>> Map = (map) =>
+        public override void Map(BsonClassMap<Tenant> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.MapMember(x => x.Name)
+            cm.MapMember(x => x.Code)
                 .SetIsRequired(true);
 
-            map.MapCreator(x => new Tenant(x.Code, x.Name, x.Id));
-        };
+            cm.MapMember(x => x.Name)
+                .SetIsRequired(true);
+
+            cm.MapCreator(x => new Tenant(x.Code, x.Name, x.Id));
+        }
     }
 }

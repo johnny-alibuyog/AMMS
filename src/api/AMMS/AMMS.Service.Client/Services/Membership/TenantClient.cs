@@ -1,7 +1,7 @@
 ﻿using AMMS.Domain.Membership.Messages.Tenants;
 using System.Threading.Tasks;
 
-namespace AMMS.Service.Client.Services.Common
+namespace AMMS.Service.Client.Services.Membership
 {
     public class TenantClient
     {
@@ -22,5 +22,11 @@ namespace AMMS.Service.Client.Services.Common
 
         public Task<TenantDelete.Response> Send(TenantDelete.Request request)
             => _restClient.Delete($"{_resource}/{request.Id}", request);
+
+        public Task<TenantEnvironmentCreate.Response> Send(TenantEnvironmentCreate.Request request)
+            => _restClient.Post($"{_resource}/environments", request);
+
+        public Task<TenantEnvironmentDelete.Response> Send(TenantEnvironmentDelete.Request request)
+            => _restClient.Delete($"{_resource}/environments/{request.TenantId}", request);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AMMS.Domain.Common.Messages.Dtos
 {
-    public class Lookup<TId> 
+    public class Lookup<TId> :  Equatable<Lookup<TId>>
     {
         public TId Id { get; set; }
 

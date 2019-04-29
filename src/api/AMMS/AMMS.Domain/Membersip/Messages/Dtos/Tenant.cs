@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using AMMS.Domain.Common.Messages.Dtos;
+using AutoMapper;
+using Bogus;
 using FluentValidation;
 
 namespace AMMS.Domain.Membership.Messages.Dtos
 {
-    public class Tenant
+    public class Tenant : Equatable<Role>
     {
         public string Id { get; set; }
 
@@ -23,6 +25,16 @@ namespace AMMS.Domain.Membership.Messages.Dtos
 
             RuleFor(x => x.Name)
                 .NotNull().NotEmpty();
+        }
+    }
+
+    public class TenantFaker : Faker<Tenant>
+    {
+        public TenantFaker()
+        {
+            RuleFor(x => x.Code, (x, y) => x.Random.AlphaNumeric(8));
+
+            RuleFor(x => x.Name, (x, y) => x.Company.CompanyName());
         }
     }
 

@@ -72,21 +72,21 @@ namespace AMMS.Domain.Membership.Models
         };
     }
 
-    public class PermissionMap
+    public class PermissionMap : ClassMap<Permission>
     {
-        public static Action<BsonClassMap<Permission>> Map = (map) =>
+        public override void Map(BsonClassMap<Permission> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.MapMember(x => x.Area)
+            cm.MapMember(x => x.Area)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.AccessRights)
+            cm.MapMember(x => x.AccessRights)
                 // TODO: https://jira.mongodb.org/browse/CSHARP-2096
                 //.SetSerializer(new StringSerializer(BsonType.String))
                 .SetIsRequired(true);
 
-            map.MapCreator(x => new Permission(x.Area, x.AccessRights));
-        };
+            cm.MapCreator(x => new Permission(x.Area, x.AccessRights));
+        }
     }
 }

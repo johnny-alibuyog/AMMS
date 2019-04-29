@@ -4,6 +4,12 @@ using System;
 
 namespace AMMS.Domain.Common.Models
 {
+    public enum Gender
+    {
+        Male,
+        Female
+    }
+
     public class Person : ValueObject<Person>
     {
         public string FirstName { get; protected set; }
@@ -11,6 +17,8 @@ namespace AMMS.Domain.Common.Models
         public string LastName { get; protected set; }
 
         public string MiddleName { get; protected set; }
+
+        public Gender? Gender { get; protected set; }
 
         public DateTime? BirthDate { get; protected set; }
 
@@ -20,39 +28,44 @@ namespace AMMS.Domain.Common.Models
             string firstName, 
             string lastName, 
             string middleName, 
+            Gender? gender,
             DateTime? birthDate)
         {
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.MiddleName = middleName;
-            this.BirthDate = birthDate;
+            FirstName = firstName;
+            LastName = lastName;
+            MiddleName = middleName;
+            Gender = gender;
+            BirthDate = birthDate;
         }
     }
 
-    public static class PersonMap
+    public class PersonMap : ClassMap<Person>
     {
-        public static Action<BsonClassMap<Person>> Map = (map) =>
+        public override void Map(BsonClassMap<Person> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.MapMember(x => x.FirstName)
+            cm.MapMember(x => x.FirstName)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.MiddleName);
+            cm.MapMember(x => x.MiddleName);
 
-            map.MapMember(x => x.LastName)
+            cm.MapMember(x => x.LastName)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.BirthDate);
+            cm.MapMember(x => x.Gender);
 
-            map.MapCreator(x =>
+            cm.MapMember(x => x.BirthDate);
+
+            cm.MapCreator(x =>
                 new Person(
                     x.FirstName,
                     x.LastName,
                     x.MiddleName,
+                    x.Gender,
                     x.BirthDate
                 )
             );
-        };
+        }
     }
 }

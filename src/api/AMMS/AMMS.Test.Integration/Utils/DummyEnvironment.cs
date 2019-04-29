@@ -25,9 +25,9 @@ namespace AMMS.Test.Integration.Utils
 
         public async Task Clean()
         {
-            await _api.Users.Send(new UserDelete.Request() { Id = User.Id });
-            await _api.Branches.Send(new BranchDelete.Request() { Id = User.Id });
-            await _api.Tenants.Send(new TenantDelete.Request() { Id = User.Id });
+            await _api.Membership.Users.Send(new UserDelete.Request() { Id = User.Id });
+            await _api.Membership.Branches.Send(new BranchDelete.Request() { Id = User.Id });
+            await _api.Membership.Tenants.Send(new TenantDelete.Request() { Id = User.Id });
         }
 
         public void Dispose()

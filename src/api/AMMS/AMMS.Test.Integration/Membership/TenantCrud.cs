@@ -10,7 +10,13 @@ namespace AMMS.Test.Integration.Membership
     [Binding]
     public class TenantCrud
     {
-        private readonly Context _ctx = new Context();
+        private Context _ctx;
+
+        [Before("Tenant", "CRUD")]
+        public void Before()
+        {
+            _ctx = new Context();
+        }
 
         [Given(@"a tenant has been created")]
         public async Task GivenATenantHasBeenCreated()
@@ -21,13 +27,15 @@ namespace AMMS.Test.Integration.Membership
                 Name = "Some Tenant"
             };
 
-            var response = await _ctx.Api.Tenants.Send(request);
+            var response = await _ctx.Api.Membership.Tenants.Send(request);
 
-            var inserted = await _ctx.Api.Tenants.Send(new TenantGet.Request() { Id = response.Id });
+            var inserted = await _ctx.Api.Membership.Tenants.Send(new TenantGet.Request() { Id = response.Id });
 
             _ctx.CaptureInsertingState(request);
 
             _ctx.CaptureInsertedState(inserted);
+
+            _ctx.CaptureGeneratedId(response.Id);
         }
 
         [When(@"the tenant is updated")]
@@ -40,9 +48,9 @@ namespace AMMS.Test.Integration.Membership
                 Name = _ctx.InsertedState.Name + "_Updated"
             };
 
-            await _ctx.Api.Tenants.Send(request);
+            await _ctx.Api.Membership.Tenants.Send(request);
 
-            var updated = await _ctx.Api.Tenants.Send(new TenantGet.Request() { Id = _ctx.InsertedState.Id });
+            var updated = await _ctx.Api.Membership.Tenants.Send(new TenantGet.Request() { Id = _ctx.InsertedState.Id });
 
             _ctx.CaptureUpdatingState(request);
 
@@ -63,7 +71,7 @@ namespace AMMS.Test.Integration.Membership
         [Then(@"the tenant is deletable")]
         public void ThenTheTenantIsDeletable()
         {
-            Assert.DoesNotThrowAsync(async () => await _ctx.Api.Tenants.Send(new TenantDelete.Request() { Id = _ctx.TenantId }));
+            Assert.DoesNotThrowAsync(async () => await _ctx.Api.Membership.Tenants.Send(new TenantDelete.Request() { Id = _ctx.TenantId }));
         }
 
         private class Context
@@ -87,6 +95,8 @@ namespace AMMS.Test.Integration.Membership
             public void CaptureUpdatingState(TenantUpdate.Request state) => UpdatingState = state;
 
             public void CaptureUpdatedState(TenantGet.Response state) => UpdatedState = state;
+
+            internal void CaptureGeneratedId(string id) => InsertingState.Id = id;
         }
     }
 }

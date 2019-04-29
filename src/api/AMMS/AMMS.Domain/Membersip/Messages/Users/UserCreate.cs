@@ -43,7 +43,7 @@ namespace AMMS.Domain.Membership.Messages.Users
                 var settings = await Db.Common.Settings.AsQueryable().OfType<UserSettings>()
                     .FirstOrDefaultAsync(x => x.TenantId == Context.TenantId, cancellationToken);
 
-                user.SetPassword(new HashProvider(), settings.DefaultPassword);
+                user.SetPassword(settings.DefaultPassword);
 
                 await Db.Membership.Users.InsertOneAsync(user);
 

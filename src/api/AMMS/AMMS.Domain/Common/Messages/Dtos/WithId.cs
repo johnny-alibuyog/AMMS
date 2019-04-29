@@ -2,7 +2,7 @@
 
 namespace AMMS.Domain.Common.Messages.Dtos
 {
-    public abstract class WithId<T>
+    public abstract class WithId<T> : Equatable<WithId<T>>
     {
         public abstract T Id { get; set; }
     }

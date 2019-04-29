@@ -18,7 +18,7 @@ namespace AMMS.Domain.Common.Pipes.Auth
     {
         private readonly ILogger _log;
         private readonly IContext _context;
-        private readonly MembershipContext _membershipContext;
+        private readonly MembershipDbContext _membershipContext;
 
         public AuthProvider(ILogger log, IContext context, DbContext dbContext)
         {

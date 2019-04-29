@@ -2,7 +2,7 @@
 
 namespace AMMS.Domain.Utils.Extentions
 {
-    internal static class MappingExt
+    internal static class MappingEx
     {
         public static TDestination MapTo<TSource, TDestination>(this TSource source, TDestination destination = null)
             where TSource : class

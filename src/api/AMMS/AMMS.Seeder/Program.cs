@@ -34,7 +34,7 @@ namespace AMMS.Seeder
                 }
             );
 
-            var user = await api.Users.Send(new UserGet.Request() { Id = "5cb7613a83501529a448cac0" });
+            var user = await api.Membership.Users.Send(new UserGet.Request() { Id = "5cb7613a83501529a448cac0" });
 
             Console.WriteLine(user);
         }

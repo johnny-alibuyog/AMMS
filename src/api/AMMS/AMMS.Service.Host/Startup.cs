@@ -3,6 +3,7 @@ using AMMS.Domain.Common.Messages;
 using AMMS.Domain.Common.Pipes.Auth;
 using AMMS.Domain.Common.Pipes.Generics;
 using AMMS.Domain.Common.Pipes.Validation;
+using AMMS.Domain.Membership.Messages.Dtos;
 using AMMS.Service.Host.Common.Auth;
 using AutoMapper;
 using FluentValidation.AspNetCore;
@@ -75,7 +76,7 @@ namespace AMMS.Service.Host
             var xmlPath = Path.Combine(AppContext.BaseDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".xml");
 
             services.AddMvc()
-                .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<DbContext>())
+                .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<TenantValidator>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(o => o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
@@ -126,11 +127,13 @@ namespace AMMS.Service.Host
     {
         public static void ConfigureServiceIoc(this ServiceRegistry service)
         {
-            service.AddScoped<DbContext>();
+            //service.AddScoped<DbContext>();
 
             service.AddSingleton(Log.Logger);
 
             service.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            service.ConfigureDb();
 
             service.ConfigureMediatR();
 
@@ -186,9 +189,23 @@ namespace AMMS.Service.Host
         private static void ConfigureAutoMapper(this ServiceRegistry registry)
         {
             // AutoMapper Configurations
-            var config = new MapperConfiguration(x => x.AddProfiles(typeof(TransformProfile).Assembly));
+            var config = new MapperConfiguration(x => x.AddMaps(typeof(TransformProfile).Assembly));
 
             registry.AddSingleton(config.CreateMapper());
+        }
+
+        private static void ConfigureDb(this ServiceRegistry registry)
+        {
+            registry.Scan(scanner =>
+            {
+                scanner.AssemblyContainingType(typeof(IClassMap));
+                scanner.AddAllTypesOf<IClassMap>();
+                scanner.WithDefaultConventions();
+            });
+
+            registry.For<IClassMapInitializer>().Use<ClassMapInitializer>().Singleton();
+
+            registry.AddScoped<DbContext>();
         }
 
         private static void ConfigureAuthorization(this ServiceRegistry registry)

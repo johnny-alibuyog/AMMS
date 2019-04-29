@@ -1,6 +1,5 @@
 ﻿using AMMS.Domain.Common.Models;
 using MongoDB.Bson.Serialization;
-using System;
 
 namespace AMMS.Domain.Membership.Models
 {
@@ -15,16 +14,16 @@ namespace AMMS.Domain.Membership.Models
         }
     }
 
-    public static class UserSettingsMap
+    public class UserSettingsMap : ClassMap<UserSettings>
     {
-        public static Action<BsonClassMap<UserSettings>> Map = (map) =>
+        public override void Map(BsonClassMap<UserSettings> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.MapMember(x => x.DefaultPassword)
+            cm.MapMember(x => x.DefaultPassword)
                 .SetIsRequired(true);
 
-            map.MapCreator(x => new UserSettings(x.TenantId, x.DefaultPassword));
-        };
+            cm.MapCreator(x => new UserSettings(x.TenantId, x.DefaultPassword));
+        }
     }
 }

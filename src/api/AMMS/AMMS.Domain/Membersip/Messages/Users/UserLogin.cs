@@ -70,7 +70,7 @@ namespace AMMS.Domain.Membership.Messages.Users
                         cancellationToken
                     );
 
-                var verified = user?.VerifyPassword(new HashProvider(), request.Password);
+                var verified = user?.VerifyPassword(request.Password);
 
                 if (verified != true)
                 {

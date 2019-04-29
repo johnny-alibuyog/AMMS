@@ -1,7 +1,5 @@
 ﻿using AMMS.Domain.Common.Kernel;
-using AMMS.Domain.Common.Models;
 using MongoDB.Bson.Serialization;
-using System;
 using System.Collections.Generic;
 
 namespace AMMS.Domain.Membership.Models
@@ -34,22 +32,22 @@ namespace AMMS.Domain.Membership.Models
         );
     }
 
-    public class RoleMap
+    public class RoleMap : ClassMap<Role>
     {
-        public static Action<BsonClassMap<Role>> Map = (map) =>
+        public override void Map(BsonClassMap<Role> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.MapMember(x => x.TenantId)
+            cm.MapMember(x => x.TenantId)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.Name)
+            cm.MapMember(x => x.Name)
                 .SetIsRequired(true);
 
-            map.MapMember(x => x.Permissions)
+            cm.MapMember(x => x.Permissions)
                 .SetIsRequired(true);
 
-            map.MapCreator(x => new Role(x.Name, x.TenantId, x.Permissions, x.Id));
-        };
+            cm.MapCreator(x => new Role(x.Name, x.TenantId, x.Permissions, x.Id));
+        }
     }
 }

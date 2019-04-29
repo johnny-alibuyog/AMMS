@@ -1,6 +1,5 @@
 ﻿using AMMS.Domain.Common.Kernel;
 using MongoDB.Bson.Serialization;
-using System;
 
 namespace AMMS.Domain.Common.Models
 {
@@ -9,16 +8,16 @@ namespace AMMS.Domain.Common.Models
         public string TenantId { get; protected set; }
     }
 
-    public static class SettingsMap
+    public class SettingsMap : ClassMap<Settings>
     {
-        public static Action<BsonClassMap<Settings>> Map = (map) =>
+        public override void Map(BsonClassMap<Settings> cm)
         {
-            map.AutoMap();
+            cm.AutoMap();
 
-            map.SetIsRootClass(true);
+            cm.SetIsRootClass(true);
 
-            map.MapMember(x => x.TenantId)
+            cm.MapMember(x => x.TenantId)
                 .SetIsRequired(true);
-        };
+        }
     }
 }
