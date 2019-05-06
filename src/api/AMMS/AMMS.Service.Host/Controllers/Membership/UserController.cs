@@ -31,9 +31,9 @@ namespace AMMS.Service.Host.Controllers.Membership
         }
 
         [HttpPut("{request.id}")]
-        public Task<UpdateMessage.Response> Handle([FromBody]UpdateMessage.Request request)
+        public Task<UserUpdate.Response> Handle([FromBody]UserUpdate.Request request)
         {
-            return _mediator.Send(request ?? new UpdateMessage.Request());
+            return _mediator.Send(request ?? new UserUpdate.Request());
         }
 
         [HttpDelete("{request.id}")]

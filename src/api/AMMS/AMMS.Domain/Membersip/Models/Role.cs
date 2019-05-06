@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 namespace AMMS.Domain.Membership.Models
 {
-    public class Role : Entity, IAggregateRoot
+    public class Role : Entity, IAggregateRoot, IHasTenant
     {
         public string TenantId { get; protected set; }
 
         public string Name { get; protected set; }
 
         public IEnumerable<Permission> Permissions { get; protected set; }
+
+        public void SetTenant(string tenantId) => TenantId = tenantId;
 
         public Role(
             string tenantId,
@@ -47,7 +49,7 @@ namespace AMMS.Domain.Membership.Models
             cm.MapMember(x => x.Permissions)
                 .SetIsRequired(true);
 
-            cm.MapCreator(x => new Role(x.Name, x.TenantId, x.Permissions, x.Id));
+            cm.MapCreator(x => new Role(x.TenantId, x.Name, x.Permissions, x.Id));
         }
     }
 }

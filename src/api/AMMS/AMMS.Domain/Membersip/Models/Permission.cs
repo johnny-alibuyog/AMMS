@@ -13,6 +13,7 @@ namespace AMMS.Domain.Membership.Models
         All,
         Tenant,
         Branch,
+        Role,
         User,
         UserPassword,
     }
@@ -58,15 +59,22 @@ namespace AMMS.Domain.Membership.Models
         public static (Area area, Access access) To(Area area, Access access) => (area, access);
 
         public static readonly Permission Super = new Permission(Area.All, new Access[] { Access.Super });
+
         public static readonly Permission Tenant = new Permission(Area.Tenant, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
+
         public static readonly Permission Branch = new Permission(Area.Branch, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
+
+        public static readonly Permission Role = new Permission(Area.Role, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
+
         public static readonly Permission User = new Permission(Area.User, new Access[] { Access.Read, Access.Create, Access.Update, Access.Delete });
+
         public static readonly Permission UserPassword = new Permission(Area.UserPassword, new Access[] { Access.Update });
 
-        public static readonly IEnumerable<Permission> Template = new List<Permission>()
+        public static readonly List<Permission> Template = new List<Permission>()
         {
             Permission.Tenant,
             Permission.Branch,
+            Permission.Role,
             Permission.User,
             Permission.UserPassword
         };

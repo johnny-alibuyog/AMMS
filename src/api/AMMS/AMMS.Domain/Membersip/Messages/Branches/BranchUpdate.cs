@@ -33,6 +33,8 @@ namespace AMMS.Domain.Membership.Messages.Branches
             {
                 var branch = Mapper.Map<Models.Branch>(request);
 
+                branch.SetTenant(Context.TenantId);
+
                 await Db.Membership.Branches.ReplaceOneAsync(x => x.Id == branch.Id, branch, new UpdateOptions(), cancellationToken);
 
                 return new Response();

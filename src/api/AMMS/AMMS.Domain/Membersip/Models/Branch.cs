@@ -3,13 +3,15 @@ using MongoDB.Bson.Serialization;
 
 namespace AMMS.Domain.Membership.Models
 {
-    public class Branch : Entity, IAggregateRoot
+    public class Branch : Entity, IAggregateRoot, IHasTenant
     {
         public string TenantId { get; protected set; }
 
         public string Code { get; protected set; }
 
         public string Name { get; protected set; }
+
+        public void SetTenant(string tenantId) => TenantId = tenantId;
 
         public Branch(string tenantId, string code, string name, string id = null)
         {
@@ -18,8 +20,6 @@ namespace AMMS.Domain.Membership.Models
             Code = code;
             Name = name;
         }
-
-        internal void SetTenantId(string tenantId) => TenantId = tenantId; 
 
         public static Branch SuperBranch => new Branch(
             id: "5cbc6faea9df57e2a2687fa3",

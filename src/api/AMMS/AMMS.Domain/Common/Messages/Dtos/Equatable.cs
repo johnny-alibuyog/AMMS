@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -60,25 +61,52 @@ namespace AMMS.Domain.Common.Messages.Dtos
 
         public virtual bool Equals(T other)
         {
-            if (other == null)
-                return false;
+            var thisType = this?.GetType();
+            var otherType = other?.GetType();
 
-            var type = this.GetType();
-            var otherType = other.GetType();
-
-            if (type != otherType)
+            if (otherType == null || thisType != otherType)
+            {
                 return false;
+            }
 
             foreach (var field in this.Fields)
             {
-                var value1 = field.GetValue(other);
-                var value2 = field.GetValue(this);
+                var thisValue = field.GetValue(this);
+                var otherValue = field.GetValue(other);
 
-                if (value1 == null && value2 != null)
+
+                if (otherValue == null && thisValue != null)
                 {
                     return false;
                 }
-                else if (!value1.Equals(value2))
+                else if (
+                    otherValue is IEnumerable otherItems && !(otherValue is string) &&  
+                    thisValue is IEnumerable thisItems && !(thisValue is string))
+                {
+                    var thisEnumerator = thisItems.GetEnumerator();
+                    var otherEnumerator = otherItems.GetEnumerator();
+
+                    var thisHasValue = false;
+                    var otherHasValue = false;
+
+                    do
+                    {
+                        thisHasValue = thisEnumerator.MoveNext();
+                        otherHasValue = otherEnumerator.MoveNext();
+
+                        if (thisHasValue != otherHasValue)
+                        {
+                            return false;
+                        }
+
+                        if (thisEnumerator.Current.ToString() != otherEnumerator.Current.ToString())
+                        {
+                            return false;
+                        }
+                    }
+                    while (thisHasValue && otherHasValue);
+                }
+                else if (!otherValue.Equals(thisValue))
                 {
                     return false;
                 }

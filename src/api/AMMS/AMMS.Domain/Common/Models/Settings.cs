@@ -3,9 +3,11 @@ using MongoDB.Bson.Serialization;
 
 namespace AMMS.Domain.Common.Models
 {
-    public abstract class Settings : Entity, IAggregateRoot
+    public abstract class Settings : Entity, IAggregateRoot, IHasTenant
     {
         public string TenantId { get; protected set; }
+
+        public void SetTenant(string tenantId) => TenantId = tenantId;
     }
 
     public class SettingsMap : ClassMap<Settings>

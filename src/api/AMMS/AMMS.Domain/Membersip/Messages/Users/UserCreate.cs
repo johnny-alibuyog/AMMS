@@ -28,6 +28,7 @@ namespace AMMS.Domain.Membership.Messages.Users
             public TransformProfile()
             {
                 CreateMap<Models.User, Response>();
+
                 CreateMap<Models.User, Request>();
             }
         }
@@ -39,6 +40,8 @@ namespace AMMS.Domain.Membership.Messages.Users
             public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var user = Mapper.Map<User>(request);
+
+                user.SetTenant(Context.TenantId);
 
                 var settings = await Db.Common.Settings.AsQueryable().OfType<UserSettings>()
                     .FirstOrDefaultAsync(x => x.TenantId == Context.TenantId, cancellationToken);

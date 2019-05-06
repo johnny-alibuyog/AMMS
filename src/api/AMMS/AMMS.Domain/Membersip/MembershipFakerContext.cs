@@ -9,6 +9,10 @@ namespace AMMS.Domain.Membership
 
         public BranchFaker Branch { get; }
 
+        public PermissionFaker Permission { get; }
+
+        public RoleFaker Role { get; }
+
         public UserFaker User { get; }
 
         public MembershipFakerContext(PersonFaker person, AddressFaker address)
@@ -16,6 +20,10 @@ namespace AMMS.Domain.Membership
             Tenant = new TenantFaker();
 
             Branch = new BranchFaker();
+
+            Permission = new PermissionFaker();
+
+            Role = new RoleFaker();
 
             User = new UserFaker(person, address);
         }

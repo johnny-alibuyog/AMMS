@@ -62,7 +62,7 @@ namespace AMMS.Domain.Membership.Messages.Tenants
 
                 var branch = Mapper.Map<Branch>(request.Branch);
 
-                branch.SetTenantId(tenant.Id);
+                branch.SetTenant(tenant.Id);
 
                 await Db.Membership.Branches.InsertOneAsync(branch, new InsertOneOptions(), cancellationToken);
 

@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace AMMS.Domain.Membership.Messages.Dtos
 {
-    public class Tenant : Equatable<Role>
+    public class Tenant : Equatable<Tenant>
     {
         public string Id { get; set; }
 

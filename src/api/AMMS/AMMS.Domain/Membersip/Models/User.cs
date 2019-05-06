@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AMMS.Domain.Membership.Models
 {
-    public class User : Entity, IAggregateRoot
+    public class User : Entity, IAggregateRoot, IHasTenant
     {
         public string TenantId { get; protected set; }
 
@@ -57,7 +57,7 @@ namespace AMMS.Domain.Membership.Models
             (PasswordHash, PasswordSalt) = hashProvider.GenerateHashAndSaltString(password);
         }
 
-        internal void SetTenant(string tenantId) => TenantId = tenantId;
+        public void SetTenant(string tenantId) => TenantId = tenantId;
 
         internal void SetRoles(string[] roleIds) => RoleIds = roleIds;
 

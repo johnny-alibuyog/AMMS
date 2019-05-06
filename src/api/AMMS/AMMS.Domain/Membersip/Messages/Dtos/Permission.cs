@@ -4,6 +4,7 @@ using AutoMapper;
 using Bogus;
 using FluentValidation;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AMMS.Domain.Membership.Messages.Dtos
 {
@@ -12,6 +13,7 @@ namespace AMMS.Domain.Membership.Messages.Dtos
         All,
         Tenant,
         Branch,
+        Role,
         User,
         UserPassword,
     }
@@ -29,7 +31,7 @@ namespace AMMS.Domain.Membership.Messages.Dtos
     {
         public Area Area { get; set; }
 
-        public IEnumerable<Access> AccessRights { get; set; }
+        public List<Access> AccessRights { get; set; }
     }
 
     public class PermissionValidator : AbstractValidator<Permission>
@@ -50,7 +52,7 @@ namespace AMMS.Domain.Membership.Messages.Dtos
         {
             RuleFor(x => x.Area, (x, y) => x.PickRandom<Area>());
 
-            RuleFor(x => x.AccessRights, (x, y) => x.PickRandom(EnumEx.GetList<Access>(), 3));
+            RuleFor(x => x.AccessRights, (x, y) => x.PickRandom(EnumEx.GetList<Access>(), 3).ToList());
         }
     }
 

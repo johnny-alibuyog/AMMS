@@ -17,7 +17,7 @@ namespace AMMS.Service.Client.Services.Membership
         public Task<UserCreate.Response> Send(UserCreate.Request request)
             => _restClient.Post($"{_resource}", request);
 
-        public Task<UpdateMessage.Response> Send(UpdateMessage.Request request)
+        public Task<UserUpdate.Response> Send(UserUpdate.Request request)
             => _restClient.Put($"{_resource}/{request.Id}", request);
 
         public Task<UserDelete.Response> Send(UserDelete.Request request)

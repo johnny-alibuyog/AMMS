@@ -16,15 +16,14 @@ namespace AMMS.Domain.Membership.Messages.Dtos
 
         public string Name { get; set; }
 
-        public IEnumerable<Permission> Permissions { get; set; }
+        public List<Permission> Permissions { get; set; }
     }
 
     public class RoleValidator : AbstractValidator<Role>
     {
         public RoleValidator()
         {
-            RuleFor(x => x.TenantId)
-                .NotNull().NotEmpty();
+            RuleFor(x => x.TenantId);
 
             RuleFor(x => x.Name)
                 .NotNull().NotEmpty();
