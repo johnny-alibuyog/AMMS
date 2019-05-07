@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -8,7 +9,7 @@ namespace AMMS.Domain.Common.Messages.Dtos
 {
     public abstract class Equatable<T> : IEquatable<T> where T : Equatable<T>
     {
-        private static IDictionary<Type, FieldInfo[]> _fieldInfos = new Dictionary<Type, FieldInfo[]>();
+        private static ConcurrentDictionary<Type, FieldInfo[]> _fieldInfos = new ConcurrentDictionary<Type, FieldInfo[]>();
 
         private FieldInfo[] Fields
         {

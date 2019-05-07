@@ -4,7 +4,7 @@ using AMMS.Domain.Membership.Messages.Branches;
 using AMMS.Domain.Membership.Messages.Dtos;
 using AMMS.Domain.Membership.Messages.Tenants;
 using AMMS.Domain.Membership.Messages.Users;
-using AMMS.Service.Client;
+using AMMS.Service.Host.Common.Client;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
@@ -14,7 +14,7 @@ namespace AMMS.Test.Integration.Membership
     [Binding]
     public class TenantEnvironmentOperations
     {
-        private readonly Api _api;
+        private readonly ClientApi _api;
 
         private readonly State _state;
 

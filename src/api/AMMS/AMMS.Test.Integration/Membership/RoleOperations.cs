@@ -1,7 +1,7 @@
 ﻿using AMMS.Domain;
 using AMMS.Domain.Membership.Messages.Dtos;
 using AMMS.Domain.Membership.Messages.Roles;
-using AMMS.Service.Client;
+using AMMS.Service.Host.Common.Client;
 using AMMS.Test.Integration.Utils;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace AMMS.Test.Integration.Membership
     [Binding]
     public class RoleOperations
     {
-        private Api _api;
+        private ClientApi _api;
 
         private readonly CrudStateContainer<string, Role> _state;
 

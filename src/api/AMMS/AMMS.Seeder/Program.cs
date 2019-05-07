@@ -1,5 +1,5 @@
 ﻿using AMMS.Domain.Membership.Messages.Users;
-using AMMS.Service.Client;
+using AMMS.Service.Host.Common.Client;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
@@ -25,7 +25,7 @@ namespace AMMS.Seeder
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var api = new Api(
+            var api = new ClientApi(
                 endpoint: config["ApiEndpoint"],
                 loginCredentials: new UserLogin.Request()
                 {

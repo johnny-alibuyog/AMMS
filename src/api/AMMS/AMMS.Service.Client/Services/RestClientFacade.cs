@@ -64,6 +64,8 @@ namespace AMMS.Service.Client.Services
         {
             var restRequest = CreateRestRequest(resource, Method.DELETE);
 
+            restRequest.AddJsonBody(request);
+
             return await _client.DeleteAsync<TResponse>(restRequest);
         }
 

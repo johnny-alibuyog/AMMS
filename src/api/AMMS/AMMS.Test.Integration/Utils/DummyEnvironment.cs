@@ -2,16 +2,17 @@
 using AMMS.Domain.Common.Pipes.Auth;
 using AMMS.Domain.Membership.Messages.Branches;
 using AMMS.Domain.Membership.Messages.Dtos;
+using AMMS.Domain.Membership.Messages.Roles;
 using AMMS.Domain.Membership.Messages.Tenants;
 using AMMS.Domain.Membership.Messages.Users;
-using AMMS.Service.Client;
+using AMMS.Service.Host.Common.Client;
 using System.Threading.Tasks;
 
 namespace AMMS.Test.Integration.Utils
 {
     public class DummyEnvironment
     {
-        private readonly Api _api; /* this is the api used to create environment using super_user */
+        private readonly ClientApi _api; /* this is the api used to create environment using super_user */
 
         private readonly FakerContext _faker;
 
@@ -20,6 +21,8 @@ namespace AMMS.Test.Integration.Utils
         public Branch Branch { get; private set; }
 
         public User User { get; private set; }
+
+        public Role Role { get; private set; }
 
         public string DefaultPassword { get; }
 
@@ -45,13 +48,14 @@ namespace AMMS.Test.Integration.Utils
             var tasks = new
             {
                 GetTenant = _api.Membership.Tenants.Send(new TenantGet.Request() { Id = response.TenantId }),
-                GetBranch = _api.Membership.Branches.Send(new BranchGet.Request() { Id = response.BranchId}),
+                GetBranch = _api.Membership.Branches.Send(new BranchGet.Request() { Id = response.BranchId }),
+                GetRole = _api.Membership.Roles.Send(new RoleGet.Request() { Id = response.RoleId }),
                 GetUser = _api.Membership.Users.Send(new UserGet.Request() { Id = response.UserId }),
             };
 
-            await Task.WhenAll(tasks.GetTenant, tasks.GetBranch, tasks.GetUser);
+            await Task.WhenAll(tasks.GetTenant, tasks.GetBranch, tasks.GetRole, tasks.GetUser);
 
-            (Tenant, Branch, User) = (tasks.GetTenant.Result, tasks.GetBranch.Result, tasks.GetUser.Result);
+            (Tenant, Branch, Role, User) = (tasks.GetTenant.Result, tasks.GetBranch.Result, tasks.GetRole.Result, tasks.GetUser.Result);
         }
 
         public async Task Clean()

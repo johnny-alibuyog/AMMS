@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AMMS.Domain\AMMS.Domain.csproj" />
-    <ProjectReference Include="..\AMMS.Service.Client\AMMS.Service.Client.csproj" />
+    <ProjectReference Include="..\AMMS.Service.Host\AMMS.Service.Host.csproj" />
   </ItemGroup>
 
   <ItemGroup>

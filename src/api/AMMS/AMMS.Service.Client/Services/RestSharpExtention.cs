@@ -5,7 +5,6 @@ using System.Text;
 
 namespace AMMS.Service.Client.Services
 {
-
     internal static class RestSharpExtensions
     {
         public static bool IsScuccessStatusCode(this HttpStatusCode responseCode)

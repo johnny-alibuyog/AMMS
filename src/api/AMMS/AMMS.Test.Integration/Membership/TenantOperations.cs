@@ -1,6 +1,6 @@
 ﻿using AMMS.Domain.Membership.Messages.Dtos;
 using AMMS.Domain.Membership.Messages.Tenants;
-using AMMS.Service.Client;
+using AMMS.Service.Host.Common.Client;
 using AMMS.Test.Integration.Utils;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -11,7 +11,7 @@ namespace AMMS.Test.Integration.Membership
     [Binding]
     public class TenantOperations
     {
-        private readonly Api _api;
+        private readonly ClientApi _api;
 
         private readonly CrudStateContainer<string, Tenant> _state;
 

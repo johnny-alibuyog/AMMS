@@ -13,7 +13,7 @@ namespace AMMS.Domain.Common.Pipes.Generics
 
         public Task Process(TRequest request, CancellationToken cancellationToken)
         {
-            _logger.Warning("- Starting Up");
+            _logger.Warning("- Starting Up Request {type}: {@request}", request.GetType().DeclaringType.Name, request);
 
             return Task.CompletedTask;
         }

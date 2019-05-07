@@ -1,6 +1,6 @@
 ﻿using AMMS.Domain.Membership.Messages.Branches;
 using AMMS.Domain.Membership.Messages.Dtos;
-using AMMS.Service.Client;
+using AMMS.Service.Host.Common.Client;
 using AMMS.Test.Integration.Utils;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -11,7 +11,7 @@ namespace AMMS.Test.Integration.Membership
     [Binding]
     public class BranchOperations
     {
-        private Api _api;
+        private ClientApi _api;
 
         private readonly CrudStateContainer<string, Branch> _state;
 

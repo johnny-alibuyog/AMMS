@@ -40,7 +40,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AMMS.Domain\AMMS.Domain.csproj" />
     <ProjectReference Include="..\AMMS.Seeder\AMMS.Seeder.csproj" />
-    <ProjectReference Include="..\AMMS.Service.Client\AMMS.Service.Client.csproj" />
+    <ProjectReference Include="..\AMMS.Service.Host\AMMS.Service.Host.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +53,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleOperations.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Membership\TenantUserSettingsOperations.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TenantUserSettingsOperations.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Membership\UserOperations.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UserOperations.feature</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -71,6 +81,14 @@
     <SpecFlowFeatureFiles Update="Membership\RoleOperations.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RoleOperations.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Membership\TenantUserSettingsOperations.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>TenantUserSettingsOperations.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Membership\UserOperations.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>UserOperations.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
   </ItemGroup>
 
