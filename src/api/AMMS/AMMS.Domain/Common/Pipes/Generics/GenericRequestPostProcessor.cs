@@ -1,5 +1,6 @@
 ﻿using MediatR.Pipeline;
 using Serilog;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AMMS.Domain.Common.Pipes.Generics
@@ -10,7 +11,7 @@ namespace AMMS.Domain.Common.Pipes.Generics
 
         public GenericRequestPostProcessor(ILogger logger) => _logger = logger;
 
-        public Task Process(TRequest request, TResponse response)
+        public Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)
         {
             _logger.Warning("- All Done");
 

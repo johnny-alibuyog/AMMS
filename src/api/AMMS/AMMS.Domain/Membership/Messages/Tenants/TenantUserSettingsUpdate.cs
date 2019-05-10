@@ -36,7 +36,8 @@ namespace AMMS.Domain.Membership.Messages.Tenants
 
                 settings.SetTenant(Context.TenantId);
 
-                var exists = await Db.Common.Settings.OfType<TenantUserSettings>().AsQueryable().AnyAsync(x => x.TenantId == settings.TenantId);
+                var exists = await Db.Common.Settings.OfType<TenantUserSettings>()
+                    .AsQueryable().AnyAsync(x => x.TenantId == settings.TenantId);
 
                 if (exists)
                 {

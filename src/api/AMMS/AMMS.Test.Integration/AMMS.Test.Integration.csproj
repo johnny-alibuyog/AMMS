@@ -27,19 +27,19 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.0" />
-    <PackageReference Include="Bogus" Version="26.0.2" />
+    <PackageReference Include="Bogus" Version="27.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
-    <PackageReference Include="SpecFlow" Version="3.0.199" />
-    <PackageReference Include="SpecFlow.NUnit" Version="3.0.199" />
-    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.0.199" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.0.199" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+    <PackageReference Include="SpecFlow" Version="3.0.213" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.0.213" />
+    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.0.213" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.0.213" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AMMS.Domain\AMMS.Domain.csproj" />
-    <ProjectReference Include="..\AMMS.Seeder\AMMS.Seeder.csproj" />
     <ProjectReference Include="..\AMMS.Service.Host\AMMS.Service.Host.csproj" />
   </ItemGroup>
 
@@ -53,6 +53,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleOperations.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Membership\TenantOperations.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TenantOperations.feature</DependentUpon>
     </Compile>
     <Compile Update="Membership\TenantUserSettingsOperations.feature.cs">
       <DesignTime>True</DesignTime>
@@ -81,6 +86,13 @@
     <SpecFlowFeatureFiles Update="Membership\RoleOperations.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RoleOperations.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Membership\TenantEnvironmentOperations.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Membership\TenantOperations.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>TenantOperations.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Membership\TenantUserSettingsOperations.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

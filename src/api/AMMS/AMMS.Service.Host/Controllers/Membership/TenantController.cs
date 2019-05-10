@@ -81,6 +81,6 @@ namespace AMMS.Service.Host.Controllers.Membership
             => _restClient.Get($"{_resource}/{request.TenantId}/user-settings/", request);
 
         public Task<TenantUserSettingsUpdate.Response> Send(TenantUserSettingsUpdate.Request request)
-            => _restClient.Post($"{_resource}/{request.TenantId}/user-settings", request);
+            => _restClient.Put($"{_resource}/{request.TenantId}/user-settings", request);
     }
 }

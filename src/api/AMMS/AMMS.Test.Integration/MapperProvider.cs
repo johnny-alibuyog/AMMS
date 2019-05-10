@@ -9,6 +9,6 @@ namespace AMMS.Test.Integration
 
         public static IMapper GetMapper() => _instance;
 
-        private static IMapper CreateMapper() => new MapperConfiguration(x => x.AddProfiles(typeof(TransformProfile).Assembly)).CreateMapper();
+        private static IMapper CreateMapper() => new MapperConfiguration(x => x.AddMaps(typeof(TransformProfile).Assembly)).CreateMapper();
     }
 }

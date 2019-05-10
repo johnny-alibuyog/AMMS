@@ -43,6 +43,7 @@ namespace AMMS.Test.Integration.Membership
         {
             var request = new TenantUserSettingsUpdate.Request()
             {
+                TenantId = _env.Tenant.Id,
                 DefaultPassword = "DefaultPassword_Updated"
             };
 

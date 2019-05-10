@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMMS.Domain", "AMMS.Domain\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMMS.Test.Integration", "AMMS.Test.Integration\AMMS.Test.Integration.csproj", "{B2150941-1DA0-446F-9C7C-A0D85BA4C64A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AMMS.Seeder", "AMMS.Seeder\AMMS.Seeder.csproj", "{20F41E27-ED1C-4BE0-9825-88D2793E9E78}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{B2150941-1DA0-446F-9C7C-A0D85BA4C64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2150941-1DA0-446F-9C7C-A0D85BA4C64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2150941-1DA0-446F-9C7C-A0D85BA4C64A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20F41E27-ED1C-4BE0-9825-88D2793E9E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20F41E27-ED1C-4BE0-9825-88D2793E9E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20F41E27-ED1C-4BE0-9825-88D2793E9E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20F41E27-ED1C-4BE0-9825-88D2793E9E78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
