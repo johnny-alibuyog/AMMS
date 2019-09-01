@@ -23,7 +23,7 @@ namespace AMMS.Domain.Membership.Messages.Tenants
 
         public class TransformProfile : Profile
         {
-            public TransformProfile() => CreateMap<Request, Models.TenantUserSettings>();
+            public TransformProfile() => CreateMap<Request, Models.TenantUserSettings>().ReverseMap();
         }
 
         public class Handler : AbstractRequestHandler<Request, Response>

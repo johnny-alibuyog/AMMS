@@ -1,0 +1,76 @@
+<template>
+  <require from="./list-layout.css"></require>
+  <require from="./list-layout-commands"></require>
+
+  <div class="list-layout">
+    <div class="list-layout__action-bar">
+      <div
+        class="list-layout__action-bar__toggler ${isFilterVisible ? 'open' : '' }"
+      >
+        <div
+          class="list-layout__action-bar__toggler-button noselect"
+          click.delegate="toggleFilter()"
+        >
+          <i class="fas fa-filter"></i> Filter
+        </div>
+        <div
+          class="list-layout__action-bar__toggler-close ${isFilterVisible ? 'open' : '' }"
+          click.delegate="toggleFilter()"
+        >
+          <i <i class="fas fa-times"></i>
+        </div>
+      </div>
+
+      <div class="list-layout__action-bar__list-options">
+        <div class="list-layout__action-bar__list-options-title">
+          ${title}
+        </div>
+        <div class="list-layout__action-bar__list-options-commands">
+          <slot name="commands"> </slot>
+        </div>
+        <!-- <div class="list-layout__action-bar__list-options-commands">
+          <slot name="commands">
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-ellipsis-v"></i>
+            </div>
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-grip-vertical"></i>
+            </div>
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-list"></i>
+            </div>
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-plus"></i>
+            </div>
+          </slot>
+        </div> -->
+
+        <!-- <div class="list-layout__action-bar__list-options-commands">
+          <slot name="commands">
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-ellipsis-v"></i>
+            </div>
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-grip-vertical"></i>
+            </div>
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-list"></i>
+            </div>
+            <div class="list-layout__action-bar__list-option-item">
+              <i class="fas fa-plus"></i>
+            </div>
+          </slot>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="list-layout__content">
+      <div class="list-layout__content-filter ${isFilterVisible ? 'open' : ''}">
+        <slot name="filter">Default Filter</slot>
+      </div>
+      <div class="list-layout__content-list">
+        <slot name="list">Default List</slot>
+      </div>
+    </div>
+  </div>
+</template>

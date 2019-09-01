@@ -1,0 +1,49 @@
+.search-bar__container {
+  @apply hidden;
+}
+
+.search-bar__icon-container {
+  @apply absolute;
+  @apply inset-y-0;
+  @apply left-0;
+  @apply flex;
+  @apply items-center;
+  @apply pl-3;
+}
+
+.search-bar__icon {
+  @apply h-6;
+  @apply w-6;
+  @apply fill-current;
+  @apply text-gray-600;
+}
+
+.search-bar__input {
+  @apply block;
+  @apply w-full;
+  @apply border;
+  @apply border-transparent;
+  @apply bg-gray-200;
+  @apply text-gray-900;
+  @apply rounded;
+  @apply pl-10;
+  @apply pr-4;
+  @apply py-2;
+  /* @apply shadow; */
+}
+
+.search-bar__input:focus {
+  @apply outline-none;
+  @apply bg-white;
+  @apply border-gray-300;
+}
+
+@screen xl {
+  .search-bar__container {
+    @apply block relative max-w-xs w-full;
+  }
+}
+
+.example {
+  @apply uppercase;
+}

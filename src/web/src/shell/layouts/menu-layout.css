@@ -1,0 +1,30 @@
+.menu-layout {
+  @apply flex-row;
+  @apply h-full;
+  @apply w-full;
+}
+
+.menu-layout__nav {
+  @apply flex-none;
+  @apply w-full;
+  @apply text-white;
+}
+
+.menu-layout__content {
+  @apply flex-1;
+  @apply w-full;
+  @apply h-full;
+  @apply overflow-x-hidden;
+}
+
+@screen xl {
+  .menu-layout {
+    @apply flex;
+  }
+  .menu-layout__nav {
+    @apply w-72;
+  }
+  .menu-layout__content {
+    /* @apply flex-1 w-full flex overflow-x-hidden; */
+  }
+}

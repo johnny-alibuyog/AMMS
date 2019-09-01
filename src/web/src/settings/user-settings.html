@@ -1,0 +1,10 @@
+<template>
+  <strong>${title}</strong>
+  <div class="flex xl:h-screen xl:overflow-y-hidden">
+    <ul class="xl:h-full; xl:overflow-y-auto">
+      <li repeat.for="x of xs">
+        <strong>${x}</strong>
+      </li>
+    </ul>
+  </div>
+</template>

@@ -91,7 +91,7 @@ namespace AMMS.Service.Host
                     Title = "AMMS",
                     Description = "AMMS Documentation"
                 });
-                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme()
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
@@ -189,9 +189,12 @@ namespace AMMS.Service.Host
         private static void ConfigureAutoMapper(this ServiceRegistry registry)
         {
             // AutoMapper Configurations
-            var config = new MapperConfiguration(x => x.AddMaps(typeof(TransformProfile).Assembly));
-
-            registry.AddSingleton(config.CreateMapper());
+            registry.AddSingleton((serviceProvider) =>
+            {
+                var assemblies = new[] { typeof(TransformProfile).Assembly };
+                var mappingConfig = new MapperConfiguration(x => x.AddMaps(assemblies));
+                return  mappingConfig.CreateMapper();
+            });
         }
 
         private static void ConfigureDb(this ServiceRegistry registry)

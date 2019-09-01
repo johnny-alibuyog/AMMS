@@ -63,7 +63,8 @@ namespace AMMS.Domain.Membership.Messages.Dtos
         {
             CreateMap<Dtos.User, Models.User>()
                 .ForMember(x => x.PasswordHash, x => x.Ignore())
-                .ForMember(x => x.PasswordSalt, x => x.Ignore());
+                .ForMember(x => x.PasswordSalt, x => x.Ignore())
+                .ReverseMap();
         }
     }
 }

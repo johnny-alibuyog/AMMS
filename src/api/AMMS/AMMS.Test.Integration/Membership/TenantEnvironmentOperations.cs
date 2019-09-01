@@ -22,7 +22,7 @@ namespace AMMS.Test.Integration.Membership
 
         public TenantEnvironmentOperations(ScenarioContext scenarioContext)
         {
-            _api = ApiProvider.CreateApi();
+            _api = ClientApiProvider.CreateClientApi();
             _state = new State(scenarioContext);
             _faker = new FakerContext();
         }

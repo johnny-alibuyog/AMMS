@@ -1,0 +1,50 @@
+<template>
+  <require from="./account-bar.css"></require>
+
+  <div class="account-bar__container">
+    <div class="account-bar__image-container">
+      <img
+        class="account-bar__image"
+        src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80"
+        alt=""
+      />
+      <span class="account-bar__image-title">Isla Schoger</span>
+    </div>
+
+    <div class="account-bar__nav">
+      <a href="#account" class="account-bar__nav-item">Account Settings</a>
+      <a href="#support" class="account-bar__nav-item mt-3">Support</a>
+      <hr class="account-bar__nav-item-divider" />
+      <a href="#sign-out" class="account-bar__nav-item mt-3">Sign Out</a>
+    </div>
+
+    <dropdown class="account-bar__dropdown" view-model.ref="dropdownRef">
+      <target>
+        <span
+          class="account-bar__dropdown-target ${(dropdownRef.state.isOpen || dropdownRef.state.isFocused) ? 'opened' : 'closed'}"
+        >
+          <img
+            class="account-bar__dropdown-target-image"
+            role="img"
+            src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80"
+            alt=""
+          />
+        </span>
+      </target>
+      <content>
+        <div class="account-bar__dropdown-content">
+          <a href="#account" class="account-bar__dropdown-content-item"
+            >Account Settings</a
+          >
+          <a href="#support" class="account-bar__dropdown-content-item mt-0"
+            >Support</a
+          >
+          <hr class="account-bar__dropdown-content-item-divider" />
+          <a href="#sign-out" class="account-bar__dropdown-content-item mt-0"
+            >Sign Out</a
+          >
+        </div>
+      </content>
+    </dropdown>
+  </div>
+</template>

@@ -1,0 +1,123 @@
+.side-bar {
+  @apply bg-gray-800;
+  @apply shadow-2xl;
+}
+
+.side-bar__toggler {
+  @apply flex;
+  @apply justify-end;
+  @apply px-4;
+  @apply py-3;
+}
+
+.side-bar__toggler-button {
+  @apply ml-4;
+  @apply p-1;
+  @apply inline-flex;
+  @apply items-center;
+  @apply rounded;
+  @apply shadow;
+  @apply pl-3;
+  @apply pr-4;
+  @apply bg-gray-700;
+}
+
+.side-bar__toggler-button-image {
+  @apply h-6;
+  @apply w-6;
+  @apply fill-current;
+  @apply text-gray-500;
+}
+
+.side-bar__toggler-button-text {
+  @apply ml-1;
+  @apply text-white;
+  @apply font-medium;
+}
+
+.side-bar__toggler-button.open,
+.side-bar__toggler-button:hover {
+  @apply bg-gray-600;
+}
+
+.side-bar__toggler-button:focus {
+  @apply outline-none;
+  @apply shadow-outline;
+}
+
+.side-bar__nav {
+  @apply hidden;
+}
+
+.side-bar__nav.open {
+  @apply inline-flex;
+  @apply justify-start;
+  @apply w-full;
+  @apply pb-6;
+}
+
+.side-bar__nav-group {
+  @apply pl-4;
+}
+
+.side-bar__nav-group-header {
+  /* @apply pl-12;  */
+  @apply py-2;
+  @apply text-xl;
+  @apply text-blue-500;
+}
+
+.side-bar__nav-group-item {
+  @apply pl-8;
+  @apply pt-2;
+}
+
+.side-bar__nav-group-item-link {
+  @apply text-gray-500;
+}
+
+.side-bar__nav-group-item-link:hover,
+.side-bar__nav-group-item-link.active {
+  @apply text-white;
+}
+
+@screen sm {
+  .side-bar__nav-group {
+    @apply pl-4;
+  }
+}
+
+@screen md {
+  .side-bar__nav-group {
+    @apply pl-12;
+  }
+}
+
+@screen lg {
+  .side-bar__nav-group {
+    @apply pl-20;
+  }
+}
+
+@screen xl {
+  .side-bar {
+    @apply h-full overflow-y-auto;
+  }
+  .side-bar__toggler {
+    @apply hidden;
+  }
+  .side-bar__nav {
+    @apply pt-2;
+    @apply block;
+  }
+  .side-bar__nav.open {
+    @apply block;
+  }
+  .side-bar__nav-group {
+    @apply mt-6;
+    @apply pl-12;
+    @apply w-full;
+  }
+  .side-bar__nav-group-header {
+  }
+}

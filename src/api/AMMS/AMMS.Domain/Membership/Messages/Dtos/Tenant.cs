@@ -42,7 +42,7 @@ namespace AMMS.Domain.Membership.Messages.Dtos
     {
         public TenantProfile()
         {
-            CreateMap<Models.Tenant, Dtos.Tenant>();
+            CreateMap<Models.Tenant, Dtos.Tenant>().ReverseMap();
         }
     }
 }

@@ -1,0 +1,12 @@
+.commands {
+  @apply flex-1;
+  @apply flex;
+  @apply self-center;
+  @apply flex-row-reverse;
+  @apply px-5;
+}
+
+.command-item {
+  @apply text-gray-600;
+  @apply px-3;
+}

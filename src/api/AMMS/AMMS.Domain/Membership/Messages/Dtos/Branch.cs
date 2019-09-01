@@ -48,7 +48,7 @@ namespace AMMS.Domain.Membership.Messages.Dtos
     {
         public BranchtProfile()
         {
-            CreateMap<Models.Branch, Dtos.Branch>();
+            CreateMap<Models.Branch, Dtos.Branch>().ReverseMap();
         }
     }
 }

@@ -4,9 +4,9 @@ using AMMS.Test.Integration.Utils;
 
 namespace AMMS.Test.Integration
 {
-    public class ApiProvider
+    public class ClientApiProvider
     {
-        public static ClientApi CreateApi(UserLogin.Request loginCredentials = null)
+        public static ClientApi CreateClientApi(UserLogin.Request loginCredentials = null)
         {
             var settings = SettingsProvider.GetSettings();
 
@@ -18,7 +18,7 @@ namespace AMMS.Test.Integration
             });
         }
 
-        public static ClientApi CreateApi(DummyEnvironment env)
+        public static ClientApi CreateClientApi(DummyEnvironment env)
         {
             var settings = SettingsProvider.GetSettings();
 

@@ -1,0 +1,64 @@
+.page-header {
+  @apply bg-gray-900;
+  @apply shadow-md;
+}
+
+.page-header__logo {
+  @apply flex;
+  @apply justify-between;
+  @apply px-4;
+  @apply py-3;
+}
+
+.page-header__logo-image {
+  @apply h-8;
+  @apply w-auto;
+}
+
+.page-header__toggle-container {
+  @apply flex;
+}
+
+.page-header__toggle-button {
+  @apply px-2;
+  @apply text-gray-500;
+}
+
+.page-header__toggle-button:hover {
+  @apply text-white;
+}
+
+.page-header__toggle-button:focus {
+  @apply text-white;
+  @apply outline-none;
+}
+
+@screen sm {
+  .page-header {
+    @apply flex items-center justify-between;
+  }
+  .page-header__toggle-container {
+    @apply hidden;
+  }
+  .page-header__nav-container {
+    @apply flex items-center;
+  }
+  .page-header__search-and-nav-container {
+    @apply flex items-center px-4;
+  }
+}
+
+@screen xl {
+  .page-header {
+    @apply bg-white;
+  }
+  .page-header__logo {
+    @apply w-72 bg-gray-900 justify-center py-5;
+  }
+  .page-header__toggle-container {
+    @apply hidden;
+  }
+  .page-header__search-and-nav-container {
+    @apply flex-1 justify-between;
+  }
+}

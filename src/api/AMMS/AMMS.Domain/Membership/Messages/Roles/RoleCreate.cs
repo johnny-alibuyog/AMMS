@@ -25,9 +25,9 @@ namespace AMMS.Domain.Membership.Messages.Roles
         {
             public TransformProfile()
             {
-                CreateMap<Models.Role, Response>();
+                CreateMap<Models.Role, Response>().ReverseMap();
 
-                CreateMap<Models.Role, Request>();
+                CreateMap<Models.Role, Request>().ReverseMap();
             }
         }
 

@@ -1,0 +1,11 @@
+<template>
+  <require from="./nav-bar.css"></require>
+
+  <div class="nav-container">
+    <div repeat.for="nav of router.navigation">
+      <a href.bind="nav.href" class="nav-link ${nav.isActive ? 'active' : ''}">
+        ${nav.title}
+      </a>
+    </div>
+  </div>
+</template>

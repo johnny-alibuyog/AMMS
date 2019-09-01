@@ -17,7 +17,7 @@ namespace AMMS.Test.Integration.Membership
 
         public TenantOperations(ScenarioContext scenarioContext)
         {
-            _api = ApiProvider.CreateApi();
+            _api = ClientApiProvider.CreateClientApi();
             _state = new CrudStateContainer<string, Tenant>(scenarioContext);
         }
 

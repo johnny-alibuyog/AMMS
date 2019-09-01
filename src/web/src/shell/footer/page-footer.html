@@ -1,0 +1,14 @@
+<template>
+  <require from="./page"></require>
+
+  <page>
+    <pager slot="pager">
+      I'm the pager ${something1}
+    </pager>
+    <content slot="content">
+      I'm the content ${something2}
+    </content>
+  </page>
+
+  <h1>${model.name}</h1>
+</template>

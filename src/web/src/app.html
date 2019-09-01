@@ -1,0 +1,16 @@
+<template>
+  <require from="./assets/css/tailwind.css"></require>
+  <require from="./assets/css/styles.css"></require>
+  <require from="./shell/header/page-header"></require>
+  <require from="./shell/content/page-content"></require>
+  <require from="./shell/footer/page-footer"></require>
+  <require from="./app.css"></require>
+
+  <div class="app">
+    <page-header class="app__page-header" router.bind="router"></page-header>
+    <page-content class="app__page-content"
+      ><router-view></router-view
+    ></page-content>
+    <!-- <page-footer></page-footer> -->
+  </div>
+</template>

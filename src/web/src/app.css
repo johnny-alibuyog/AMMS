@@ -1,0 +1,32 @@
+.app {
+  @apply flex-row;
+  @apply h-screen;
+  @apply bg-gray-200;
+  @apply antialiased;
+  @apply overflow-hidden;
+}
+
+.app__page-header {
+  @apply flex-shrink-0;
+}
+
+.app__page-content {
+  @apply flex-1;
+  @apply flex;
+  @apply h-full;
+  @apply overflow-y-hidden;
+}
+
+@screen xl {
+  .app {
+    @apply flex-col;
+  }
+  /*
+  .app__page-header {
+    @apply flex-shrink-0;
+  }
+  .app__page-content {
+    @apply flex-1 flex overflow-y-hidden;
+  }
+*/
+}

@@ -25,7 +25,7 @@ namespace AMMS.Domain.Membership.Messages.Branches
 
         public class TransformProfile : Profile
         {
-            public TransformProfile() => CreateMap<Lookup<string>, Response>();
+            public TransformProfile() => CreateMap<Lookup<string>, Response>().ReverseMap();
         }
 
         public class Handler : AbstractRequestHandler<Request, Response>

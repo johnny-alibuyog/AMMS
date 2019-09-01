@@ -25,9 +25,9 @@ namespace AMMS.Domain.Membership.Messages.Branches
         {
             public TransformProfile()
             {
-                CreateMap<Models.Branch, Response>();
+                CreateMap<Models.Branch, Response>().ReverseMap();
 
-                CreateMap<Models.Branch, Request>();
+                CreateMap<Models.Branch, Request>().ReverseMap();
             }
         }
 

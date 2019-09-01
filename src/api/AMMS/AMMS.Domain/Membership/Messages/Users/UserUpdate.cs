@@ -22,7 +22,7 @@ namespace AMMS.Domain.Membership.Messages.Users
 
         public class TransformProfile : Profile
         {
-            public TransformProfile() => CreateMap<Request, User>();
+            public TransformProfile() => CreateMap<Request, User>().ReverseMap();
         }
 
         public class Handler : AbstractRequestHandler<Request, Response>

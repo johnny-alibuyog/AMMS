@@ -74,7 +74,7 @@ namespace AMMS.Domain.Common.Messages.Dtos
     {
         public PersonProfile()
         {
-            CreateMap<Models.Person, Dtos.Person>();
+            CreateMap<Models.Person, Dtos.Person>().ReverseMap();
         }
     }
 }

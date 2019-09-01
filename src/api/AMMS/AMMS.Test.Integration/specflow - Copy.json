@@ -1,0 +1,17 @@
+﻿{
+  "bindingCulture": {
+    "language": "en-us"
+  },
+  "language": {
+    "feature": "en-us"
+  },
+  "unitTestProvider": {
+    "name": "NUnit"
+  },
+  "generator": {
+    "allowDebugGeneratedFiles": "true",
+    "allowRowTests": "true",
+    "generateAsyncTests": "true"
+  },
+  "plugins": []
+}

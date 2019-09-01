@@ -1,0 +1,45 @@
+.nav-container {
+  @apply px-2;
+  @apply pt-2;
+  @apply pb-5;
+  @apply border-b;
+  @apply border-gray-800;
+}
+
+.nav-link {
+  /*@apply lowercase;*/
+  @apply block;
+  @apply px-3;
+  @apply py-1;
+  @apply rounded;
+  @apply font-semibold;
+  @apply text-white;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  @apply bg-gray-800;
+  /* @apply shadow; */
+}
+
+@screen sm {
+  .nav-container {
+    @apply flex;
+    @apply border-b-0;
+    @apply py-0;
+    @apply px-0;
+  }
+  .nav-link {
+    @apply mt-0 text-sm px-2 ml-2;
+  }
+}
+
+@screen xl {
+  .nav-link {
+    @apply text-gray-900;
+  }
+  .nav-link:hover,
+  .nav-link.active {
+    @apply bg-gray-200;
+  }
+}

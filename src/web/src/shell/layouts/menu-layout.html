@@ -1,0 +1,13 @@
+<template>
+  <require from="./menu-layout.css"></require>
+  <require from="./menu-layout-side-bar"></require>
+
+  <div class="menu-layout">
+    <div class="menu-layout__nav">
+      <menu-layout-side-bar router.bind="router"></menu-layout-side-bar>
+    </div>
+    <div class="menu-layout__content">
+      <slot></slot>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,113 @@
+.list-layout {
+  @apply flex-row;
+  @apply h-full;
+  @apply w-full;
+  @apply overflow-hidden;
+}
+
+.list-layout__action-bar {
+  @apply flex-none;
+  @apply flex;
+  /* @apply flex-wrap; */
+  @apply h-12;
+  @apply shadow-md;
+  @apply text-gray-700;
+}
+
+.list-layout__action-bar__toggler {
+  @apply flex;
+  @apply content-center;
+  @apply justify-between;
+  @apply overflow-x-hidden;
+  @apply flex-none;
+  @apply w-32;
+  @apply text-gray-500;
+  @apply bg-gray-700;
+}
+
+.list-layout__action-bar__toggler.open {
+  @apply w-72;
+  @apply text-gray-400;
+}
+
+.list-layout__action-bar__toggler:hover {
+  @apply text-gray-400;
+}
+
+.list-layout__action-bar__toggler-button {
+  @apply px-8;
+  @apply text-lg;
+  @apply self-center;
+  cursor: pointer;
+}
+
+.list-layout__action-bar__toggler-close {
+  @apply hidden;
+  cursor: pointer;
+}
+
+.list-layout__action-bar__toggler-close.open {
+  @apply flex;
+  @apply self-center;
+  @apply pr-6;
+}
+
+.list-layout__action-bar__list-options {
+  @apply flex;
+  @apply flex-1;
+}
+
+.list-layout__action-bar__list-options-title {
+  @apply flex-initial;
+  @apply text-gray-700;
+  @apply self-center;
+  @apply pl-4;
+  @apply text-lg;
+  /* @apply font-bold; */
+  @apply uppercase;
+}
+
+.list-layout__action-bar__list-options-commands {
+  @apply flex-1;
+  @apply flex;
+  @apply self-center;
+  @apply flex-row-reverse;
+  @apply px-5;
+}
+
+.list-layout__action-bar__list-option-item {
+  @apply text-gray-600;
+  @apply px-3;
+}
+
+.list-layout__action-bar__list-option-item:hover {
+  @apply text-gray-700;
+  cursor: pointer;
+}
+
+.list-layout__content {
+  @apply flex-1;
+  @apply flex;
+  @apply h-full;
+  @apply w-full;
+}
+
+.list-layout__content-filter {
+  @apply flex-none;
+  @apply flex-col;
+  @apply w-72;
+  @apply p-4;
+  @apply bg-gray-700;
+  @apply hidden;
+}
+
+.list-layout__content-filter.open {
+  @apply block;
+}
+
+.list-layout__content-list {
+  @apply flex-1;
+  @apply flex;
+  @apply p-4;
+  @apply w-full;
+}

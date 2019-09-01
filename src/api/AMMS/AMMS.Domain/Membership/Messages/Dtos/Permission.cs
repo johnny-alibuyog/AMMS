@@ -61,11 +61,11 @@ namespace AMMS.Domain.Membership.Messages.Dtos
     {
         public PermissiontProfile()
         {
-            CreateMap<Models.Area, Dtos.Area>();
+            CreateMap<Models.Area, Dtos.Area>().ReverseMap();
 
-            CreateMap<Models.Access, Dtos.Access>();
+            CreateMap<Models.Access, Dtos.Access>().ReverseMap();
 
-            CreateMap<Models.Permission, Dtos.Permission>();
+            CreateMap<Models.Permission, Dtos.Permission>().ReverseMap();
         }
     }
 }

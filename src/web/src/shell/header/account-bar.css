@@ -1,0 +1,128 @@
+.account-bar__container {
+  @apply relative;
+  @apply px-5;
+  @apply py-5;
+}
+
+.account-bar__image-container {
+  @apply flex;
+  @apply items-center;
+}
+
+.account-bar__image {
+  @apply h-10;
+  @apply w-10;
+  @apply object-cover;
+  @apply rounded-full;
+  @apply border-2;
+  @apply border-gray-600;
+}
+
+.account-bar__image-title {
+  @apply ml-4;
+  @apply font-semibold;
+  @apply text-gray-200;
+}
+
+.account-bar__nav {
+  @apply mt-5;
+}
+
+.account-bar__nav-item {
+  @apply block;
+  @apply text-gray-400;
+}
+
+.account-bar__nav-item:hover {
+  @apply text-white;
+}
+
+.account-bar__nav-item-divider {
+  @apply border-t;
+  @apply mx-2;
+  @apply border-gray-200;
+}
+
+.account-bar__dropdown {
+  @apply hidden;
+}
+
+.account-bar__dropdown-target {
+  @apply block;
+  @apply h-8;
+  @apply w-8;
+  @apply overflow-hidden;
+  @apply rounded-full;
+  @apply border-2;
+}
+
+.account-bar__dropdown-target.opened {
+  @apply border-white;
+}
+
+.account-bar__dropdown-target.closed {
+  @apply border-gray-600;
+}
+
+.account-bar__dropdown-target-image {
+  @apply h-full;
+  @apply w-full;
+  @apply object-cover;
+}
+
+.account-bar__dropdown-content {
+  @apply mt-3;
+  @apply bg-white;
+  @apply rounded-lg;
+  @apply w-48;
+  @apply py-2;
+  @apply shadow-xl;
+}
+
+.account-bar__dropdown-content-item {
+  @apply block;
+  @apply text-gray-800;
+  @apply px-4;
+  @apply py-2;
+}
+
+.account-bar__dropdown-content-item:hover {
+  @apply text-white;
+  @apply bg-indigo-500;
+}
+
+.account-bar__dropdown-content-item-divider {
+  @apply border-t;
+  @apply mx-2;
+  @apply border-gray-200;
+}
+
+@screen sm {
+  .account-bar__container {
+    @apply py-0 ml-4 px-0;
+  }
+  .account-bar__image-container {
+    @apply hidden;
+  }
+  .account-bar__image-title {
+    @apply hidden;
+  }
+  .account-bar__nav {
+    @apply hidden;
+  }
+  .account-bar__dropdown {
+    @apply block;
+  }
+}
+
+@screen xl {
+  .account-bar__dropdown-target.opened {
+    @apply border-indigo-500;
+  }
+  .account-bar__dropdown-target.closed {
+    @apply border-gray-300;
+  }
+  .account-bar__dropdown-content {
+    @apply border;
+  }
+}

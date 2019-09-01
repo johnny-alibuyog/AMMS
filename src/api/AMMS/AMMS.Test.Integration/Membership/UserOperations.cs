@@ -31,7 +31,7 @@ namespace AMMS.Test.Integration.Membership
 
             await _env.Initialize();
 
-            _api = ApiProvider.CreateApi(_env);
+            _api = ClientApiProvider.CreateClientApi(_env);
         }
 
         [After("UserCrud")]

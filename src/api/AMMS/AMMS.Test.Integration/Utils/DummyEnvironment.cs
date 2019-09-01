@@ -28,7 +28,7 @@ namespace AMMS.Test.Integration.Utils
 
         public DummyEnvironment()
         {
-            _api = ApiProvider.CreateApi();
+            _api = ClientApiProvider.CreateClientApi();
             _faker = new FakerContext();
             DefaultPassword = new PasswordGenerator().Generate();
         }

@@ -57,11 +57,11 @@ namespace AMMS.Domain.Membership.Messages.Dtos
     {
         public RoletProfile()
         {
-            CreateMap<Models.Area, Dtos.Area>();
+            CreateMap<Models.Area, Dtos.Area>().ReverseMap();
 
-            CreateMap<Models.Access, Dtos.Access>();
+            CreateMap<Models.Access, Dtos.Access>().ReverseMap();
 
-            CreateMap<Models.Role, Dtos.Role>();
+            CreateMap<Models.Role, Dtos.Role>().ReverseMap();
         }
     }
 }
