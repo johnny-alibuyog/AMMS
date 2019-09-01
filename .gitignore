@@ -11,3 +11,7 @@
 /third_party
 /src/api/AMMS/AMMS.Seeder/bin
 obj
+.vscode
+bin
+.chrome
+dist
