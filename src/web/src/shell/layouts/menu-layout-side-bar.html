@@ -4,37 +4,21 @@
 
   <section class="side-bar">
     <div class="side-bar__toggler">
-      <button
-        click.delegate="toggle()"
-        type="button"
-        class="side-bar__toggler-button ${ isOpen ? 'open' : '' }"
-      >
-        <svg
-          class="side-bar__toggler-button-image"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm3 6a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H7a1 1 0 0 1-1-1zm4 5a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-4z"
-          />
+      <button click.delegate="toggle()" type="button" class="side-bar__toggler-button ${ isOpen ? 'open' : '' }">
+        <svg class="side-bar__toggler-button-image" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm3 6a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H7a1 1 0 0 1-1-1zm4 5a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-4z" />
         </svg>
         <span class="side-bar__toggler-button-text">Submenu</span>
       </button>
     </div>
     <nav class="side-bar__nav ${ isOpen ? 'open' : '' }">
-      <div
-        class="side-bar__nav-group"
-        repeat.for="[group, routes] of router.navigation | groupedRoute"
-      >
+      <div class="side-bar__nav-group" repeat.for="[group, routes] of router.navigation | groupedRoute">
         <a class="side-bar__nav-group-header" href="#">
           <!-- <i class="fas fa-tools fa-xs mr-2"></i> -->
           ${group}
         </a>
         <div class="side-bar__nav-group-item" repeat.for="nav of routes">
-          <a
-            class="side-bar__nav-group-item-link ${nav.isActive ? 'active' : ''}"
-            href.bind="nav.href"
-          >
+          <a class="side-bar__nav-group-item-link ${nav.isActive ? 'active' : ''}" href.bind="nav.href">
             ${nav.title}
           </a>
         </div>

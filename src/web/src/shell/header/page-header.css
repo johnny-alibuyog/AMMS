@@ -15,20 +15,26 @@
   @apply w-auto;
 }
 
-.page-header__toggle-container {
+.page-header__toggler {
   @apply flex;
 }
 
-.page-header__toggle-button {
+.page-header__toggler-button {
   @apply px-2;
   @apply text-gray-500;
 }
 
-.page-header__toggle-button:hover {
+.page-header__toggler-button-img {
+  @apply h-6;
+  @apply w-6;
+  @apply fill-current;
+}
+
+.page-header__toggler-button:hover {
   @apply text-white;
 }
 
-.page-header__toggle-button:focus {
+.page-header__toggler-button:focus {
   @apply text-white;
   @apply outline-none;
 }
@@ -37,13 +43,13 @@
   .page-header {
     @apply flex items-center justify-between;
   }
-  .page-header__toggle-container {
+  .page-header__toggler {
     @apply hidden;
   }
-  .page-header__nav-container {
+  .page-header__nav {
     @apply flex items-center;
   }
-  .page-header__search-and-nav-container {
+  .page-header__search-and-nav {
     @apply flex items-center px-4;
   }
 }
@@ -55,10 +61,10 @@
   .page-header__logo {
     @apply w-72 bg-gray-900 justify-center py-5;
   }
-  .page-header__toggle-container {
+  .page-header__toggler {
     @apply hidden;
   }
-  .page-header__search-and-nav-container {
+  .page-header__search-and-nav {
     @apply flex-1 justify-between;
   }
 }

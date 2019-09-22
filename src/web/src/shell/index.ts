@@ -7,7 +7,6 @@ export class Index {
   public routerCount: number;
 
   public configureRouter(config: RouterConfiguration, router: Router) {
-    debugger;
     config.title = this.title;
     config.options.pushState = true;
     config.options.root = "/";

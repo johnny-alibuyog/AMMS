@@ -1,0 +1,18 @@
+.commands {
+  @apply flex;
+  @apply self-center;
+  @apply flex-row-reverse;
+  @apply text-gray-600;
+  @apply px-5;
+}
+
+.command__img,
+.menu-command__img {
+  @apply px-3;
+  cursor: pointer;
+}
+
+.command__img:hover,
+.menu-command__img:hover {
+  @apply text-gray-800;
+}

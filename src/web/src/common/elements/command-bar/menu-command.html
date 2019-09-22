@@ -1,0 +1,15 @@
+<template>
+  <require from="./menu-command.css"></require>
+
+  <div class="menu-command__img-section ${state.isOpen ? 'open' : ''}" click.delegate="toggleMenu()">
+    <i class="menu-command__img fas fa-ellipsis-v ${state.isOpen ? 'open' : ''}"></i>
+  </div>
+
+  <div class="menu-command__item-section ${state.isOpen ? 'open' : ''}">
+    <button class="menu-command__item__close-button" click.delegate="state.isOpen = false"
+      type="button"></button>
+    <div class="menu-command__item__container noselect">
+      <slot></slot>
+    </div>
+  </div>
+</template>

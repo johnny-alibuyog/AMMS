@@ -1,5 +1,6 @@
 .list-layout {
-  @apply flex-row;
+  @apply flex;
+  @apply flex-col;
   @apply h-full;
   @apply w-full;
   @apply overflow-hidden;
@@ -16,10 +17,10 @@
 
 .list-layout__action-bar__toggler {
   @apply flex;
+  @apply flex-none;
   @apply content-center;
   @apply justify-between;
   @apply overflow-x-hidden;
-  @apply flex-none;
   @apply w-32;
   @apply text-gray-500;
   @apply bg-gray-700;
@@ -27,11 +28,7 @@
 
 .list-layout__action-bar__toggler.open {
   @apply w-72;
-  @apply text-gray-400;
-}
-
-.list-layout__action-bar__toggler:hover {
-  @apply text-gray-400;
+  /* @apply text-gray-400; */
 }
 
 .list-layout__action-bar__toggler-button {
@@ -50,6 +47,11 @@
   @apply flex;
   @apply self-center;
   @apply pr-6;
+}
+
+.list-layout__action-bar__toggler-close:hover,
+.list-layout__action-bar__toggler-button:hover {
+  @apply text-gray-400;
 }
 
 .list-layout__action-bar__list-options {
@@ -72,7 +74,7 @@
   @apply flex;
   @apply self-center;
   @apply flex-row-reverse;
-  @apply px-5;
+  /* @apply px-5; */
 }
 
 .list-layout__action-bar__list-option-item {
@@ -99,6 +101,8 @@
   @apply p-4;
   @apply bg-gray-700;
   @apply hidden;
+  @apply h-full;
+  @apply overflow-y-auto;
 }
 
 .list-layout__content-filter.open {
@@ -110,4 +114,14 @@
   @apply flex;
   @apply p-4;
   @apply w-full;
+  @apply h-full;
+  @apply overflow-y-auto;
 }
+
+/* 
+@screen xl {
+  .list-layout__content {
+    @apply flex-col;
+  }
+}
+ */

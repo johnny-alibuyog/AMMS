@@ -1,0 +1,22 @@
+page-content {
+  @apply flex;
+  @apply items-stretch;
+}
+
+main {
+  @apply min-h-full;
+  @apply min-w-full;
+  @apply overflow-hidden;
+}
+
+/*
+page-content {
+  @apply h-full;
+  @apply w-full;
+}
+
+main {
+  @apply h-full;
+  @apply w-full;
+}
+*/

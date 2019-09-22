@@ -1,4 +1,4 @@
-.search-bar__container {
+.search-bar {
   @apply hidden;
 }
 
@@ -39,7 +39,7 @@
 }
 
 @screen xl {
-  .search-bar__container {
+  .search-bar {
     @apply block relative max-w-xs w-full;
   }
 }

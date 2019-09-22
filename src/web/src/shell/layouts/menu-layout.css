@@ -1,11 +1,12 @@
 .menu-layout {
-  @apply flex-row;
+  @apply flex;
+  @apply flex-col;
   @apply h-full;
   @apply w-full;
 }
 
 .menu-layout__nav {
-  @apply flex-none;
+  @apply flex-shrink-0;
   @apply w-full;
   @apply text-white;
 }
@@ -14,17 +15,20 @@
   @apply flex-1;
   @apply w-full;
   @apply h-full;
+  @apply overflow-y-auto;
   @apply overflow-x-hidden;
 }
 
 @screen xl {
   .menu-layout {
-    @apply flex;
+    @apply flex-row;
+    /* @apply h-full; */
   }
   .menu-layout__nav {
     @apply w-72;
   }
   .menu-layout__content {
+    @apply h-auto;
     /* @apply flex-1 w-full flex overflow-x-hidden; */
   }
 }

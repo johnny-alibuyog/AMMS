@@ -1,9 +1,9 @@
-import {
-  ActionCommand,
-  MenuCommand,
-  MenuCommandItem
-} from "./../../shell/layouts/list-layout-commands";
-import { Command } from "../../shell/layouts/list-layout-commands";
+// import {
+//   ActionCommand,
+//   MenuCommand,
+//   MenuCommandItem
+// } from "./../../shell/layouts/list-layout-commands";
+// import { Command } from "../../shell/layouts/list-layout-commands";
 
 export class DiagnosisList {
   public title: string = "Diagnoses";
