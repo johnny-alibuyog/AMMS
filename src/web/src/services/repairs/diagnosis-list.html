@@ -3,7 +3,7 @@
   <require from="../../shell/layouts/list-layout-commands"></require>
 
   <list-layout title.bind="title">
-    <div slot="commands">
+    <section slot="command-section">
       <command-bar>
         <menu-command>
           <command-bar>
@@ -20,123 +20,165 @@
         <tile-command exec.call="add()"></tile-command>
         <add-command exec.call="add()"></add-command>
       </command-bar>
-    </div>
+    </section>
 
-    <div slot="filter">
-      <!-- <form class="xl:block xl:h-full xl:flex xl:flex-col xl:justify-between">
-        <div class="lg:flex xl:block xl:overflow-y-auto">
-          <div class="px-4 py-4 border-t border-gray-900 lg:w-1/3 xl:border-t-0 xl:w-full">
-            <div class="flex flex-wrap -mx-2">
-              <label class="block w-1/2 px-2 sm:w-1/4 lg:w-1/2">
-                <span class="text-sm font-semibold text-gray-500">Bedrooms</span>
-                <select class="mt-1 form-select block w-full text-white shadow focus:bg-gray-600">
-                  <option>4</option>
-                </select>
-              </label>
-              <label class="block w-1/2 px-2 sm:w-1/4 lg:w-1/2">
-                <span class="text-sm font-semibold text-gray-500">Bathrooms</span>
-                <select class="mt-1 form-select block w-full text-white shadow focus:bg-gray-600">
-                  <option>2</option>
-                </select>
-              </label>
-              <label class="mt-4 block w-full px-2 sm:mt-0 sm:w-1/2 lg:mt-4 lg:w-full">
-                <span class="text-sm font-semibold text-gray-500">Price Range</span>
-                <select class="mt-1 form-select block w-full text-white shadow focus:bg-gray-600">
-                  <option>Up to $2,000/wk</option>
-                </select>
-              </label>
-            </div>
-          </div>
-          <div class="px-4 py-4 border-t border-gray-900 lg:w-1/3 lg:border-l xl:w-full">
-            <span class="block text-sm font-semibold text-gray-500">Property Type</span>
-            <div class="sm:flex sm:-mx-2 lg:block lg:mx-0">
-              <label class="mt-3 sm:w-1/4 sm:px-2 flex items-center lg:w-full lg:px-0">
-                <input class="form-radio bg-gray-900 focus:bg-gray-700" type="radio" name="propertyType"
-                  value="house" />
-                <span class="ml-2 text-white">House</span>
-              </label>
-              <label class="mt-3 sm:w-1/4 sm:px-2 flex items-center lg:w-full lg:px-0">
-                <input class="form-radio bg-gray-900 focus:bg-gray-700" type="radio" name="propertyType"
-                  value="apartment" />
-                <span class="ml-2 text-white">Apartment</span>
-              </label>
-              <label class="mt-3 sm:w-1/4 sm:px-2 flex items-center lg:w-full lg:px-0">
-                <input class="form-radio bg-gray-900 focus:bg-gray-700" type="radio" name="propertyType" value="loft" />
-                <span class="ml-2 text-white">Loft</span>
-              </label>
-              <label class="mt-3 sm:w-1/4 sm:px-2 flex items-center lg:w-full lg:px-0">
-                <input class="form-radio bg-gray-900 focus:bg-gray-700" type="radio" name="propertyType"
-                  value="townhouse" />
-                <span class="ml-2 text-white">Townhouse</span>
-              </label>
-            </div>
-          </div>
+    <section slot="filter-section" class="filter-section container">
+      <form id="filter-form" submit.trigger="dofilter()">
+        <div class="field-group">
+          <label class="group">
+            <span class="label">User</span>
+            <input class="input form-input" type="text" />
+          </label>
+          <label class="group">
+            <span class="label">Role</span>
+            <input class="input form-input" type="text" />
+          </label>
+        </div>
+        <div class="field-group">
+          <label class="group">
+            <span class="label">Bedrooms</span>
+            <select class="input form-select">
+              <option>4</option>
+            </select>
+          </label>
+          <label class="group">
+            <span class="label">Bathrooms</span>
+            <select class="input form-select">
+              <option>2</option>
+            </select>
+          </label>
+          <label class="group">
+            <span class="label">Price Range</span>
+            <select class="input form-select">
+              <option>Up to $2,000/wk</option>
+            </select>
+          </label>
+        </div>
+        <div class="checkbox-group">
+          <span class="label">Amenities</span>
+          <div class="checkboxes">
+            <label class="group">
+              <input class="input form-checkbox" type="checkbox" />
+              <span class="label">Balcony</span>
+            </label>
+            <label class="group">
+              <input class="input form-checkbox" type="checkbox" />
+              <span class="label">Pool</span>
+            </label>
+            <label class="group">
+              <input class="input form-checkbox" type="checkbox" />
+              <span class="label">Beach</span>
+            </label>
+            <label class="group">
+              <input class="input form-checkbox" type="checkbox" />
+              <span class="label">Pet friendly</span>
+            </label>
+            <label class="group">
+              <input class="input form-checkbox" type="checkbox" />
+              <span class="label">Kid friendly</span>
+            </label>
+            <label class="group">
+              <input class="input form-checkbox" type="checkbox" />
+              <span class="label">Parking</span>
+            </label>
+            <label class="group">
+              <input class="input form-checkbox" type="checkbox" />
+              <span class="label">Air conditioning</span>
+            </label>
           </div>
         </div>
-        <div class="bg-gray-900 px-4 py-4 sm:text-right">
-          <button
-            class="block w-full sm:w-auto sm:inline-block bg-indigo-500 hover:bg-indigo-400 font-semibold text-white px-4 py-2 rounded-lg xl:block xl:w-full">
-            Update results
-          </button>
+        
+        <div class="radio-group">
+          <span class="label">Property Type</span>
+          <div class="radios">
+            <label class="group">
+              <input class="input form-radio" type="radio" name="propertyType" />
+              <span class="label">House</span>
+            </label>
+            <label class="group">
+              <input class="input form-radio" type="radio" name="propertyType" />
+              <span class="label">Apartment</span>
+            </label>
+            <label class="group">
+              <input class="input form-radio" type="radio" name="propertyType" />
+              <span class="label">Loft</span>
+            </label>
+            <label class="group">
+              <input class="input form-radio" type="radio" name="propertyType" />
+              <span class="label">Townhouse</span>
+            </label>
+          </div>
         </div>
-      </form> -->
-    </div>
+       
+      </form>
 
-    <div slot="list">
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-      <div>Here goes the list</div>
-    </div>
+      <div id="filter-actions">
+        <button class="secondary">Reset</button>
+        <button class="primary">Apply</button>
+      </div>
+    </section>
+
+    <section slot="list-section" class="list-section container">
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th class="action">
+                <span>Action</span>
+              </th>
+              <th click.delegate="sorter.doSort('name')" class="highlightable">
+                <span>Name</span>
+                <i class="${sorter.class(sorter['name'])}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('email')" class="highlightable right">
+                <span>Email</span>
+                <i class="${sorter.class(sorter['email'])}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('role')" class="highlightable">
+                <span>Role</span>
+                <i class="${sorter.class(sorter['role'])}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('role')" class="highlightable">
+                <span>Role</span>
+                <i class="${sorter.class(sorter['role'])}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('role')" class="highlightable">
+                <span>Role</span>
+                <i class="${sorter.class(sorter['role'])}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('role')" class="highlightable">
+                <span>Role</span>
+                <i class="${sorter.class(sorter['role'])}"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="${ $even ? 'striped' : '' }" repeat.for="user of pager.items">
+              <td class="action">
+                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="edit(user)">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="javascript:undefined" class="secondary" title="Delete" click.delegate="delete(user)">
+                  <i class="fas fa-trash"></i>
+                </a>
+                <a href="javascript:undefined" class="warning" title="Delete" click.delegate="delete(user)">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </td>
+              <td>${user.name}</td>
+              <td class="right">${user.email}</td>
+              <td>${user.role}</td>
+              <td>${user.role}</td>
+              <td>${user.role}</td>
+              <td>${user.role}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pagination current-page.bind="pager.offset" total-items.bind="pager.count"
+        change.delegate="pager.doPage($event)" />
+    </section>
+
   </list-layout>
 </template>

@@ -96,17 +96,83 @@
 
 .list-layout__content-filter {
   @apply flex-none;
+  @apply flex;
   @apply flex-col;
-  @apply w-72;
-  @apply p-4;
   @apply bg-gray-700;
   @apply hidden;
+  @apply w-72;
   @apply h-full;
-  @apply overflow-y-auto;
+  /* @apply p-4; */
+  @apply overflow-hidden;
 }
 
 .list-layout__content-filter.open {
   @apply block;
+}
+
+.list-layout__content-filter .filter-section {
+  @apply flex;
+  @apply flex-col;
+  @apply mx-auto;
+  @apply h-full;
+  @apply w-full;
+  @apply overflow-hidden;
+}
+
+.list-layout__content-filter .filter-section #filter-form {
+  /* @apply h-full; */
+  @apply overflow-y-auto;
+}
+
+.list-layout__content-filter .filter-section #filter-actions {
+  @apply flex;
+  @apply border-gray-600;
+  @apply border-t;
+  @apply px-2;
+  @apply py-3; 
+  @apply text-right;
+}
+
+.list-layout__content-filter .filter-section #filter-actions .primary {
+  @apply flex-1;
+  @apply bg-blue-600;
+  @apply text-blue-100;
+  @apply font-semibold;
+  @apply px-2;
+  @apply py-1;
+  @apply mx-2;
+  @apply rounded ;
+  @apply shadow-lg;
+  /* @apply w-full; */
+  /* @apply text-white; */
+  /*
+  sm:w-auto
+  sm:inline-block
+  xl:block 
+  xl:w-full
+  */
+}
+
+.list-layout__content-filter .filter-section #filter-actions .secondary {
+  @apply flex-1;
+  @apply bg-gray-100;
+  @apply text-gray-700;
+  @apply font-semibold;
+  @apply px-2;
+  @apply py-1;
+  @apply mx-2;
+  @apply border;
+  @apply border-gray-400;
+  @apply rounded;
+  @apply shadow;
+}
+
+.list-layout__content-filter .filter-section #filter-actions .primary:hover {
+  @apply bg-blue-500;
+}
+
+.list-layout__content-filter .filter-section #filter-actions .secondary:hover {
+  @apply bg-gray-200;
 }
 
 .list-layout__content-list {
@@ -118,6 +184,11 @@
   @apply overflow-y-auto;
 }
 
+.list-layout__content-list .list-section {
+  @apply mx-auto; 
+}
+
+
 /* 
 @screen xl {
   .list-layout__content {
@@ -125,3 +196,102 @@
   }
 }
  */
+
+
+ /*
+  * Text fields
+  */ 
+
+#filter-form .field-group {
+  @apply block; 
+  @apply border-gray-600;
+  @apply border-solid;
+  @apply border-b;
+  @apply py-1;
+  @apply px-4;
+}
+
+#filter-form .field-group .group {
+  @apply flex;
+  @apply flex-col;
+  @apply text-gray-800;
+  @apply my-2;
+}
+
+#filter-form .field-group .group .label {
+  @apply font-semibold;
+  @apply text-gray-500;
+  @apply text-sm;
+}
+
+#filter-form .field-group .group .input {
+  @apply bg-gray-400;
+  @apply text-gray-900;
+  @apply mt-1;
+  @apply pl-2;
+  @apply pr-4;
+  @apply py-1;
+  @apply rounded;
+  @apply shadow;
+  @apply border-transparent;
+  @apply border;
+}
+
+#filter-form .field-group .group .input:focus {
+  @apply bg-white;
+} 
+
+/*
+ * checkbox and radio fields
+ */
+
+#filter-form .radio-group,
+#filter-form .checkbox-group {
+  @apply block; 
+  @apply border-gray-600;
+  @apply border-solid;
+  @apply border-b;
+  @apply py-2;
+  @apply px-4;
+}
+
+#filter-form .radio-group .label,
+#filter-form .checkbox-group .label {
+  @apply font-semibold;
+  @apply text-gray-500;
+  @apply text-sm;
+}
+
+#filter-form .radio-group .radios,
+#filter-form .checkbox-group .checkboxes {
+  @apply flex;
+  @apply -mx-2;
+  @apply flex-wrap;
+}
+
+#filter-form .radio-group .radios .group,
+#filter-form .checkbox-group .checkboxes .group {
+  /* mt-3 flex items-center sm:w-1/4 sm:px-2 lg:w-1/2 xl:w-full */
+  @apply mt-2;
+  @apply px-2;
+  @apply flex;
+  @apply items-center;
+  @apply w-full;
+}
+
+#filter-form .radio-group .radios .group .input[type="radio"],
+#filter-form .checkbox-group .checkboxes .group .input[type="checkbox"] {
+  /* mt-3 flex items-center sm:w-1/4 sm:px-2 lg:w-1/2 xl:w-full */
+  @apply bg-gray-800;
+}
+
+#filter-form .radios-group .radios .group .input[type="radio"]:focus,
+#filter-form .checkbox-group .checkboxes .group .input[type="checkbox"]:focus {
+  @apply bg-gray-700;
+}
+
+#filter-form .radio-group .radios .group .label,
+#filter-form .checkbox-group .checkboxes .group .label {
+  @apply ml-2;
+  @apply text-gray-300;
+}

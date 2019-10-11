@@ -58,6 +58,9 @@
 
 .side-bar__nav-group {
   @apply pl-4;
+  @apply border-gray-900;
+  @apply border-b;
+  @apply border-solid;
 }
 
 .side-bar__nav-group-header {
@@ -114,7 +117,8 @@
     @apply block;
   }
   .side-bar__nav-group {
-    @apply mt-6;
+    @apply pt-3;
+    @apply pb-3;
     @apply pl-12;
     @apply w-full;
   }

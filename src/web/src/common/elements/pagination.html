@@ -1,0 +1,38 @@
+<template>
+  <require from="./pagination.css"></require>
+
+  <div if.bind="totalItems === 0" class="pager-no-items">
+    <label>There are no items to display</label>
+  </div>
+  <ul if.bind="pages.length > 1" class="pagination">
+    <li if.bind="boundaryLinks" class="${noPrevious ? 'disabled' : ''}">
+      <a href="javascript:undefined" class="img" click.delegate="selectFirst()">
+        <i class="${getText('first')}"></i>
+        <!-- ${getText('first')} -->
+      </a>
+    </li>
+    <li if.bind="directionLinks" class="${noPrevious ? 'disabled' : ''}">
+      <a href="javascript:undefined" class="img" disabled.bind="noPrevious" click.delegate="selectPrevious()">
+        <i class="${getText('previous')}"></i>
+        <!-- ${getText('previous')} -->
+      </a>
+    </li>
+    <li repeat.for="page of pages" class="${page.isActive ? 'active' : ''}">
+      <a href="javascript:undefined" class="text" click.delegate="selectPage(page.number)">
+        ${page.text}
+      </a>
+    </li>
+    <li if.bind="directionLinks" class="${noNext ? 'disabled' : ''}">
+      <a href="javascript:undefined" class="img" click.delegate="selectNext()">
+        <i class="${getText('next')}"></i>
+        <!-- ${getText('next')} -->
+      </a>
+    </li>
+    <li if.bind="boundaryLinks" class="${noNext ? 'disabled' : ''}">
+      <a href="javascript:undefined" class="img" click.delegate="selectLast()">
+        <i class="${getText('last')}"></i>
+        <!-- ${getText('last')} -->
+      </a>
+    </li>
+  </ul>
+</template>

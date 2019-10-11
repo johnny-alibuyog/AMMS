@@ -1,0 +1,58 @@
+/* pagination {
+  @apply my-10;
+} */
+
+ul.pagination {
+  /* list-style: none; */
+  @apply flex;
+  @apply text-gray-700;
+}
+
+ul.pagination > li {
+  @apply m-1;
+}
+
+ul.pagination > li > a {
+  @apply rounded-full;
+  @apply items-center;
+  @apply justify-center;
+  @apply h-10; 
+  @apply w-10;
+  @apply flex;
+}
+
+ul.pagination > li > a.img {
+  @apply text-blue-400;
+}
+
+ul.pagination > li > a.text {
+  @apply text-blue-500;
+}
+
+ul.pagination > li:not(.disabled):not(.active) > a:hover {
+  @apply shadow;
+  @apply bg-blue-100;
+  @apply text-blue-900;
+}
+
+ul.pagination > li.active > a:hover,
+ul.pagination > li.disabled > a:hover {
+  @apply cursor-default;
+}
+
+ul.pagination > li.active > a {
+  @apply shadow-lg;
+  @apply bg-blue-400;
+  @apply text-blue-100;
+}
+
+/* ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 60px;
+}
+
+li a {
+  display: block;
+} */
