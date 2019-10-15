@@ -1,12 +1,6 @@
 import { Filter } from '../../common/models/filter';
 import { Sorter, SortDirection } from '../../common/models/sorter';
 import { Pager } from '../../common/models/pager';
-// import {
-//   ActionCommand,
-//   MenuCommand,
-//   MenuCommandItem
-// } from "./../../shell/layouts/list-layout-commands";
-// import { Command } from "../../shell/layouts/list-layout-commands";
 
 type User = {
   name: string,

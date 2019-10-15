@@ -1,0 +1,24 @@
+<template>
+  <require from="../../shell/layouts/form-layout"></require>
+
+  <form-layout title.bind="title">
+
+    <!-- form section -->
+    <section slot="form-section">
+      <form>
+        <div class="field-group">
+          <label class="group">
+            <span class="label">User</span>
+            <input class="input form-input" type="text" />
+          </label>
+          <label class="group">
+            <span class="label">Role</span>
+            <input class="input form-input" type="text" />
+          </label>
+        </div>
+      </form>
+    </section>
+
+  </form-layout>
+
+</template>

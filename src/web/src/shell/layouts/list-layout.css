@@ -186,6 +186,7 @@
 
 .list-layout__content-list .list-section {
   @apply mx-auto; 
+  @apply w-full;
 }
 
 

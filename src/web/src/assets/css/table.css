@@ -68,7 +68,8 @@
 }
 
 .responsive-table > table > tbody > tr > td.action > a.primary {
-  @apply text-blue-400;  
+  @apply mx-1;
+  @apply text-blue-400;
 }
 
 .responsive-table > table > tbody > tr > td.action > a.primary:hover {
@@ -76,6 +77,7 @@
 }
 
 .responsive-table > table > tbody > tr > td.action > a.secondary {
+  @apply mx-1;
   @apply text-gray-500;  
 }
 
@@ -84,6 +86,7 @@
 }
 
 .responsive-table > table > tbody > tr > td.action > a.warning {
+  @apply mx-1;
   @apply text-red-400;  
 }
 

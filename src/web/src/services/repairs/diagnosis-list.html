@@ -1,6 +1,5 @@
 <template>
   <require from="../../shell/layouts/list-layout"></require>
-  <require from="../../shell/layouts/list-layout-commands"></require>
 
   <list-layout title.bind="title">
     <section slot="command-section">
@@ -22,7 +21,7 @@
       </command-bar>
     </section>
 
-    <section slot="filter-section" class="filter-section container">
+    <section slot="filter-section" class="filter-section">
       <form id="filter-form" submit.trigger="dofilter()">
         <div class="field-group">
           <label class="group">
@@ -118,7 +117,8 @@
       </div>
     </section>
 
-    <section slot="list-section" class="list-section container">
+
+    <section slot="list-section" class="list-section">
       <div class="responsive-table">
         <table>
           <thead>
@@ -139,15 +139,15 @@
                 <i class="${sorter.class(sorter['role'])}"></i>
               </th>
               <th click.delegate="sorter.doSort('role')" class="highlightable">
-                <span>Role</span>
+                <span>Role One</span>
                 <i class="${sorter.class(sorter['role'])}"></i>
               </th>
               <th click.delegate="sorter.doSort('role')" class="highlightable">
-                <span>Role</span>
+                <span>Role Two</span>
                 <i class="${sorter.class(sorter['role'])}"></i>
               </th>
               <th click.delegate="sorter.doSort('role')" class="highlightable">
-                <span>Role</span>
+                <span>Role Three Four</span>
                 <i class="${sorter.class(sorter['role'])}"></i>
               </th>
             </tr>

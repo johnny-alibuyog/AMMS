@@ -1,0 +1,7 @@
+.list-layout {
+  @apply flex;
+  @apply flex-col;
+  @apply h-full;
+  @apply w-full;
+  @apply overflow-hidden;
+}

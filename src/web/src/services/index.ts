@@ -58,9 +58,9 @@ const repairRoutes = (meta: Meta) =>
     },
     {
       title: "Diagnosis",
-      name: "diagnosis",
-      route: "repairs/diagnosis",
-      moduleId: PLATFORM.moduleName("./repairs/diagnosis"),
+      name: "diagnosis-form",
+      route: "repairs/diagnosis-form",
+      moduleId: PLATFORM.moduleName("./repairs/diagnosis-form"),
       nav: false,
       settings: {
         group: meta.group
