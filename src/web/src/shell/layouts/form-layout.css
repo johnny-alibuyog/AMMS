@@ -1,7 +1,54 @@
-.list-layout {
+.form-layout {
   @apply flex;
   @apply flex-col;
-  @apply h-full;
+  @apply h-auto;
   @apply w-full;
   @apply overflow-hidden;
+}
+
+.form-layout__header {
+  @apply flex-none;
+  @apply flex;
+  /* @apply flex-wrap; */
+  @apply h-12;
+  @apply shadow-md;
+  @apply text-gray-700;
+}
+
+.form-layout__header__title {
+  @apply pl-4;
+  @apply text-lg;
+  @apply uppercase;
+  @apply self-center;
+  @apply text-gray-700;
+}
+
+.form-layout__content {
+  @apply flex-1;
+  @apply flex;
+  @apply h-auto;
+  @apply w-full;
+  @apply overflow-hidden;
+  @apply overflow-auto;
+}
+
+.form-layout__content > section {
+  @apply py-5;
+  @apply px-4;
+  @apply flex;
+  @apply h-auto;
+  @apply w-full;
+  @apply overflow-hidden;
+  @apply overflow-auto;
+}
+
+.form-layout__content > section > form {
+  @apply w-full;
+  @apply h-auto;
+  /* @apply my-5; */
+  /* @apply mx-4; */
+  @apply rounded;
+  @apply shadow-md;
+  @apply bg-gray-100;
+  /* @apply overflow-hidden; */
 }

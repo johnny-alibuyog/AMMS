@@ -1,28 +1,28 @@
 <template>
   <require from="./list-layout.css"></require>
 
-  <div class="list-layout">
-
-    <section class="list-layout__action-bar">
-      <div class="list-layout__action-bar__toggler ${isFilterVisible ? 'open' : '' }">
-        <div class="list-layout__action-bar__toggler-button noselect" click.delegate="toggleFilter()">
+  <section class="list-layout">
+    <header class="list-layout__header">
+      <div class="list-layout__header__filter-toggler ${isFilterVisible ? 'open' : '' }">
+        <div class="list-layout__header__filter-toggler-button noselect" click.delegate="toggleFilter()">
           <i class="fas fa-filter"></i> Filter
         </div>
-        <div class="list-layout__action-bar__toggler-close ${isFilterVisible ? 'open' : '' }"
+        <div class="list-layout__header__filter-toggler-close ${isFilterVisible ? 'open' : '' }"
           click.delegate="toggleFilter()">
           <i <i class="fas fa-times"></i>
         </div>
       </div>
-      <div class="list-layout__action-bar__list-options">
-        <div class="list-layout__action-bar__list-options-title">
+      <div class="list-layout__header__list-options">
+        <div class="list-layout__header__list-options-title">
+          <!-- <breadcrumbs></breadcrumbs> -->
           ${title}
         </div>
-        <div class="list-layout__action-bar__list-options-commands">
-          <slot name="command-section"></slot>
+        <div class="list-layout__header__list-options-tools">
+          <slot name="tool-section"></slot>
         </div>
       </div>
-    </section>
-    
+    </header>
+
     <div class="list-layout__content">
       <div class="list-layout__content-filter ${isFilterVisible ? 'open' : ''}">
         <slot name="filter-section"></slot>
@@ -31,5 +31,5 @@
         <slot name="list-section"></slot>
       </div>
     </div>
-  </div>
+  </section>
 </template>

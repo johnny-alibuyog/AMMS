@@ -6,7 +6,7 @@
   @apply overflow-hidden;
 }
 
-.list-layout__action-bar {
+.list-layout__header {
   @apply flex-none;
   @apply flex;
   /* @apply flex-wrap; */
@@ -15,7 +15,7 @@
   @apply text-gray-700;
 }
 
-.list-layout__action-bar__toggler {
+.list-layout__header__filter-toggler {
   @apply flex;
   @apply flex-none;
   @apply content-center;
@@ -26,63 +26,60 @@
   @apply bg-gray-700;
 }
 
-.list-layout__action-bar__toggler.open {
+.list-layout__header__filter-toggler.open {
   @apply w-72;
   /* @apply text-gray-400; */
 }
 
-.list-layout__action-bar__toggler-button {
+.list-layout__header__filter-toggler-button {
   @apply px-8;
   @apply text-lg;
   @apply self-center;
   cursor: pointer;
 }
 
-.list-layout__action-bar__toggler-close {
+.list-layout__header__filter-toggler-close {
   @apply hidden;
   cursor: pointer;
 }
 
-.list-layout__action-bar__toggler-close.open {
+.list-layout__header__filter-toggler-close.open {
   @apply flex;
   @apply self-center;
   @apply pr-6;
 }
 
-.list-layout__action-bar__toggler-close:hover,
-.list-layout__action-bar__toggler-button:hover {
+.list-layout__header__filter-toggler-close:hover,
+.list-layout__header__filter-toggler-button:hover {
   @apply text-gray-400;
 }
 
-.list-layout__action-bar__list-options {
+.list-layout__header__list-options {
   @apply flex;
   @apply flex-1;
+  @apply w-full;
+  @apply justify-between;
 }
 
-.list-layout__action-bar__list-options-title {
-  @apply flex-initial;
-  @apply text-gray-700;
-  @apply self-center;
+.list-layout__header__list-options-title {
   @apply pl-4;
   @apply text-lg;
-  /* @apply font-bold; */
   @apply uppercase;
+  @apply self-center;
+  @apply text-gray-700;
 }
 
-.list-layout__action-bar__list-options-commands {
-  @apply flex-1;
+.list-layout__header__list-options-tools {
   @apply flex;
   @apply self-center;
-  @apply flex-row-reverse;
-  /* @apply px-5; */
 }
 
-.list-layout__action-bar__list-option-item {
+.list-layout__header__list-option-item {
   @apply text-gray-600;
   @apply px-3;
 }
 
-.list-layout__action-bar__list-option-item:hover {
+.list-layout__header__list-option-item:hover {
   @apply text-gray-700;
   cursor: pointer;
 }
@@ -92,6 +89,7 @@
   @apply flex;
   @apply h-full;
   @apply w-full;
+  @apply overflow-hidden;
 }
 
 .list-layout__content-filter {

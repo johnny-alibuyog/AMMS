@@ -75,7 +75,7 @@ module.exports = ({
   },
   entry: {
     app: ["aurelia-bootstrapper"],
-    vendor: ["bluebird"]
+    vendor: ["babel-polyfill", "bluebird"]
   },
   mode: production ? "production" : "development",
   output: {

@@ -5,44 +5,39 @@
 
 .side-bar__toggler {
   @apply flex;
-  @apply justify-end;
+  @apply justify-between;
+  /* @apply justify-end; */
   @apply px-4;
-  @apply py-3;
+  @apply py-1;
 }
 
 .side-bar__toggler-button {
-  @apply ml-4;
-  @apply p-1;
-  @apply inline-flex;
+  @apply ml-1;
+  @apply mr-2;
   @apply items-center;
-  @apply rounded;
-  @apply shadow;
-  @apply pl-3;
-  @apply pr-4;
-  @apply bg-gray-700;
+  @apply text-gray-500;
+  @apply flex;
 }
 
 .side-bar__toggler-button-image {
   @apply h-6;
   @apply w-6;
   @apply fill-current;
-  @apply text-gray-500;
 }
 
 .side-bar__toggler-button-text {
-  @apply ml-1;
-  @apply text-white;
-  @apply font-medium;
+  @apply hidden;
+  @apply font-semibold;
+  @apply mx-1;
 }
 
 .side-bar__toggler-button.open,
 .side-bar__toggler-button:hover {
-  @apply bg-gray-600;
+  @apply text-white;
 }
 
 .side-bar__toggler-button:focus {
   @apply outline-none;
-  @apply shadow-outline;
 }
 
 .side-bar__nav {
@@ -64,29 +59,36 @@
 }
 
 .side-bar__nav-group-header {
-  /* @apply pl-12;  */
   @apply py-2;
-  @apply text-xl;
-  @apply text-blue-500;
+  @apply uppercase;
+  @apply text-gray-600;
+  @apply tracking-widest;
 }
 
 .side-bar__nav-group-item {
-  @apply pl-8;
-  @apply pt-2;
+  @apply pl-2;
+  @apply py-1;
 }
 
 .side-bar__nav-group-item-link {
-  @apply text-gray-500;
+  @apply text-blue-100;
 }
 
-.side-bar__nav-group-item-link:hover,
+.side-bar__nav-group-item-link:hover {
+  @apply text-blue-300;
+}
+
 .side-bar__nav-group-item-link.active {
-  @apply text-white;
+  @apply text-blue-400;
+  /* @apply bg-gray-700; */
 }
 
 @screen sm {
   .side-bar__nav-group {
     @apply pl-4;
+  }
+  .side-bar__toggler-button-text {
+    @apply block;
   }
 }
 
@@ -125,3 +127,59 @@
   .side-bar__nav-group-header {
   }
 }
+
+
+/*
+details {
+  border: 1px solid #E1E1E1; 
+  border-radius: 5px; 
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .4); 
+  color: #363636; 
+  margin: 0 0 .4em; 
+  padding: 1%;
+}
+
+details[open] {
+  background: #E1E1E1;
+}
+
+summary {
+  background: -webkit-linear-gradient(top, #FAFAFA 50%, #E1E1E1 50%); 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: .8em; 
+  font-weight: 
+  bold; margin: -1%; 
+  padding: 8px 0; 
+  position: relative; 
+  width: 102%;
+}
+
+summary:hover, 
+details[open] summary {
+  background: #E1E1E1;
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+summary:before {
+  border-radius: 5px; 
+  content: "+"; 
+  color: #363636; 
+  display: block; 
+  float: left; 
+  font-size: 1.5em; 
+  font-weight: bold; 
+  margin: -2px 10px 0 10px; 
+  padding: 0; 
+  text-align: center; 
+  width: 20px;
+}
+
+details[open] summary:before {
+  content: "-"; 
+  margin-top: -4px;
+}
+*/

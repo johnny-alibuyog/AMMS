@@ -1,4 +1,4 @@
-import { MediaService, ScreenSize } from "../../common/services/MediaService";
+import { ScreenSize, MediaService } from "../../common/services/media-service";
 import { autoinject, bindable } from "aurelia-framework";
 import { Router } from "aurelia-router";
 

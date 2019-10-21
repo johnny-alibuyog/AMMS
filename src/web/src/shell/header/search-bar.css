@@ -40,7 +40,10 @@
 
 @screen xl {
   .search-bar {
-    @apply block relative max-w-xs w-full;
+    @apply block;
+    @apply relative;
+    @apply max-w-xs;
+    @apply w-full;
   }
 }
 

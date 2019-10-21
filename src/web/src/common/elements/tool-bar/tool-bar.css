@@ -1,0 +1,17 @@
+.tools {
+  @apply flex;
+  @apply self-center;
+  @apply text-gray-600;
+  @apply px-5;
+}
+
+.tool__img,
+.dropdown-menu-tool__img {
+  @apply px-3;
+  @apply cursor-pointer;
+}
+
+.tool__img:hover,
+.dropdown-menu-tool__img:hover {
+  @apply text-gray-800;
+}

@@ -1,0 +1,82 @@
+dropdown-menu-tool {
+  @apply relative;
+}
+
+dropdown-menu-tool-item {
+  @apply block;
+  @apply text-gray-800;
+  @apply px-4;
+  @apply py-2;
+}
+
+dropdown-menu-tool-item:hover {
+  @apply text-white;
+  @apply bg-gray-600;
+}
+
+.dropdown-menu-tool__img-section {
+  @apply rounded;
+}
+
+.dropdown-menu-tool__img-section.open {
+  @apply bg-gray-400;
+  /* @apply border-blue-400; */
+}
+
+.dropdown-menu-tool__img.open {
+  @apply text-gray-700;
+}
+
+/*
+.dropdown-menu-tool__img.open {
+  @apply text-gray-700;
+}
+
+.dropdown-menu-tool__img {
+  @apply px-3;
+  cursor: pointer;
+}
+
+.dropdown-menu-tool__img:hover {
+  @apply text-gray-700;
+} */
+
+
+.dropdown-menu-tool__item-section {
+  @apply hidden;
+}
+
+.dropdown-menu-tool__item-section.open {
+  @apply block;
+}
+
+.dropdown-menu-tool__item__close-button {
+  @apply z-30;
+  @apply block;
+  @apply fixed;
+  @apply inset-0;
+  @apply w-full;
+  @apply h-full;
+  @apply cursor-default;
+}
+
+.dropdown-menu-tool__item__container {
+  @apply absolute;
+  @apply border;
+  @apply z-40;
+  @apply right-0;
+  @apply mt-3;
+  @apply bg-white;
+  @apply rounded;
+  @apply w-48;
+  @apply py-2;
+  @apply shadow-xl;
+}
+
+/*
+.dropdown-menu-tool__item-divider {
+  @apply border-t;
+  @apply mx-2;
+  @apply border-gray-200;
+}
+*/

@@ -1,0 +1,15 @@
+<template>
+  <require from="./dropdown-menu-tool.css"></require>
+
+  <div class="dropdown-menu-tool__img-section ${state.isOpen ? 'open' : ''}" click.delegate="toggleMenu()">
+    <i class="dropdown-menu-tool__img fas fa-ellipsis-v ${state.isOpen ? 'open' : ''}"></i>
+  </div>
+
+  <div class="dropdown-menu-tool__item-section ${state.isOpen ? 'open' : ''}">
+    <button class="dropdown-menu-tool__item__close-button" click.delegate="state.isOpen = false"
+      type="button"></button>
+    <div class="dropdown-menu-tool__item__container noselect">
+      <slot></slot>
+    </div>
+  </div>
+</template>

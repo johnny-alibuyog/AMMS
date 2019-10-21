@@ -1,6 +1,6 @@
-import { Filter } from '../../common/models/filter';
-import { Sorter, SortDirection } from '../../common/models/sorter';
-import { Pager } from '../../common/models/pager';
+import { Router } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { Filter, Sorter, Pager, SortDirection } from 'common/services/pagination';
 
 type User = {
   name: string,
@@ -8,18 +8,17 @@ type User = {
   role: string,
 }
 
+@autoinject
 export class DiagnosisList {
   public title: string = "Diagnoses";
-
   public roles: string[] = ['user', 'admin'];
-
   public filter: Filter;
-
   public sorter: Sorter;
-
   public pager: Pager<User>;
 
-  constructor() {
+  constructor(
+    private readonly _router: Router,
+  ) {
     this.filter = new Filter({
       fields: {
         name: '',
@@ -46,7 +45,7 @@ export class DiagnosisList {
   }
 
   public add(): void {
-    alert("add");
+    this._router.navigateToRoute('diagnosis-form');
   }
 
   public edit(item: User): void {
@@ -66,23 +65,6 @@ export class DiagnosisList {
     this.pager.count = result.count;
     this.pager.items = result.items;
   }
-
-
-  // public commands: Command[] = [
-  //   <ActionCommand>{
-  //     icon: 'add',
-  //     action: () => alert('add')
-  //   },
-  //   <MenuCommand>{
-  //     icon: 'more',
-  //     commands: [
-  //       <MenuCommandItem>{
-  //         title: 'Hello',
-  //         action: () => alert('Hello')
-  //       }
-  //     ]
-  //   }
-  // ];
 }
 
 const data: User[] = Array(45)

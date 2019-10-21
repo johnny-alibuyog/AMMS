@@ -3,19 +3,30 @@
 /// <reference types="aurelia-loader-webpack/src/webpack-hot-interface"/>
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { Aurelia } from "aurelia-framework";
 import environment from "./environment";
-import { PLATFORM } from "aurelia-pal";
 import * as Bluebird from "bluebird";
+import { Aurelia } from "aurelia-framework";
+import { PLATFORM } from "aurelia-pal";
+import { DialogConfiguration } from 'aurelia-dialog';
+
 
 // remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
 Bluebird.config({ warnings: { wForgottenReturn: false } });
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
+    .developmentLogging()
     .standardConfiguration()
-    .feature(PLATFORM.moduleName("common/index"));
-
+    .feature(PLATFORM.moduleName("common/index"))
+    .plugin(PLATFORM.moduleName('aurelia-validation'))
+    .plugin(PLATFORM.moduleName('aurelia-animator-css'))
+    .plugin(PLATFORM.moduleName('aurelia-dialog'), (config: DialogConfiguration) => {
+      config.useDefaults();
+      config.settings.lock = true;
+      config.settings.centerVerticalOnly = true;
+      config.settings.startingZIndex = 5;
+      config.settings.keyboard = true; //['Enter', 'Escape'];
+    });
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin(PLATFORM.moduleName('aurelia-animator-css'));
   // if the css animator is enabled, add swap-order="after" to all router-view elements

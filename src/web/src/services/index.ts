@@ -29,7 +29,8 @@ const customerRoutes = (meta: Meta) =>
       moduleId: PLATFORM.moduleName("./customers/customer-list"),
       nav: true,
       settings: {
-        group: meta.group
+        group: meta.group,
+        icon: 'fa-users'
       }
     },
     {
@@ -37,10 +38,7 @@ const customerRoutes = (meta: Meta) =>
       name: "customer",
       route: "customers/customer",
       moduleId: PLATFORM.moduleName("./customers/customer"),
-      nav: false,
-      settings: {
-        group: meta.group
-      }
+      nav: false
     }
   ];
 
@@ -53,7 +51,8 @@ const repairRoutes = (meta: Meta) =>
       moduleId: PLATFORM.moduleName("./repairs/diagnosis-list"),
       nav: true,
       settings: {
-        group: meta.group
+        group: meta.group,
+        icon: 'fa-tasks'
       }
     },
     {
@@ -62,9 +61,6 @@ const repairRoutes = (meta: Meta) =>
       route: "repairs/diagnosis-form",
       moduleId: PLATFORM.moduleName("./repairs/diagnosis-form"),
       nav: false,
-      settings: {
-        group: meta.group
-      }
     },
     {
       title: "Quotations",
@@ -73,7 +69,8 @@ const repairRoutes = (meta: Meta) =>
       moduleId: PLATFORM.moduleName("./repairs/quotation-list"),
       nav: true,
       settings: {
-        group: meta.group
+        group: meta.group,
+        icon: 'fa-calculator'
       }
     },
     {
@@ -81,10 +78,7 @@ const repairRoutes = (meta: Meta) =>
       name: "quotation",
       route: "repairs/quotation",
       moduleId: PLATFORM.moduleName("./repairs/quotation"),
-      nav: false,
-      settings: {
-        group: meta.group
-      }
+      nav: false
     },
     {
       title: "Job Orders",
@@ -93,7 +87,8 @@ const repairRoutes = (meta: Meta) =>
       moduleId: PLATFORM.moduleName("./repairs/job-order-list"),
       nav: true,
       settings: {
-        group: meta.group
+        group: meta.group,
+        icon: 'fa-wrench'
       }
     },
     {
@@ -101,9 +96,6 @@ const repairRoutes = (meta: Meta) =>
       name: "job-order",
       route: "repairs/job-order",
       moduleId: PLATFORM.moduleName("./repairs/job-order"),
-      nav: false,
-      settings: {
-        group: meta.group
-      }
+      nav: false
     }
   ];

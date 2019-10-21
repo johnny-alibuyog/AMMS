@@ -1,0 +1,20 @@
+
+ol.breadcrumbs {
+  @apply list-none;
+  @apply inline-flex;
+}
+
+ol.breadcrumbs > li {
+  @apply mr-2;
+  @apply text-gray-300;
+}
+
+ol.breadcrumbs > li > a {
+  /* cursor: pointer; */
+  @apply cursor-pointer;
+  @apply text-blue-300;
+}
+
+ol.breadcrumbs > li > a:hover {
+  @apply text-blue-400;
+}

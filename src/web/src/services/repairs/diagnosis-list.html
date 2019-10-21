@@ -2,23 +2,31 @@
   <require from="../../shell/layouts/list-layout"></require>
 
   <list-layout title.bind="title">
-    <section slot="command-section">
-      <command-bar>
-        <menu-command>
-          <command-bar>
-            <list-command exec.call="add()"></list-command>
-            <tile-command exec.call="add()"></tile-command>
-            <add-command exec.call="add()"></add-command>
-          </command-bar>
-          <menu-command-item exec.call="add()">Men</menu-command-item>
-          <menu-command-item exec.call="add()">Men 2</menu-command-item>
-          <menu-command-item exec.call="add()">Men 2</menu-command-item>
-          <menu-command-item exec.call="add()">Men 2</menu-command-item>
-        </menu-command>
-        <list-command exec.call="add()"></list-command>
-        <tile-command exec.call="add()"></tile-command>
-        <add-command exec.call="add()"></add-command>
-      </command-bar>
+    
+    <section slot="tool-section">
+      <tool-bar>
+        <add-tool exec.call="add()"></add-tool>
+        <tile-tool exec.call="add()"></tile-tool>
+        <list-tool exec.call="add()"></list-tool>
+        <dropdown-menu-tool>
+          <tool-bar>
+            <list-tool exec.call="add()"></list-tool>
+            <tile-tool exec.call="add()"></tile-tool>
+            <add-tool exec.call="add()"></add-tool>
+          </tool-bar>
+          <!-- <dropdown-menu-tool-item>
+            <tool-bar>
+              <list-tool exec.call="add()"></list-tool>
+              <tile-tool exec.call="add()"></tile-tool>
+              <add-tool exec.call="add()"></add-tool>
+            </tool-bar>
+          </dropdown-menu-tool-item> -->
+          <dropdown-menu-tool-item exec.call="add()">Men</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+        </dropdown-menu-tool>
+      </tool-bar>
     </section>
 
     <section slot="filter-section" class="filter-section">
@@ -86,7 +94,7 @@
             </label>
           </div>
         </div>
-        
+
         <div class="radio-group">
           <span class="label">Property Type</span>
           <div class="radios">
@@ -108,7 +116,7 @@
             </label>
           </div>
         </div>
-       
+
       </form>
 
       <div id="filter-actions">

@@ -13,8 +13,6 @@ export class MenuLayoutSideBar {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public router: Router;
 
-  public xs: number[] = [];
-
   public toggle(): void {
     this.isOpen = !this.isOpen;
   }

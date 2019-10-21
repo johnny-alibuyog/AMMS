@@ -1,12 +1,21 @@
 <template>
   <require from="./form-layout.css"></require>
 
-  <div class="form-layout">
+  <section class="form-layout">
+
+    <header class="form-layout__header">
+      <div class="form-layout__header__title">
+        <slot name="title-section">${title}</slot>
+      </div>
+      <div class="form-layout__header__tools">
+        <slot name="tool-section"></slot>
+      </div>
+    </header>
 
     <div class="form-layout__content">
       <slot name="form-section"></slot>
     </div>
 
-  </div>
-  
+  </section>
+
 </template>

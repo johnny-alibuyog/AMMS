@@ -1,0 +1,38 @@
+<template>
+  <require from="./breadcrumbs.css"></require>
+
+  <nav>
+    <ol class="breadcrumbs">
+      <template repeat.for="instruction of router.currentInstruction.getAllInstructions() | instructionFilter">
+        <let group="${instruction.config.navModel.settings.group}"></let>
+        <let title="${instruction.config.navModel.title}"></let>
+
+        <li if.bind="group">
+          ${group}
+        </li>
+
+        <li if.bind="group">
+          <!-- <i class="fas fa-angle-right fa-sm"></i> -->
+          <!-- <span>/</span> -->
+          <span>›</span>
+        </li>
+
+        <li if.bind="$last" class="${$last ? 'active' : ''}">
+          ${title}
+        </li>
+        <li else>
+          <a href="#" click.delegate="$parent.navigate(instruction)">
+            ${title}
+          </a>
+        </li>
+
+        <li if.bind="!$last">
+          <!-- <i class="fas fa-angle-right fa-sm"></i> -->
+          <!-- <span>/</span> -->
+          <span>›</span>
+        </li>
+      </template>
+    </ol>
+  </nav>
+
+</template>

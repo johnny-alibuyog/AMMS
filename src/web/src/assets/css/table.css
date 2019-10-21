@@ -29,9 +29,16 @@
 
 .responsive-table > table > thead > tr,
 .responsive-table > table > tbody > tr {
+  @apply h-full;
   @apply border-b;
   @apply bg-white;
 }
+
+/* .responsive-table > table > thead > tr > th {
+  @apply flex;
+  @apply flex-no-wrap;
+} */
+
 
 .responsive-table > table > thead > tr > th,
 .responsive-table > table > tbody > tr > td {
@@ -40,31 +47,29 @@
   @apply px-5;
 }
 
-.responsive-table > table > thead > tr > th.action,
+.responsive-table > table > thead > tr > th.action {
+  @apply text-center;
+}
+
 .responsive-table > table > tbody > tr > td.action {
   @apply flex;
   @apply justify-around;
-  @apply items-center;
+  @apply content-center;
 }
 
 .responsive-table > table > thead > tr > th.center,
 .responsive-table > table > tbody > tr > td.center {
-  @apply flex;
-  @apply justify-center;
-  @apply items-center;
+  @apply text-center;
 }
 
 .responsive-table > table > thead > tr > th.right,
 .responsive-table > table > tbody > tr > td.right {
-  @apply flex;
-  @apply justify-end;
-  @apply items-center;
+  @apply text-right;
 }
 
 .responsive-table > table > thead > tr > th.left,
 .responsive-table > table > tbody > tr > td.left {
-  @apply flex;
-  @apply justify-start;
+  @apply text-left;
 }
 
 .responsive-table > table > tbody > tr > td.action > a.primary {
