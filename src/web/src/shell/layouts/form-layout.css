@@ -1,15 +1,14 @@
 .form-layout {
   @apply flex;
   @apply flex-col;
-  @apply h-auto;
+  @apply h-full;
   @apply w-full;
-  @apply overflow-hidden;
+  /* @apply overflow-hidden; */
 }
 
 .form-layout__header {
   @apply flex-none;
   @apply flex;
-  /* @apply flex-wrap; */
   @apply h-12;
   @apply shadow-md;
   @apply text-gray-700;
@@ -24,31 +23,234 @@
 }
 
 .form-layout__content {
-  @apply flex-1;
+  @apply z-50;
   @apply flex;
-  @apply h-auto;
-  @apply w-full;
-  @apply overflow-hidden;
   @apply overflow-auto;
 }
 
 .form-layout__content > section {
-  @apply py-5;
-  @apply px-4;
-  @apply flex;
-  @apply h-auto;
   @apply w-full;
-  @apply overflow-hidden;
-  @apply overflow-auto;
+  @apply h-full;
 }
 
 .form-layout__content > section > form {
-  @apply w-full;
-  @apply h-auto;
-  /* @apply my-5; */
-  /* @apply mx-4; */
+  @apply px-8;
+  @apply py-10;
+  @apply my-5;
+  @apply mx-4;
   @apply rounded;
   @apply shadow-md;
-  @apply bg-gray-100;
-  /* @apply overflow-hidden; */
+  @apply bg-white;
 }
+
+/*
+ * Form input styles
+ */
+
+.form .field-group {
+  @apply flex;
+  @apply flex-wrap;
+  @apply -mx-3;
+}
+
+.form .field-group .group {
+  @apply w-full;
+  @apply px-3;
+  @apply mb-3;
+}
+
+.form .field-group .group .label {
+  @apply block;
+  @apply uppercase;
+  @apply tracking-wide;
+  @apply text-gray-600;
+  @apply text-xs;
+  @apply font-bold;
+  @apply mb-1;
+}
+
+.form .field-group .group .input {
+  @apply pl-2;
+  @apply pr-4;
+  @apply py-2;
+  @apply mb-1;
+  @apply block;
+  @apply w-full;
+  @apply rounded;
+  @apply bg-gray-200;
+  @apply text-gray-700;
+  @apply border;
+  @apply border-gray-400;
+  @apply leading-tight;
+  @apply appearance-none;
+  @apply tracking-wide;
+}
+
+.form .field-group .group .input:focus {
+  @apply outline-none;
+  @apply bg-white;
+  @apply border-gray-600;
+  @apply shadow-none;
+}
+
+.form .field-group .group .input.error {
+  @apply border-red-500;
+} 
+
+.form .field-group .group .input-desc {
+  @apply text-gray-600;
+  @apply text-xs;
+  @apply italic;
+} 
+
+.form .field-group .group .error-message {
+  @apply text-red-500;
+  @apply text-xs;
+  @apply italic;
+} 
+
+@screen md {
+  .form .field-group .group {
+    /* @apply mb-0; */
+  }
+  .form .field-group .group.by-2 {
+    @apply w-1/2;
+  }
+  .form .field-group .group.by-3 {
+    @apply w-1/3;
+  }
+}
+
+
+
+/*
+ * checkbox and radio fields
+ */
+/*
+.form .radio-group,
+.form .checkbox-group {
+  @apply block; 
+  @apply border-gray-600;
+  @apply border-solid;
+  @apply border-b;
+  @apply py-2;
+  @apply px-4;
+}
+
+.form .radio-group .label,
+.form .checkbox-group .label {
+  @apply font-semibold;
+  @apply text-gray-500;
+  @apply text-sm;
+}
+
+.form .radio-group .radios,
+.form .checkbox-group .checkboxes {
+  @apply flex;
+  @apply -mx-2;
+  @apply flex-wrap;
+}
+
+.form .radio-group .radios .group,
+.form .checkbox-group .checkboxes .group {
+  @apply mt-2;
+  @apply px-2;
+  @apply flex;
+  @apply items-center;
+  @apply w-full;
+}
+
+.form .radio-group .radios .group .input[type="radio"],
+.form .checkbox-group .checkboxes .group .input[type="checkbox"] {
+  @apply bg-gray-800;
+}
+
+.form .radios-group .radios .group .input[type="radio"]:focus,
+.form .checkbox-group .checkboxes .group .input[type="checkbox"]:focus {
+  @apply bg-gray-700;
+}
+
+.form .radio-group .radios .group .label,
+.form .checkbox-group .checkboxes .group .label {
+  @apply ml-2;
+  @apply text-gray-300;
+}
+*/
+
+
+/*
+
+.field-group {
+  @apply flex;
+  @apply flex-wrap;
+  @apply -mx-3;
+}
+
+
+.group {
+  @apply w-full;
+  @apply px-3;
+  @apply mb-3;
+}
+
+.label {
+  @apply block;
+  @apply uppercase;
+  @apply tracking-wide;
+  @apply text-gray-600;
+  @apply text-xs;
+  @apply font-bold;
+  @apply mb-1;
+}
+
+.input {
+  @apply pl-2;
+  @apply pr-4;
+  @apply py-2;
+  @apply mb-1;
+  @apply block;
+  @apply w-full;
+  @apply rounded;
+  @apply bg-gray-200;
+  @apply text-gray-700;
+  @apply border;
+  @apply border-gray-400;
+  @apply leading-tight;
+  @apply appearance-none;
+  @apply tracking-wide;
+}
+
+input:focus {
+  @apply outline-none;
+  @apply bg-white;
+  @apply border-gray-600;
+}
+
+.input.error {
+  @apply border-red-500;
+}
+
+.input-desc {
+  @apply text-gray-600;
+  @apply text-xs;
+  @apply italic;
+}
+
+.error-message {
+  @apply text-red-500;
+  @apply text-xs;
+  @apply italic;
+}
+
+@screen md {
+  .group {
+    @apply mb-0;
+  }
+  .group.by-2 {
+    @apply w-1/2;
+  }
+  .group.by-3 {
+    @apply w-1/3;
+  }
+}
+*/
