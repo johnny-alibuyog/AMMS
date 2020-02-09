@@ -3,8 +3,10 @@ import { FrameworkConfiguration, PLATFORM } from "aurelia-framework";
 export function configure(config: FrameworkConfiguration) {
   config.globalResources([
     PLATFORM.moduleName("./elements/breadcrumbs"),
+    PLATFORM.moduleName("./elements/custom-breadcrumbs"),
     PLATFORM.moduleName("./elements/dropdown"),
     PLATFORM.moduleName("./elements/pagination"),
+    PLATFORM.moduleName("./elements/toast/toast"),
     PLATFORM.moduleName("./elements/tool-bar/tool-bar"),
     PLATFORM.moduleName("./elements/tool-bar/add-tool"),
     PLATFORM.moduleName("./elements/tool-bar/list-tool"),

@@ -1,0 +1,23 @@
+<template>
+  <require from="./custom-breadcrumbs.css"></require>
+
+  <nav aria-label="breadcrumb">
+    <ol class="custom-breadcrumbs">
+      <template repeat.for="item of items">
+        <li class="${$last ? 'active' : ''" aria-current="${$last ? 'page' : ''}">
+          <span if.bind="$last">
+            ${item.title}
+          </span>
+          <a else href="${item.url || '#'}">
+            ${item.title}
+          </a>
+        </li>
+        <li if.bind="!$last">
+          <!-- <span>›</span> -->
+          <span>/</span>
+        </li>
+      </template>
+    </ol>
+  </nav>
+
+</template>

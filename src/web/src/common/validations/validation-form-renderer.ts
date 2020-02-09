@@ -1,7 +1,7 @@
 import { RenderInstruction, ValidateResult } from "aurelia-validation";
 
 export class ValidationFormRenderer {
-  render(instruction: RenderInstruction) {
+  public render(instruction: RenderInstruction): void {
     for (let { result, elements } of instruction.unrender) {
       for (let element of elements) {
         this.remove(element, result);
@@ -15,52 +15,52 @@ export class ValidationFormRenderer {
     }
   }
 
-  add(element: Element, result: ValidateResult) {
-    const formGroup = element.closest('.form-group');
-    if (!formGroup) {
+  public add(element: Element, result: ValidateResult): void {
+    const group = element.closest('.group');
+    if (!group) {
       return;
     }
 
     if (result.valid) {
-      if (!formGroup.classList.contains('has-error')) {
-        formGroup.classList.add('has-success');
+      if (!group.classList.contains('has-error')) {
+        group.classList.add('has-success');
       }
-    } else {
-      // add the has-error class to the enclosing form-group div
-      formGroup.classList.remove('has-success');
-      formGroup.classList.add('has-error');
+    }
+    else {
+      // add the has-error class to the enclosing group div
+      group.classList.remove('has-success');
+      group.classList.add('has-error');
 
       // add help-block
-      const message = document.createElement('span');
-      message.className = 'help-block validation-message';
+      const message = document.createElement('p');
+      message.className = 'error-message';
       message.textContent = result.message;
-      message.id = `validation-message-${result.id}`;
-      formGroup.appendChild(message);
+      message.id = `error-message-${result.id}`;
+      group.appendChild(message);
     }
   }
 
-  remove(element: Element, result: ValidateResult) {
-    const formGroup = element.closest('.form-group');
-    if (!formGroup) {
+  public remove(element: Element, result: ValidateResult): void {
+    const group = element.closest('.group');
+    if (!group) {
       return;
     }
 
     if (result.valid) {
-      if (formGroup.classList.contains('has-success')) {
-        formGroup.classList.remove('has-success');
+      if (group.classList.contains('has-success')) {
+        group.classList.remove('has-success');
       }
     } else {
       // remove help-block
-      const message = formGroup.querySelector(`#validation-message-${result.id}`);
+      const message = group.querySelector(`#error-message-${result.id}`);
       if (message) {
-        formGroup.removeChild(message);
+        group.removeChild(message);
 
-        // remove the has-error class from the enclosing form-group div
-        if (formGroup.querySelectorAll('.help-block.validation-message').length === 0) {
-          formGroup.classList.remove('has-error');
+        // remove the has-error class from the enclosing group div
+        if (group.querySelectorAll('.error-message').length === 0) {
+          group.classList.remove('has-error');
         }
       }
     }
   }
 }
-

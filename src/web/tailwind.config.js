@@ -74,5 +74,8 @@ module.exports = {
     //   verticalAlign: 'top',                             // default: 'top'
     // }),
     require("@tailwindcss/custom-forms"),
-  ]
+  ],
+  corePlugins: {
+    placeholderColor: true,
+  }
 };

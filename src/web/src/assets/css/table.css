@@ -120,6 +120,13 @@
   @apply text-blue-400;
 }
 
+.responsive-table > table > thead > tr > th:hover > i.fas.fa-fw.fa-sort,
+.responsive-table > table > thead > tr > th:hover > i.fas.fa-fw.fa-sort-up,
+.responsive-table > table > thead > tr > th:hover > i.fas.fa-fw.fa-sort-down {
+  @apply text-blue-400;
+}
+
+
 /*
 .responsive-table > table > thead > tr > th.highlightable:hover,
 .responsive-table > table > thead > tr > th > i.fas.fa-fw.fa-sort:hover {

@@ -45,7 +45,7 @@ export class DiagnosisList {
   }
 
   public add(): void {
-    this._router.navigateToRoute('diagnosis-form');
+    this._router.navigateToRoute('repairs/diagnosis');
   }
 
   public edit(item: User): void {

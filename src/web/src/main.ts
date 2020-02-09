@@ -3,6 +3,7 @@
 /// <reference types="aurelia-loader-webpack/src/webpack-hot-interface"/>
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import 'izitoast/dist/css/iziToast.css';
 import environment from "./environment";
 import * as Bluebird from "bluebird";
 import { Aurelia } from "aurelia-framework";

@@ -4,7 +4,7 @@
   <form-layout title.bind="title">
 
     <section slot="title-section">
-      <breadcrumbs></breadcrumbs>
+      <custom-breadcrumbs items.bind="breadcrumbItems"></custom-breadcrumbs>
     </section>
 
     <section slot="tool-section"></section>
@@ -13,25 +13,24 @@
     <section slot="form-section">
       <form class="form" validation-errors="errors.bind: errors; controller.bind: controller"
         submit.delegate="submit()">
-
+        <!-- 
         <span class="help-block" repeat.for="errorInfo of errors">
           ${errorInfo.error.message}
         </span>
+        -->
 
         <div class="field-group">
           <label class="group by-3">
             <span class="label">First Name</span>
-            <input class="input form-input error" type="text" placeholder="Euphrates"
-              value.bind="user.firstName & validate" />
-            <p class="error-message">Please fill out this field.</p>
+            <input class="input" type="text" placeholder="Juan" value.bind="user.firstName & validate" />
           </label>
           <label class="group by-3">
             <span class="label">Middle Name</span>
-            <input class="input form-input" type="text" placeholder="Efa" value.bind="user.middleName & validate" />
+            <input class="input form-input" type="text" placeholder="Ponce" value.bind="user.middleName & validate" />
           </label>
           <label class="group by-3">
             <span class="label">Last Name</span>
-            <input class="input form-input" type="text" placeholder="Alibuyog" value.bind="user.lastName & validate" />
+            <input class="input form-input" type="text" placeholder="Deleon" value.bind="user.lastName & validate" />
           </label>
         </div>
 
@@ -66,6 +65,7 @@
           <label class="group by-3">
             <span class="label">state</span>
             <select class="input form-select">
+              <option></option>
               <option>New Mexico</option>
               <option>Missouri</option>
               <option>Texas</option>
@@ -77,8 +77,9 @@
           </label>
         </div>
 
-        <div class="field-group">
-          <input type="submit" value="Submit" />
+        <div class="form-actions">
+          <input type="submit" class="primary" value="Apply" />
+          <input type="button" class="secondary" value="Reset" click.delegate="reset()" />
         </div>
       </form>
     </section>

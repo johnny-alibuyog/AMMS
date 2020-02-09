@@ -2,6 +2,10 @@ import { autoinject, bindable, bindingMode } from 'aurelia-framework';
 import { NavigationInstruction } from 'aurelia-router';
 import { Router } from 'aurelia-router';
 
+
+/*
+ * this breadcurmbs is based on the route
+ */
 @autoinject()
 export class Breadcrumbs {
 

@@ -86,6 +86,10 @@
   @apply tracking-wide;
 }
 
+.form .field-group .group .input::placeholder {
+  @apply text-gray-400;
+}
+
 .form .field-group .group .input:focus {
   @apply outline-none;
   @apply bg-white;
@@ -93,21 +97,61 @@
   @apply shadow-none;
 }
 
-.form .field-group .group .input.error {
-  @apply border-red-500;
-} 
-
 .form .field-group .group .input-desc {
   @apply text-gray-600;
   @apply text-xs;
   @apply italic;
 } 
 
-.form .field-group .group .error-message {
+.form .field-group .group.has-error .input {
+  @apply border-red-500;
+} 
+
+.form .field-group .group.has-error .error-message {
   @apply text-red-500;
   @apply text-xs;
   @apply italic;
 } 
+
+.form .form-actions {
+  @apply flex;
+  @apply mt-5;
+  /* @apply px-2;
+  @apply py-2;  */
+  @apply text-right;
+}
+
+.form .form-actions > input[type="submit"],
+.form .form-actions > input[type="button"] {
+  @apply font-semibold;
+  @apply px-10;
+  @apply py-2;
+  @apply mr-4;
+  @apply rounded;
+  @apply shadow-lg;
+}
+
+.form .form-actions .primary {
+  @apply bg-blue-400;
+  @apply text-blue-100;
+  @apply border;
+  @apply border-blue-500;
+}
+
+.form .form-actions .secondary {
+  @apply bg-gray-100;
+  @apply text-gray-700;
+  @apply border;
+  @apply border-gray-300;
+}
+
+.form .form-actions .primary:hover {
+  @apply bg-blue-600;
+}
+
+.form .form-actions .secondary:hover {
+  @apply bg-gray-200;
+}
 
 @screen md {
   .form .field-group .group {
