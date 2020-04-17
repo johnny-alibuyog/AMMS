@@ -1,12 +1,12 @@
 import { ToastController } from './toast-controller';
 import { autoinject, Container, CompositionEngine, CompositionContext, Origin } from 'aurelia-framework';
-import { ToastRenderer } from './toast-renderer';
 import { Toast } from './toast';
 
 const defaults: Partial<ToastSettings> = {
   debug: false,
   position: 'toast-top-right',
-  startingZIndex: 1000
+  startingZIndex: 1000,
+  duration: 5 /* 5 sec */
 };
 
 export type ToastType
@@ -37,6 +37,7 @@ export type ToastSettings = {
   preventDuplicates: boolean,
   newestOnTop: boolean,
   startingZIndex: number,
+  duration: number,
   model: any
 }
 

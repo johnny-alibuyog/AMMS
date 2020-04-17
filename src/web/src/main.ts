@@ -23,10 +23,11 @@ export function configure(aurelia: Aurelia) {
     .plugin(PLATFORM.moduleName('aurelia-animator-css'))
     .plugin(PLATFORM.moduleName('aurelia-dialog'), (config: DialogConfiguration) => {
       config.useDefaults();
-      config.settings.lock = true;
-      config.settings.centerVerticalOnly = true;
-      config.settings.startingZIndex = 5;
-      config.settings.keyboard = true; //['Enter', 'Escape'];
+      // config.useCSS('');
+      // config.settings.lock = true;
+      // config.settings.centerVerticalOnly = true;
+      // config.settings.startingZIndex = 5;
+      // config.settings.keyboard = true; //['Enter', 'Escape'];
     });
     
   // Uncomment the line below to enable animation.

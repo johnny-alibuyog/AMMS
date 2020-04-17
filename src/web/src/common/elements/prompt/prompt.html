@@ -1,0 +1,16 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header>
+      <h1>${options.title}</h1>
+    </ux-dialog-header>
+
+    <ux-dialog-body>
+      <h2>${options.message}</h2>
+    </ux-dialog-body>
+
+    <ux-dialog-footer>
+      <button click.trigger="ok()">Ok</button>
+      <button click.trigger="cancel()">Cancel</button>
+    </ux-dialog-footer>
+  </ux-dialog>  
+</template>

@@ -1,11 +1,12 @@
+import { PromptService } from './../../common/elements/prompt/prompt-service';
 import { autoinject } from 'aurelia-framework';
 import { ValidationRules, ValidationControllerFactory, ValidationController, ValidateResult } from 'aurelia-validation';
 import { Router } from 'aurelia-router';
 import { ToastService } from 'common/elements/toast/toast-service';
-import { ToastService2 } from 'common/elements/toast/toast-service2';
 import { ValidationFormRenderer } from '../../common/validations/validation-form-renderer';
 import { BreadcrumbItem } from '../../common/elements/custom-breadcrumbs';
 import { rules } from '../../common/validations/validation-custom-rules';
+import { PromptType, PromptResult } from 'common/elements/prompt/prompt';
 
 @autoinject()
 export class DiagnosisForm {
@@ -16,9 +17,9 @@ export class DiagnosisForm {
   public readonly controller: ValidationController;
 
   constructor(
-    private readonly router: Router,
-    private readonly toast: ToastService,
-    private readonly toast2: ToastService2,
+    private readonly _router: Router,
+    private readonly _toast: ToastService,
+    private readonly _prompt: PromptService,
     renderer: ValidationFormRenderer,
     factory: ValidationControllerFactory
   ) {
@@ -29,17 +30,20 @@ export class DiagnosisForm {
 
   public async activate(params: any): Promise<void> {
     this.breadcrumbItems = [
-      { title: "Diagnoses", url: this.router.generate("repairs/diagnoses") },
-      { title: "New Diagnosis", url: this.router.generate("repairs/diagnosis") }
+      { title: "Diagnoses", url: this._router.generate("repairs/diagnoses") },
+      { title: "New Diagnosis", url: this._router.generate("repairs/diagnosis") }
     ];
   }
 
   public async submit(): Promise<void> {
-    console.log(this.errors);
-    const result = await this.controller.validate();
-    if (!result.valid) {
-      await this.toast.error('Validaton Error', 'Error');
-      this.toast2.error('Validaton Error', 'Error');
+    const promptResult = await this._prompt.show('Prompt Title', 'Title', PromptType.OkCancel);
+    if (promptResult == PromptResult.Cancel) {
+      return;
+    }
+    
+    const valResult = await this.controller.validate();
+    if (!valResult.valid) {
+      await this._toast.error('Validaton Error', 'Error');
     }
   }
 
@@ -53,8 +57,7 @@ export class DiagnosisForm {
       confirmPassword: '',
     });
     this.controller.reset();
-    await this.toast.success('reset', 'Sucess');
-    this.toast2.success('reset', 'Sucess');
+    await this._toast.success('reset', 'Sucess');
   }
 }
 

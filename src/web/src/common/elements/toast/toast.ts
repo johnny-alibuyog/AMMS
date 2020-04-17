@@ -36,5 +36,6 @@ export class Toast {
     this.closable = options.closable;
     this.clearable = options.clearable;
     this.position = options.position;
+    setTimeout(() => this._controller.close(), options.duration * 1000);
   }
 }
