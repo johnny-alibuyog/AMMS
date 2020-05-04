@@ -9,7 +9,7 @@ import {
   $$,
   ExpectedConditions
 } from "aurelia-protractor-plugin/protractor";
-import { config } from "../protractor.conf";
+import { config } from "../protractor.conf.back";
 
 describe("aurelia skeleton app", function() {
   let poWelcome: PageObject_Welcome;

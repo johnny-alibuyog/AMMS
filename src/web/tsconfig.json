@@ -13,7 +13,15 @@
     "skipLibCheck": true,
     "lib": ["es2017", "dom"]
   },
-  "include": ["./src/**/*.ts", "./test/**/*.ts", "./custom_typings/**/*.d.ts"],
+  "include": [
+    "./src/**/*.ts", 
+    "./test/**/*.ts", 
+    "./custom_typings/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
   "atom": {
     "rewriteTsconfig": false
   }

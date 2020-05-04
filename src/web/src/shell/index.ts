@@ -26,6 +26,14 @@ export class Index {
         // nav: true,
         // main: true,
         // title: 'Profile',
+      },
+      {
+        route: ["membershipt"],
+        name: "login",
+        moduleId: PLATFORM.moduleName("../accounts/profile")
+        // nav: true,
+        // main: true,
+        // title: 'Profile',
       }
       // {
       //   route: '',

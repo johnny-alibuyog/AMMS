@@ -137,7 +137,7 @@ module.exports = ({
       },
       // embed small images and fonts as Data Urls and larger ones as files:
       {
-        test: /\.(png|gif|jpg|cur)$/i,
+        test: /\.(png|gif|jpg|jpeg|cur)$/i,
         loader: "url-loader",
         options: { limit: 8192 }
       },
