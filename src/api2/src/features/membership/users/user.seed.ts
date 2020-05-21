@@ -43,6 +43,7 @@ const randomUsersFn = (getRoles: () => Role[]) => (count: number = 12) => {
     const person = randomPerson();
 
     return new User({
+      email: faker.internet.email(person.firstName, person.lastName),
       username: generateUsername(person),
       password: faker.internet.password(),
       person: person,

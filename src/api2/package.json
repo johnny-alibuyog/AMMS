@@ -7,8 +7,7 @@
     "postinstall": "npx tsc",
     "dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
     "start": "npx pm2 start pm2.yaml",
-    "test": "jest --detectOpenHandles --coverage",
-    "test1": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles --coverage"
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles --coverage"
   },
   "author": "johnny",
   "license": "ISC",

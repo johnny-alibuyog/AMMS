@@ -1,4 +1,4 @@
-import { ValueObject, Entity } from '../../kernel';
+import { ValueObject, Entity } from '../../common';
 import { prop, Ref, arrayProp, pre, post } from '@typegoose/typegoose';
 import { Role } from './../roles/role.models';
 import { encryptor } from '../../../utils/encryptor';
@@ -69,6 +69,9 @@ class Address extends ValueObject {
   }
 }) 
 class User extends Entity {
+  @prop({ unique: true, required: true })
+  public email!: string;
+
   @prop({ unique: true, required: true })
   public username!: string;
 

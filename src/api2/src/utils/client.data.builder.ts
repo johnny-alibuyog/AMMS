@@ -66,6 +66,7 @@ export type IBuilder<TArgs, TModel> = {
 
 export type UserBuilderArgs = {
   username: string,
+  email: string,
   password: string,
   accessControl?: AccessControl
 }

@@ -11,7 +11,7 @@ import { Aurelia } from 'aurelia-framework';
 import { PLATFORM } from 'aurelia-pal';
 import { DialogConfiguration } from 'aurelia-dialog';
 import { initialState } from './kernel/state/models';
-import { authService } from 'kernel/auth-service';
+import { auth } from 'features/membership/auth';
 
 // remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
 Bluebird.config({ warnings: { wForgottenReturn: false } });
@@ -52,15 +52,15 @@ export function configure(aurelia: Aurelia): Aurelia {
   }
 
   aurelia.start()
-    .then(() => authService.getState())
+    .then(() => auth.getState())
     .then((auth) => {
       const root = (auth?.signedIn)
         ? PLATFORM.moduleName('app')
-        : PLATFORM.moduleName('membership/users/signin');
+        : PLATFORM.moduleName('features/membership/auth/signin');
       return aurelia.setRoot(root);
     });
 
-  return aurelia;
+    return aurelia;
 }
 
 // type Root = 'signin' | 'dashboard';

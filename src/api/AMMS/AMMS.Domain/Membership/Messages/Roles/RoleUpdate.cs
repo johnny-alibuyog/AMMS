@@ -34,8 +34,8 @@ namespace AMMS.Domain.Membership.Messages.Roles
                 var role = Mapper.Map<Models.Role>(request);
 
                 role.SetTenant(Context.TenantId);
-
-                await Db.Membership.Roles.ReplaceOneAsync(x => x.Id == role.Id, role, new UpdateOptions(), cancellationToken);
+                
+                await Db.Membership.Roles.ReplaceOneAsync(x => x.Id == role.Id, role, new ReplaceOptions(), cancellationToken);
 
                 return new Response();
             }

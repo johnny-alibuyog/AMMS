@@ -98,7 +98,8 @@ namespace AMMS.Domain.Common.Pipes.Auth
                     jsonSerializer: jsonSerializer, 
                     dateTimeProvider: GetDateTimeProvider()
                 ), 
-                urlEncoder: GetEncoder()
+                urlEncoder: GetEncoder(),
+                algorithm: GetAlgorithm()
             );
 
             var payload = decoder.DecodeToObject<TPayload>(

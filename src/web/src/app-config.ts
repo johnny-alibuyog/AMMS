@@ -2,7 +2,7 @@
 import { PageConfig } from './common/elements/pagination';
 
 let apiHosts = {
-  'localhost': 'http://localhost:49561',
+  'localhost': 'http://localhost:8081/api/v1',
   'server-pc': 'http://server-pc/ampbiz/api/',
   'DBDC-SERVER': 'http://DBDC-SERVER/ampbiz/api/',
   'nicont130server': 'http://nicont130server/ampbiz/api/',

@@ -33,7 +33,7 @@ namespace AMMS.Domain.Membership.Messages.Tenants
             {
                 var tenant = Mapper.Map<Tenant>(request);
 
-                await Db.Membership.Tenants.ReplaceOneAsync(x => x.Id == tenant.Id, tenant, new UpdateOptions(), cancellationToken);
+                await Db.Membership.Tenants.ReplaceOneAsync(x => x.Id == tenant.Id, tenant, new ReplaceOptions(), cancellationToken);
 
                 return new Response();
             }

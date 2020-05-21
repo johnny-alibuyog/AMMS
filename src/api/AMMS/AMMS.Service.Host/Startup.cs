@@ -61,8 +61,9 @@ namespace AMMS.Service.Host
             this._logger.Information("Logged in Configure");
 
             if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+            { 
+                //app.UseDeveloperExceptionPage();
+                //app.UseStatusCodePagesWithRedirects();
             }
 
             app.UseServiceMvc();
@@ -77,7 +78,7 @@ namespace AMMS.Service.Host
 
             services.AddMvc()
                 .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<TenantValidator>())
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(o => o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             // Register the Swagger generator, defining 1 or more Swagger documents

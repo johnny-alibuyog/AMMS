@@ -19,6 +19,7 @@ export class MediaService {
     "(max-width: 1279px) and (min-width: 1024px)": ScreenSize.Large,
     "(min-width: 1280px)": ScreenSize.ExtraLarge
   };
+
   private onChange(mediaQuery: MediaQueryListEvent) {
     if (mediaQuery.matches) {
       this.screenSize = this._screenSizes[mediaQuery.media];
@@ -28,6 +29,7 @@ export class MediaService {
       }
     }
   }
+
   public initialize(): void {
     for (const query in this._screenSizes) {
       const mediaQuery = window.matchMedia(query);
@@ -35,14 +37,17 @@ export class MediaService {
       this._mediaQueries.push(mediaQuery);
     }
   }
+
   public constructor() {
     this.initialize();
   }
+
   public addChangedLister(listener: ScreenResizeEventListener): void {
     if (this._listeners.indexOf(listener, 0) === -1) {
       this._listeners.push(listener);
     }
   }
+  
   public removeChangedListener(listener: ScreenResizeEventListener): void {
     for (let index = 0; index < this._listeners.length; index++) {
       if (this._listeners[index] === listener) {

@@ -53,6 +53,9 @@
 
 .side-bar__nav-group {
   @apply pl-4;
+}
+
+.side-bar__nav-group.grouped {
   @apply border-gray-900;
   @apply border-b;
   @apply border-solid;

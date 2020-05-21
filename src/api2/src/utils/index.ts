@@ -43,3 +43,6 @@ export {
   applyMiddleware,
   applyRoutes
 }
+
+// utils to explore
+// https://dev.to/ascorbic/creating-a-typed-compose-function-in-typescript-3-351i

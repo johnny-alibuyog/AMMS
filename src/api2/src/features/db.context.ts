@@ -1,7 +1,7 @@
 import { logger } from './../utils/logger';
-import { getModelForClass, mongoose } from '@typegoose/typegoose';
-import { ConnectionOptions } from 'mongoose';
 import { config } from '../config';
+import { ConnectionOptions } from 'mongoose';
+import { getModelForClass, mongoose } from '@typegoose/typegoose';
 import { Role, Resource, AccessControl, Permission, Action, Ownership } from './membership/roles/role.models';
 import { User, userModelOptions, Person, Gender } from './membership/users/user.models';
 import { IModelOptions, ReturnModelType } from '@typegoose/typegoose/lib/types';
@@ -52,10 +52,12 @@ const initializeData = async (db: DbContext): Promise<void> => {
 const ensureSuperUser = async (db: DbContext): Promise<User> => {
   let superUser = await db.users.findOne({ username: config.tenant.superUser.username });
   if (!superUser) {
+    logger.info('Creating super user ...');
     let superRole = await db.roles.findOne({
       name: `${config.tenant.superRole.name} SUPER ROLE`
     });
     if (!superRole) {
+      logger.info('Creating super role ...');
       superRole = await db.roles.create(new Role({
         name: config.tenant.superRole.name,
         accessControls: [
@@ -74,6 +76,7 @@ const ensureSuperUser = async (db: DbContext): Promise<User> => {
     }
 
     superUser = await db.users.create(new User({
+      email: config.tenant.superUser.email,
       username: config.tenant.superUser.username,
       password: config.tenant.superUser.password,
       person: new Person({
@@ -94,16 +97,10 @@ type DbContext = {
 
 let dbContext: DbContext;
 
-let counter = 0;
-
 export const initDbContext = async ({ successFn, errorFn }: Args = {}) => {
   if (dbContext) {
     return dbContext;
   }
-
-  counter++;
-
-  logger.error(`INITIALIZATION: ${counter}`);
 
   await initConnection({ successFn, errorFn });
 

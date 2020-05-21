@@ -1,0 +1,4 @@
+.error-block {
+  @apply text-red-600;
+  @apply italic;
+}

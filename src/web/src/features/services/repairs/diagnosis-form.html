@@ -1,0 +1,87 @@
+<template>
+  <require from="../../../shell/layouts/form-layout"></require>
+
+  <form-layout title.bind="title">
+
+    <section slot="title-section">
+      <custom-breadcrumbs items.bind="breadcrumbItems"></custom-breadcrumbs>
+    </section>
+
+    <section slot="tool-section"></section>
+
+    <!-- form section -->
+    <section slot="form-section">
+      <form class="form" validation-errors="errors.bind: errors; controller.bind: controller"
+        submit.delegate="submit()">
+        <!-- 
+        <span class="help-block" repeat.for="errorInfo of errors">
+          ${errorInfo.error.message}
+        </span>
+        -->
+
+        <div class="field-group">
+          <label class="group by-3">
+            <span class="label">First Name</span>
+            <input class="input" type="text" placeholder="Juan" value.bind="user.firstName & validate" />
+          </label>
+          <label class="group by-3">
+            <span class="label">Middle Name</span>
+            <input class="input form-input" type="text" placeholder="Ponce" value.bind="user.middleName & validate" />
+          </label>
+          <label class="group by-3">
+            <span class="label">Last Name</span>
+            <input class="input form-input" type="text" placeholder="Deleon" value.bind="user.lastName & validate" />
+          </label>
+        </div>
+
+        <div class="field-group">
+          <label class="group by-3">
+            <span class="label">Password</span>
+            <input class="input" type="password" value.bind="user.password & validate"
+              placeholder="******************" />
+            <p class="input-desc">Make it as long and as crazy as you'd like</p>
+          </label>
+          <label class="group by-3">
+            <span class="label">Confirm</span>
+            <input class="input" type="password" value.bind="user.confirmPassword & validate"
+              placeholder="******************" />
+            <p class="input-desc">Make it as long and as crazy as you'd like</p>
+          </label>
+        </div>
+
+        <div class="field-group">
+          <label class="group by-2">
+            <span class="label">Email</span>
+            <input class="input" type="email" placeholder="juan.delcruz@gmail.com" value.bind="user.email & validate" />
+            <p class="input-desc">Make it as long and as crazy as you'd like</p>
+          </label>
+        </div>
+
+        <div class="field-group">
+          <label class="group by-3">
+            <span class="label">City</span>
+            <input class="input" type="text" placeholder="Albuquerque" />
+          </label>
+          <label class="group by-3">
+            <span class="label">state</span>
+            <select class="input form-select">
+              <option></option>
+              <option>New Mexico</option>
+              <option>Missouri</option>
+              <option>Texas</option>
+            </select>
+          </label>
+          <label class="group by-3">
+            <span class="label">Zip</span>
+            <input class="input" type="text" placeholder="90210" />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <input type="submit" class="primary" value="Apply" />
+          <input type="button" class="secondary" value="Reset" click.delegate="reset()" />
+        </div>
+      </form>
+    </section>
+  </form-layout>
+</template>

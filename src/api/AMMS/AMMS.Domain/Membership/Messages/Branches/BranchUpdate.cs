@@ -35,7 +35,7 @@ namespace AMMS.Domain.Membership.Messages.Branches
 
                 branch.SetTenant(Context.TenantId);
 
-                await Db.Membership.Branches.ReplaceOneAsync(x => x.Id == branch.Id, branch, new UpdateOptions(), cancellationToken);
+                await Db.Membership.Branches.ReplaceOneAsync(x => x.Id == branch.Id, branch, new ReplaceOptions(), cancellationToken);
 
                 return new Response();
             }

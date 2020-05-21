@@ -1,4 +1,4 @@
-import { buildActions } from "./utils";
+import { buildActions } from "./builder";
 import { initialAuthState, initialUserState } from "./models";
 
 const authActions = buildActions('auth', initialAuthState);

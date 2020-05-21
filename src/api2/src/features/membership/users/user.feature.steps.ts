@@ -45,6 +45,7 @@ defineFeature(feature, test => {
       userToBeUpdatedWith = randomUsers(1)[0];
 
       const params = {
+        email: 'some.user@gmail.com',
         username: 'some_user_with_user_admin',
         password: 'some_password',
         accessControl: new AccessControl({

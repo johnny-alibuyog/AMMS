@@ -1,11 +1,11 @@
 import { autoinject } from 'aurelia-framework';
-import { authService } from '../../kernel/auth-service';
+import { auth } from '../../features/membership/auth';
 
 @autoinject()
 export class AccountBar {
   public title = "title man";
 
   public logout(): void {
-    authService.signout();
+    auth.signout();
   }
 }

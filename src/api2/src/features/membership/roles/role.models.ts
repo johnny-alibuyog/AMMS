@@ -1,4 +1,4 @@
-import { ValueObject, Entity } from '../../kernel';
+import { ValueObject, Entity } from '../../common';
 import { prop, mapProp, index } from "@typegoose/typegoose";
 
 enum Resource {

@@ -1,0 +1,113 @@
+<template>
+  <require from="../../../shell/layouts/list-layout"></require>
+
+  <list-layout title.bind="title">
+
+    <section slot="tool-section">
+      <tool-bar>
+        <add-tool exec.call="add()"></add-tool>
+        <tile-tool exec.call="add()"></tile-tool>
+        <list-tool exec.call="add()"></list-tool>
+        <dropdown-menu-tool>
+          <tool-bar>
+            <list-tool exec.call="add()"></list-tool>
+            <tile-tool exec.call="add()"></tile-tool>
+            <add-tool exec.call="add()"></add-tool>
+          </tool-bar>
+          <!-- <dropdown-menu-tool-item>
+            <tool-bar>
+              <list-tool exec.call="add()"></list-tool>
+              <tile-tool exec.call="add()"></tile-tool>
+              <add-tool exec.call="add()"></add-tool>
+            </tool-bar>
+          </dropdown-menu-tool-item> -->
+          <dropdown-menu-tool-item exec.call="add()">Men</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+        </dropdown-menu-tool>
+      </tool-bar>
+    </section>
+
+    <section slot="filter-section" class="filter-section">
+      <form id="filter-form" submit.trigger="dofilter()">
+        <div class="field-group">
+          <label class="group">
+            <span class="label">Keyword</span>
+            <input class="input form-input" value.bind="filter.data.keyword" type="text" />
+          </label>
+        </div>
+        <div class="checkbox-group">
+          <span class="label">Roles</span>
+          <div class="checkboxes">
+            <label class="group" repeat.for="role of roles">
+              <input class="input form-checkbox" type="checkbox" model.bind="role.id" checked.bind="filter.data.roles" />
+              <span class="label">${role.name}</span>
+            </label>
+          </div>
+        </div>
+
+      </form>
+
+      <div id="filter-actions">
+        <input type="button" class="secondary" value="Reset" click.delegate="reset()" />
+        <input type="submit" class="primary" value="Apply" click.delegate="paginate()" />
+      </div>
+    </section>
+
+
+    <section slot="list-section" class="list-section">
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th class="action">
+                <span>Action</span>
+              </th>
+              <th click.delegate="sorter.doSort('username')" class="highlightable">
+                <span>Username</span>
+                <i class="${sorter.class(sorter.data.username)}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('name')" class="highlightable">
+                <span>Name</span>
+                <i class="${sorter.class(sorter.data.name)}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('email')" class="highlightable right">
+                <span>Email</span>
+                <i class="${sorter.class(sorter.data.email)}"></i>
+              </th>
+              <th click.delegate="sorter.doSort('role')" class="highlightable">
+                <span>Role</span>
+                <i class="${sorter.class(sorter.data.role)}"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="${ $even ? 'striped' : '' }" repeat.for="user of pager.items">
+              <td class="action">
+                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="edit(user)">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="javascript:undefined" class="warning" title="Delete" click.delegate="delete(user)">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </td>
+              <td>${user.username}</td>
+              <td>${user.person.firstName} ${user.person.lastName}</td>
+              <td class="right">${user.email}</td>
+              <td>
+                <span repeat.for="role of user.roles" class="px-2 inline-flex leading-5 rounded-full bg-green-200 text-green-800">
+                  ${toName(role)}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pagination current-page.bind="pager.page" total-items.bind="pager.total"
+        change.delegate="pager.doPage($event)" />
+    </section>
+
+  </list-layout>
+</template>

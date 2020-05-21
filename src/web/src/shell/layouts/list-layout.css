@@ -24,6 +24,9 @@
   @apply w-32;
   @apply text-gray-500;
   @apply bg-gray-700;
+  @apply border-b;
+  @apply border-solid;
+  @apply border-gray-600;
 }
 
 .list-layout__header__filter-toggler.open {

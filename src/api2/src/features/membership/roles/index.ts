@@ -25,6 +25,17 @@ const routes: Route[] = [
     ]
   },
   {
+    path: basePath().resource('lookup').build(),
+    method: 'get',
+    handlers: [
+      guard(Action.read),
+      wrap(async (req: Request, res: Response) => {
+        const result = await roleService.lookup();
+        handle(req, res, result);
+      })
+    ]
+  },
+  {
     path: basePath().param('id').build(),
     method: 'get',
     handlers: [
