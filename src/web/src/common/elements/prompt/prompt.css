@@ -1,0 +1,16 @@
+.prompt {
+  @apply fixed;
+  @apply bottom-0;
+  @apply inset-x-0;
+  @apply px-4;
+  @apply pb-4; 
+}
+
+@screen sm {
+  .prompt {
+    @apply flex; 
+    @apply inset-0; 
+    @apply items-center;
+    @apply justify-center;
+  }
+}

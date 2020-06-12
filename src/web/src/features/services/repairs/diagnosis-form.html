@@ -12,7 +12,7 @@
     <!-- form section -->
     <section slot="form-section">
       <form class="form" validation-errors="errors.bind: errors; controller.bind: controller"
-        submit.delegate="submit()">
+        submit.delegate="save()">
         <!-- 
         <span class="help-block" repeat.for="errorInfo of errors">
           ${errorInfo.error.message}

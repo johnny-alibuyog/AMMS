@@ -25,6 +25,7 @@ defineFeature(feature, test => {
       roleToBeCreated = roleSeed.randomRoles(1)[0];
       roleToBeUpdatedWith = roleSeed.randomRoles(1)[0];
       const user = {
+        email: 'some_email@gmail.com',
         username: 'some_user_with_role_admin',
         password: 'some_password',
         accessControl: new AccessControl({

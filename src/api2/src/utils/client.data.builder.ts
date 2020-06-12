@@ -91,7 +91,8 @@ const createUserBuilder = async (token?: string): Promise<IBuilder<UserBuilderAr
         user = await userBuilder
           .with({ 
             username: args.username, 
-            password: args.password, 
+            password: args.password,
+            email: args.email, 
             roles: [role] 
           })
           .build();

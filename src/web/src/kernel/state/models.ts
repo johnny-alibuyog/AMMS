@@ -9,9 +9,14 @@ type UserState = {
   name: string
 }
 
+type ListPageState = {
+  isFilterVisible: boolean  
+}
+
 type State = {
   auth: AuthState,
-  user: UserState
+  user: UserState,
+  listPage: ListPageState
 }
 
 const initialAuthState: AuthState = {
@@ -25,16 +30,23 @@ const initialUserState: UserState = {
   name: null
 }
 
+const initialListPageState: ListPageState = {
+  isFilterVisible: false
+}
+
 const initialState: State = {
   auth: initialAuthState,
-  user: initialUserState
+  user: initialUserState,
+  listPage: initialListPageState
 }
 
 export {
   State,
   AuthState,
   UserState,
+  ListPageState,
   initialState,
   initialAuthState,
-  initialUserState
+  initialUserState,
+  initialListPageState
 }

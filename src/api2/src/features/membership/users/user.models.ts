@@ -1,67 +1,11 @@
-import { ValueObject, Entity } from '../../common';
+import { Entity } from '../../common';
 import { prop, Ref, arrayProp, pre, post } from '@typegoose/typegoose';
 import { Role } from './../roles/role.models';
 import { encryptor } from '../../../utils/encryptor';
 import { IModelOptions } from '@typegoose/typegoose/lib/types';
+import { Person } from '../../common/person/person.model';
+import { Address } from '../../common/address/address.model';
 
-enum Gender {
-  male = 'Male',
-  female = 'Female',
-  others = 'Others'
-}
-
-class Person extends ValueObject {
-  @prop({ required: true })
-  public firstName!: string;
-
-  @prop()
-  public middleName?: string;
-
-  @prop({ required: true })
-  public lastName!: string;
-
-  @prop({ required: true })
-  public gender!: Gender;
-
-  @prop()
-  public birthDate?: Date;
-
-  constructor(init?: Person) {
-    super();
-    Object.assign(this, init);
-  }
-}
-
-class Address extends ValueObject {
-  @prop()
-  public unit?: string;         // Unit Number + House/Building/Street Number
-
-  @prop()
-  public street?: string;       // Street Name
-
-  @prop()
-  public subdivision?: string;  // Subdivision/Village
-
-  @prop()
-  public district?: string;     // Barangay/District Name
-
-  @prop()
-  public municipality?: string; // City/Municipality
-
-  @prop()
-  public province?: string;     // Province/Metro Manila
-
-  @prop()
-  public country?: string;
-
-  @prop()
-  public zipcode?: string;
-
-  constructor(init?: Address) {
-    super();
-    Object.assign(this, init);
-  }
-}
 
 @pre<User>('save', async function () {
   if (this.password) {
@@ -82,7 +26,7 @@ class User extends Entity {
   public person!: Person;
 
   @prop()
-  public addressInfo?: Address[];
+  public address?: Address;
 
   @arrayProp({ itemsRef: Role, required: true })
   public roles!: Ref<Role>[];
@@ -110,9 +54,6 @@ const userModelOptions: IModelOptions = {
 };
 
 export {
-  Gender,
-  Person,
-  Address,
   User,
   userModelOptions
 }

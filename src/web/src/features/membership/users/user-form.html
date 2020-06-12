@@ -1,3 +1,222 @@
 <template>
-  <h1>User Form</h1>
+  <require from="../../common/person/gender.binder"></require>
+  <require from="../../../shell/layouts/form-layout"></require>
+
+  <form-layout title.bind="title">
+
+    <section slot="title-section">
+      <custom-breadcrumbs items.bind="breadcrumbItems"></custom-breadcrumbs>
+    </section>
+
+    <section slot="tool-section">
+      <tool-bar>
+        <add-tool exec.call="add()"></add-tool>
+        <tile-tool exec.call="add()"></tile-tool>
+        <list-tool exec.call="add()"></list-tool>
+        <dropdown-menu-tool>
+          <tool-bar>
+            <list-tool exec.call="add()"></list-tool>
+            <tile-tool exec.call="add()"></tile-tool>
+            <add-tool exec.call="add()"></add-tool>
+          </tool-bar>
+          <dropdown-menu-tool-item exec.call="add()">Men</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+          <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
+        </dropdown-menu-tool>
+      </tool-bar>
+
+    </section>
+
+    <!-- form section -->
+    <section slot="form-section">
+      <form id="input-form" class="form" validation-errors="errors.bind: errors; controller.bind: validator"
+        submit.delegate="save()">
+        <!-- 
+        <span class="help-block" repeat.for="errorInfo of errors">
+          ${errorInfo.error.message}
+        </span>
+        -->
+
+        <!-- <div class="field-group">
+          <div><video ref="video" id="video" width="640" height="480" autoplay></video></div>
+          <div><button id="snap" click.delegate="capture()">Snap Photo</button></div>
+          <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
+          <ul>
+            <li repeat.for="capture of captures">
+              <img src.bind="capture" height="50" width="auto" />
+            </li>
+          </ul>
+        </div> -->
+
+        <div class="form-group">
+          <div class="form-group__title">
+            <h3 class="label">Profile</h3>
+            <p class="desc">
+              This information will be displayed publicly so be careful what you share.
+            </p>
+          </div>
+          <div class="form-group__content">
+
+            <div class="mt-2 mb-3">
+              <label class="uppercase block text-sm leading-5 font-medium text-gray-700">
+                Photo
+              </label>
+              <div class="mt-2 flex items-center">
+                <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                  <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </span>
+                <span class="ml-5 rounded-md shadow-sm">
+                  <button type="button"
+                    class="py-2 px-3 border border-gray-300 rounded-md text-sm leading-4 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
+                    Change
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <!-- <div class="mt-6">
+              <label class="block text-sm leading-5 font-medium text-gray-700">
+                Cover photo
+              </label>
+              <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                <div class="text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <p class="mt-1 text-sm text-gray-600">
+                    <button class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition duration-150 ease-in-out">
+                      Upload a file
+                    </button>
+                    or drag and drop
+                  </p>
+                  <p class="mt-1 text-xs text-gray-500">
+                    PNG, JPG, GIF up to 10MB
+                  </p>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="field-group">
+              <label class="group by-2">
+                <span class="label">Username</span>
+                <input class="input" type="email" placeholder="Username" 
+                  value.bind="user.username & validate" focus="true" />
+              </label>
+
+              <label class="group by-2">
+                <span class="label">Email</span>
+                <input class="input" type="email" placeholder="Email"
+                  value.bind="user.email & validate" />
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group__divider"></div>
+
+        <div class="form-group">
+          <div class="form-group__title">
+            <h3 class="label">Personal Information</h3>
+            <p class="desc">Use a permanent address where you can receive mail.</p>
+          </div>
+          <div class="form-group__content">
+            <div class="field-group">
+              <label class="group by-3">
+                <span class="label">First Name</span>
+                <input class="input" type="text" placeholder="First Name" 
+                  value.bind="user.person.firstName & validate" />
+              </label>
+              <label class="group by-3">
+                <span class="label">Middle Name</span>
+                <input class="input form-input" type="text" placeholder="Middle Name"
+                  value.bind="user.person.middleName & validate" />
+              </label>
+              <label class="group by-3">
+                <span class="label">Last Name</span>
+                <input class="input form-input" type="text" placeholder="Last Name"
+                  value.bind="user.person.lastName & validate" />
+              </label>
+            </div>
+
+            <div class="field-group" with.bind="user">
+              <label class="group by-3">
+                <span class="label">Birth Date</span>
+                <input class="input form-input" type="date" placeholder="Birth Date"
+                  value.bind="person.birthDate | date & validate" />
+              </label>
+              <label class="group by-3">
+                <span class="label">Gender</span>
+                <select class="input form-select" value.bind="person.gender & validate">
+                  <option repeat.for="gender of Genders" model.bind="gender">${gender}</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="field-group" with.bind="user">
+              <label class="group by-2-3">
+                <span class="label">Address Line 1</span>
+                <input class="input form-input" placeholder="Address Line 1"
+                  value.bind="address.line1 & validate" />
+                <p class="input-desc">Unit Number + House/Building/Street Number, Street Name</p>
+                </label>
+            </div>
+
+            <div class="field-group" with.bind="user">
+              <label class="group by-2-3">
+                <span class="label">Address Line 2</span>
+                <input class="input form-input" placeholder="Address Line 2"
+                  value.bind="address.line2 & validate" />
+                <p class="input-desc">Subdivision/Village, Barangay/District Name</p>
+              </label>
+            </div>
+
+            <div class="field-group" with.bind="user">
+              <label class="group by-2">
+                <span class="label">City / Municipality</span>
+                <input class="input form-input" placeholder="City / Municipality"
+                  value.bind="address.municipality & validate" />
+              </label>
+              <label class="group by-2">
+                <span class="label">Province / Metro Manila</span>
+                <input class="input form-input" placeholder="Province / Metro Manila"
+                  value.bind="address.province & validate" />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group__divider"></div>
+
+        <div class="form-group">
+          <div class="form-group__title">
+            <h3 class="label">Access Rights</h3>
+            <p class="desc">A user role defines permissions for users to perform a group of tasks.</p>
+          </div>
+          <div class="form-group__content">
+            <div class="checkbox-group">
+              <span class="label">Roles</span>
+              <div class="checkboxes">
+                <label class="group" repeat.for="role of roles">
+                  <input class="input form-checkbox" type="checkbox" model.bind="role.id" checked.bind="user.roles" />
+                  <span class="desc">${role.name}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+    <section slot="form-actions">
+      <input type="submit" class="primary" value="Save" form="input-form" />
+      <input type="button" class="secondary" value="Cancel" click.delegate="cancel()" />
+    </section>
+
+  </form-layout>
 </template>

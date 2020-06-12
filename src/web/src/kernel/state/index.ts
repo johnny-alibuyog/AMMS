@@ -1,8 +1,9 @@
-import { userActions, authActions } from "./actions"
+import { userActions, authActions, listPageActions } from "./actions"
 
 const state = {
   user: userActions,
-  auth: authActions
+  auth: authActions,
+  listPage: listPageActions
 }
 
 export { state }

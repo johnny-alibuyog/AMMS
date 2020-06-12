@@ -1,7 +1,8 @@
 import { appConfig } from '../../app-config';
+import { isNotNullOrDefault } from 'common/utils';
 
 type Param<T> = {
-  data: T,
+  init: () => T,
   action: () => Promise<void>
 }
 
@@ -9,11 +10,31 @@ export class Filter<T> {
   public data: T;
 
   constructor(param: Param<T>) {
-    this.data = param.data;
+    this.init = () => param.init();
     this.filter = () => param.action();
+    this.data = this.init();
   }
 
+  public valueOf = (): T => {
+    return Object.entries(this.data)
+      .filter(([_, value]) => isNotNullOrDefault(value))
+      .reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {}) as T;
+  }
+
+  public init: () => T;
+
   public filter: () => Promise<void>;
+
+  public set(value?: Partial<T>) {
+    if (!value) {
+      return;
+    }
+
+    this.data = Object.assign(this.init(), value);
+  }
 
   public doFilter(): void {
     if (!this.filter)
@@ -27,11 +48,31 @@ export class Sorter<T> {
   public data: T;
 
   constructor(param: Param<T>) {
-    this.data = param.data;
+    this.init = () => param.init();
     this.sort = () => param.action();
+    this.data = this.init();
   }
 
+  public valueOf = (): T => {
+    return Object.entries(this.data)
+      .filter(([_, value]) => value != <SortDirection>'none')
+      .reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {}) as T;
+  }
+
+  public init: () => T;
+
   public sort: () => Promise<void>;
+
+  public set(value?: Partial<T>) {
+    if (!value) {
+      return;
+    }
+
+    this.data = Object.assign(this.init(), value);
+  }
 
   public doSort(field: keyof T): void {
     if (!this.sort) {
@@ -90,9 +131,17 @@ export class Pager<T> {
   public paginate: () => Promise<void>;
 
   constructor(param: PagerParam) {
-    this.page = 1;
-    this.size = param?.config?.pageSize || appConfig.page.pageSize;
+    this.set({
+      page: 1,
+      size: param?.config?.pageSize
+    });
     this.paginate = () => param.action();
+  }
+
+  public set(value: { page: number, size: number }) {
+    this.page = value?.page ?? 1;
+    this.size = value?.size || appConfig.page.pageSize;
+
   }
 
   public clear(): void {

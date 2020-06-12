@@ -47,8 +47,8 @@ defineFeature(feature, (test) => {
       await userBuilder.clean();
     });
 
-    given(/^username (.*) with password (.*) does exists$/, async (username: string, password: string) => {
-      await userBuilder.build({ username, password, accessControl });
+    given(/^username (.*) with email (.*) and password (.*) does exists$/, async (username: string, email: string, password: string) => {
+      await userBuilder.build({ email, username, password, accessControl });
     });
 
     when(/^credentials (.*) and password (.*) is submitted$/, async (username: string, password: string) => {
@@ -87,8 +87,8 @@ defineFeature(feature, (test) => {
       await userBuilder.clean();
     });
 
-    given(/^username (.*) with password (.*) does exists$/, async (username: string, password: string) => {
-      await userBuilder.build({ username, password, accessControl });
+    given(/^username (.*) with email (.*) and password (.*) does exists$/, async (username: string, email: string, password: string) => {
+      await userBuilder.build({ email, username, password, accessControl });
     });
 
     when(/^credentials (.*) and password (.*) is submitted$/, async (username: string, password: string) => {
@@ -121,8 +121,8 @@ defineFeature(feature, (test) => {
       await userBuilder.clean();
     });
 
-    given(/^username (.*) with password (.*) does exists$/, async (username: string, password: string) => {
-      await userBuilder.build({ username, password, accessControl });
+    given(/^username (.*) with email (.*) and password (.*) does exists$/, async (username: string, email: string, password: string) => {
+      await userBuilder.build({ email, username, password, accessControl });
     });
 
     when(/^credentials (.*) and password (.*) is submitted$/, async (username: string, password: string) => {

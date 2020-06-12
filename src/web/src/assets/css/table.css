@@ -53,8 +53,10 @@
 
 .responsive-table > table > tbody > tr > td.action {
   @apply flex;
-  @apply justify-around;
+  /* @apply justify-around; */
+  @apply space-x-1;
   @apply content-center;
+  @apply align-middle;  
 }
 
 .responsive-table > table > thead > tr > th.center,
@@ -73,7 +75,7 @@
 }
 
 .responsive-table > table > tbody > tr > td.action > a.primary {
-  @apply mx-1;
+  /* @apply mx-1; */
   @apply text-blue-400;
 }
 
@@ -82,7 +84,7 @@
 }
 
 .responsive-table > table > tbody > tr > td.action > a.secondary {
-  @apply mx-1;
+  /* @apply mx-1; */
   @apply text-gray-500;  
 }
 

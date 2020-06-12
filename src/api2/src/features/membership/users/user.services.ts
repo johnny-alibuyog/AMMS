@@ -1,17 +1,17 @@
 import { User } from './user.models';
-import { initDbContext } from '../../db.context';
 import { logger } from '../../../utils/logger';
 import { context } from '../../../utils/request.context';
-import { PageResponse, PageRequest, SortDirection, parsePageFrom } from '../../common/contract.models';
+import { initDbContext } from '../../db.context';
 import { RoleIdContract } from '../roles/role.services';
+import { PageResponse, PageRequest, SortDirection, parsePageFrom } from '../../common/contract.models';
 
 type UserIdContract = string;
 
 type UserContract = Omit<User, 'passwordHash' | 'passwordSalt'>;
 
-type UserFilterRequest = { keyword: string, roles: RoleIdContract[] }
+type UserFilterRequest = { keyword?: string, roles?: RoleIdContract[] }
 
-type UserSortRequest = { username: SortDirection, email: SortDirection, name: SortDirection }
+type UserSortRequest = { username?: SortDirection, email?: SortDirection, name?: SortDirection }
 
 type UserPageRequest = PageRequest<UserFilterRequest, UserSortRequest>;
 
@@ -80,18 +80,21 @@ const find = async (request: UserPageRequest) => {
     })
   };
 
-  const sortDirectionIsNotNone = (dir: SortDirection) => dir != 'none';
+  const sortDirectionIsNotNone = (dir: SortDirection = 'none') =>
+    isNotNullOrDefault(dir) && dir != 'none';
+
+  const valueOrNone = (dir?: SortDirection) => dir ? dir : 'none';
 
   const sort: string[][] = [
-    ...addItemWhen(request.sort?.email, {
+    ...addItemWhen(valueOrNone(request.sort?.email), {
       when: sortDirectionIsNotNone,
       map: (value) => ['email', value]
     }),
-    ...addItemWhen(request.sort?.username, {
+    ...addItemWhen(valueOrNone(request.sort?.username), {
       when: sortDirectionIsNotNone,
       map: (value) => ['username', value]
     }),
-    ...addItemWhen(request.sort?.name, {
+    ...addItemWhen(valueOrNone(request.sort?.name), {
       when: sortDirectionIsNotNone,
       map: (value) => [
         ['person.firstName', value],
@@ -99,42 +102,6 @@ const find = async (request: UserPageRequest) => {
       ]
     }).flat()
   ];
-
-  // const filter = (() => {
-  //   return (request.filter?.keyword)
-  //     ? {
-  //       $or: [
-  //         { 'email': request.filter.keyword },
-  //         { 'username': request.filter.keyword },
-  //         { 'person.firstName': request.filter.keyword },
-  //         { 'person.middleName': request.filter.keyword },
-  //         { 'person.lastName': request.filter.keyword },
-  //       ]
-  //     }
-  //     : {}
-  // })();
-  // const sort = (() => {
-  //   const values: string[][] = [];
-  //   if (request.sort?.username != 'none') {
-  //     values.push(['username', request.sort?.username]);
-  //   }
-  //   if (request.sort?.name != 'none') {
-  //     values.push(['person.firstName', request.sort?.name])
-  //   }
-  //   return values;
-  // })();
-
-  logger.info(`Page Filter: 
-    ${JSON.stringify(request.filter, null, 2)}
-    ==========================================
-    ${JSON.stringify(filter, null, 2)}
-  `);
-  logger.info(`Page Sort: 
-    ${JSON.stringify(request.sort, null, 2)}
-    ==========================================
-    ${JSON.stringify(sort, null, 2)}
-  `);
-
   const { skip, limit } = parsePageFrom(request);
   const [total, items] = await Promise.all([
     db.users.find(filter).countDocuments().exec(),
@@ -151,7 +118,8 @@ const find = async (request: UserPageRequest) => {
 const get = async (id: UserIdContract) => {
   logger.info(`CONTEXT MAN: ${JSON.stringify(context.current())}`);
   const db = await initDbContext();
-  const user = await db.users.findById(id).populate('roles').exec();
+  const user = await db.users.findById(id).exec();
+  // const user = await db.users.findById(id).populate('roles').exec();
   return <UserContract>user;
 }
 

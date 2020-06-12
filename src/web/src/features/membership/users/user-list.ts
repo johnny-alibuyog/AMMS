@@ -2,29 +2,33 @@ import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
 import { User, UserFilter, UserSort, initFilter, initSort } from './user.models';
 import { Filter, Sorter, Pager } from 'common/services/pagination';
-import { api } from 'features/api';
-import { Lookup } from 'features/common/model';
+import { Lookup, PageRequest } from 'features/common/model';
+import { UrlState } from 'features/common/url.states';
 import { RoleId } from '../roles/role.models';
+import { api } from 'features/api';
 
 @autoinject
 export class UserList {
+  private readonly _url: UrlState
+  private _activated: boolean = false ;
   public title: string = "Users";
-  public roles: Lookup[];
+  public roles: Lookup[] = [];
   public filter: Filter<UserFilter>;
   public sorter: Sorter<UserSort>;
   public pager: Pager<User>;
 
   constructor(private readonly _router: Router) {
     this.init();
+    this._url = new UrlState(this._router);
   }
 
-  private init(roles: RoleId[] = []): void {
+  private init(): void {
     this.filter = new Filter({
-      data: initFilter(roles),
+      init: () => initFilter(),
       action: () => this.paginate()
     });
     this.sorter = new Sorter({
-      data: initSort(),
+      init: () => initSort(),
       action: () => this.paginate()
     });
     this.pager = new Pager({
@@ -32,10 +36,17 @@ export class UserList {
     });
   }
 
-  public async activate(): Promise<void> {
-    this.roles = await api.roles.lookup();
-    this.init(this.roles?.map(x => x.id) ?? []);
-    await this.paginate();
+  public async activate(param: PageRequest<UserFilter, UserSort>): Promise<void> {
+    this.filter.set(param?.filter);
+    this.sorter.set(param?.sort);
+    this.pager.set({ page: param.page, size: param.size });
+
+    [this.roles] = await Promise.all([
+      api.roles.lookup(),
+      this.paginate()
+    ]);
+
+    this._activated = true;
   }
 
   public add(): void {
@@ -44,7 +55,6 @@ export class UserList {
 
   public edit(item: User): void {
     this._router.navigateToRoute('users/user-form', { id: item.id });
-    alert(`edit: ${item.username}`);
   }
 
   public delete(item: User): void {
@@ -61,19 +71,22 @@ export class UserList {
   }
 
   public async paginate(): Promise<void> {
-    const result = await api.users.find({
-      filter: this.filter.data, 
-      sort: this.sorter.data, 
-      page: this.pager.page, 
+    const request: PageRequest<UserFilter, UserSort> = {
+      filter: this.filter.valueOf(),
+      sort: this.sorter.valueOf(),
+      page: this.pager.page,
       size: this.pager.size
-    });
+    };
+    const result = await api.users.find(request);
     this.pager.total = result.total;
     this.pager.items = result.items;
+    if (this._activated) {
+      this._url.rewrite(request);
+    }
   }
 
   public async reset(): Promise<void> {
-    this.init(this.roles?.map(x => x.id) ?? []);
+    this.init();
     await this.paginate();
   }
 }
-

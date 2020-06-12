@@ -2,9 +2,11 @@ import { logger } from './../utils/logger';
 import { config } from '../config';
 import { ConnectionOptions } from 'mongoose';
 import { getModelForClass, mongoose } from '@typegoose/typegoose';
-import { Role, Resource, AccessControl, Permission, Action, Ownership } from './membership/roles/role.models';
-import { User, userModelOptions, Person, Gender } from './membership/users/user.models';
+import { Gender, Person } from './common/person/person.model';
+import { User, userModelOptions } from './membership/users/user.models';
 import { IModelOptions, ReturnModelType } from '@typegoose/typegoose/lib/types';
+import { Role, Resource, AccessControl, Permission, Action, Ownership } from './membership/roles/role.models';
+import { Address } from './common/address/address.model';
 
 type Args = {
   successFn?: Function,
@@ -54,7 +56,7 @@ const ensureSuperUser = async (db: DbContext): Promise<User> => {
   if (!superUser) {
     logger.info('Creating super user ...');
     let superRole = await db.roles.findOne({
-      name: `${config.tenant.superRole.name} SUPER ROLE`
+      name: config.tenant.superRole.name
     });
     if (!superRole) {
       logger.info('Creating super role ...');
@@ -82,7 +84,14 @@ const ensureSuperUser = async (db: DbContext): Promise<User> => {
       person: new Person({
         firstName: 'Super',
         lastName: 'User',
-        gender: Gender.male
+        gender: Gender.male,
+        birthDate: new Date(1982, 3, 28),
+      }),
+      address: new Address({
+        line1: 'Ocean Street, Virginia Summer Ville',
+        line2: 'Mayamot',
+        municipality: 'Antipolo City',
+        province: 'Rizal'
       }),
       roles: [superRole]
     }));

@@ -7250,10 +7250,10 @@ karma@^2.0.0:
     tmp "0.0.33"
     useragent "2.2.1"
 
-keycode-js@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/keycode-js/-/keycode-js-1.0.4.tgz#3c56ce1363169291fa6fcc255190a87e81fa6667"
-  integrity sha512-kGZKTIlTtbZSb8NyBDb7xU/LlZf+bsHiAjb595M3flVPbSUCknGK/w2KXs8r9sVCcwwafQcrAGWDt7d38ajemw==
+keycode-js@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/keycode-js/-/keycode-js-2.0.3.tgz#0ef559be057847aae6c520ce03577f4a12f7e257"
+  integrity sha512-nGuOQ0zvYQFr0OOBOZS47e/ifsiuNz1pleQIFS+LX+udj3St6AvHpv55MI8DCre6Yg9D2CG/qqWbuAx7iQt9FQ==
 
 keyv@3.0.0:
   version "3.0.0"
@@ -8040,6 +8040,11 @@ moment@2.x.x, moment@^2.15.1, moment@^2.24.0:
   version "2.25.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.1.tgz#1cb546dca1eccdd607c9324747842200b683465d"
   integrity sha512-nRKMf9wDS4Fkyd0C9LXh2FFXinD+iwbJ5p/lh3CHitW9kZbRbJ8hCruiadiIXZVbeAqKZzqcTvHnK3mRhFjb6w==
+
+moment@^2.26.0:
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
+  integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
 
 move-concurrently@^1.0.1:
   version "1.0.1"

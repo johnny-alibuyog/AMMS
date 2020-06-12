@@ -30,7 +30,7 @@
     </section>
 
     <section slot="filter-section" class="filter-section">
-      <form id="filter-form" submit.trigger="dofilter()">
+      <form id="filter-form" role="form" submit.trigger="dofilter()">
         <div class="field-group">
           <label class="group">
             <span class="label">Keyword</span>
@@ -46,15 +46,13 @@
             </label>
           </div>
         </div>
-
       </form>
 
       <div id="filter-actions">
         <input type="button" class="secondary" value="Reset" click.delegate="reset()" />
-        <input type="submit" class="primary" value="Apply" click.delegate="paginate()" />
+        <input type="submit" class="primary" value="Apply" form="filter-form" click.delegate="paginate()" />
       </div>
     </section>
-
 
     <section slot="list-section" class="list-section">
       <div class="responsive-table">

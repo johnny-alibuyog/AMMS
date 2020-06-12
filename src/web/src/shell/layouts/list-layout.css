@@ -123,6 +123,7 @@
 .list-layout__content-filter .filter-section #filter-form {
   /* @apply h-full; */
   @apply overflow-y-auto;
+  @apply overflow-x-hidden;
 }
 
 .list-layout__content-filter .filter-section #filter-actions {

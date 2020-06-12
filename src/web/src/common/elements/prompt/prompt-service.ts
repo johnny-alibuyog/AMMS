@@ -26,4 +26,10 @@ export class PromptService {
       return PromptResult.Cancel;
     }
   }
+
+  public async discard(): Promise<boolean> {
+    const message = 'Your changes has not been saved. To stay on the page so that you can save your changes, click Cancel';
+    const result = await this.show(message, 'Discard', PromptType.OkCancel);
+    return result == PromptResult.Ok;
+  }
 }

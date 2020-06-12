@@ -8,6 +8,7 @@ import { ValidationFormRenderer } from 'common/validations/validation-form-rende
 
 @autoinject()
 export class Login {
+  public now: Date = new Date();
   public serverError: string = null;
   public credential: LoginCredential = intitCredential();
   public readonly errors: ValidateResult[] = [];

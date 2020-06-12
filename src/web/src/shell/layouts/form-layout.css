@@ -12,6 +12,7 @@
   @apply h-12;
   @apply shadow-md;
   @apply text-gray-700;
+  @apply justify-between;
 }
 
 .form-layout__header__title {
@@ -22,8 +23,13 @@
   @apply text-gray-700;
 }
 
+.form-layout__header__tools {
+  @apply flex;
+  @apply self-center;
+}
+
 .form-layout__content {
-  @apply z-50;
+  @apply z-10;
   @apply flex;
   @apply overflow-auto;
 }
@@ -47,19 +53,49 @@
  * Form input styles
  */
 
-.form .field-group {
+.form-group {
+}
+
+.form-group__title {
+}
+
+.form-group__title .label {
+  @apply text-lg;
+  @apply font-medium;
+  @apply leading-6;
+  @apply text-gray-600;
+}
+
+.form-group__title .desc {
+  @apply mt-1;
+  @apply text-sm;
+  @apply leading-5;
+  @apply text-gray-500;
+}
+
+.form-group__content {
+  @apply mt-5;
+}
+
+.form-group__divider {
+  @apply my-5;
+  @apply border-t;
+  @apply border-gray-200;
+}
+
+.field-group {
   @apply flex;
   @apply flex-wrap;
   @apply -mx-3;
 }
 
-.form .field-group .group {
+.field-group .group {
   @apply w-full;
   @apply px-3;
   @apply mb-3;
 }
 
-.form .field-group .group .label {
+.field-group .group .label {
   @apply block;
   @apply uppercase;
   @apply tracking-wide;
@@ -69,7 +105,7 @@
   @apply mb-1;
 }
 
-.form .field-group .group .input {
+.field-group .group .input {
   @apply pl-2;
   @apply pr-4;
   @apply py-2;
@@ -86,117 +122,115 @@
   @apply tracking-wide;
 }
 
-.form .field-group .group .input::placeholder {
+.field-group .group .input::placeholder {
   @apply text-gray-400;
 }
 
-.form .field-group .group .input:focus {
+.field-group .group .input:focus {
   @apply outline-none;
   @apply bg-white;
   @apply border-gray-600;
   @apply shadow-none;
 }
 
-.form .field-group .group .input-desc {
-  @apply text-gray-600;
+.field-group .group .input-desc {
+  @apply text-gray-500;
   @apply text-xs;
   @apply italic;
 } 
 
-.form .field-group .group.has-error .input {
+.field-group .group.has-error .input {
   @apply border-red-500;
 } 
 
-.form .field-group .group.has-error .error-message {
+.field-group .group.has-error .error-message {
   @apply text-red-500;
   @apply text-xs;
   @apply italic;
 } 
 
-.form .form-actions {
+.form-actions {
+  @apply max-h-full;
+  @apply py-3;
+  @apply px-4;
   @apply flex;
-  @apply mt-5;
-  /* @apply px-2;
-  @apply py-2;  */
-  @apply text-right;
+  @apply flex-wrap;
+  @apply content-center;
+  @apply w-full; 
+  @apply border-t;
+  @apply border-gray-400;
+  /* @apply bg-white; */
 }
 
-.form .form-actions > input[type="submit"],
-.form .form-actions > input[type="button"] {
+.form-actions input[type="submit"],
+.form-actions input[type="button"] {
   @apply font-semibold;
   @apply px-10;
   @apply py-2;
-  @apply mr-4;
+  @apply mr-3; 
   @apply rounded;
   @apply shadow-lg;
 }
 
-.form .form-actions .primary {
+.form-actions .primary {
   @apply bg-blue-400;
   @apply text-blue-100;
   @apply border;
   @apply border-blue-500;
 }
 
-.form .form-actions .secondary {
+.form-actions .secondary {
   @apply bg-gray-100;
   @apply text-gray-700;
   @apply border;
   @apply border-gray-300;
 }
 
-.form .form-actions .primary:hover {
+.form-actions .primary:hover {
   @apply bg-blue-600;
 }
 
-.form .form-actions .secondary:hover {
+.form-actions .secondary:hover {
   @apply bg-gray-200;
 }
-
-@screen md {
-  .form .field-group .group {
-    /* @apply mb-0; */
-  }
-  .form .field-group .group.by-2 {
-    @apply w-1/2;
-  }
-  .form .field-group .group.by-3 {
-    @apply w-1/3;
-  }
-}
-
 
 
 /*
  * checkbox and radio fields
  */
-/*
-.form .radio-group,
-.form .checkbox-group {
+
+.radio-group,
+.checkbox-group {
   @apply block; 
+  /* 
   @apply border-gray-600;
   @apply border-solid;
-  @apply border-b;
+  @apply border-b; 
   @apply py-2;
   @apply px-4;
+  */
 }
 
-.form .radio-group .label,
-.form .checkbox-group .label {
-  @apply font-semibold;
-  @apply text-gray-500;
-  @apply text-sm;
+.radio-group .label,
+.checkbox-group .label {
+  @apply block;
+  @apply uppercase;
+  @apply tracking-wide;
+  @apply text-gray-600;
+  @apply text-xs;
+  @apply font-bold;
+  @apply mb-1;
 }
 
-.form .radio-group .radios,
-.form .checkbox-group .checkboxes {
+.radio-group .radios,
+.checkbox-group .checkboxes {
   @apply flex;
   @apply -mx-2;
   @apply flex-wrap;
 }
 
-.form .radio-group .radios .group,
-.form .checkbox-group .checkboxes .group {
+.radio-group .radios .group,
+.checkbox-group .checkboxes .group {
   @apply mt-2;
   @apply px-2;
   @apply flex;
@@ -204,26 +238,56 @@
   @apply w-full;
 }
 
-.form .radio-group .radios .group .input[type="radio"],
-.form .checkbox-group .checkboxes .group .input[type="checkbox"] {
-  @apply bg-gray-800;
+.radio-group .radios .group .input[type="radio"],
+.checkbox-group .checkboxes .group .input[type="checkbox"] {
+  /* @apply bg-gray-800; */
+  @apply border-gray-500;
 }
 
-.form .radios-group .radios .group .input[type="radio"]:focus,
-.form .checkbox-group .checkboxes .group .input[type="checkbox"]:focus {
-  @apply bg-gray-700;
+.radios-group .radios .group .input[type="radio"]:focus,
+.checkbox-group .checkboxes .group .input[type="checkbox"]:focus {
+  /* @apply bg-gray-700; */
 }
 
-.form .radio-group .radios .group .label,
-.form .checkbox-group .checkboxes .group .label {
-  @apply ml-2;
-  @apply text-gray-300;
+.radio-group .radios .group .desc,
+.checkbox-group .checkboxes .group .desc {
+  @apply ml-4;
+  @apply text-gray-700;
 }
-*/
+
+@screen md {
+  .form-group {
+    @apply grid grid-cols-3 gap-6;
+  }
+
+  .form-group__title {
+    @apply col-span-1;
+  }
+  
+  .form-group__content {
+    @apply mt-0 col-span-2;
+  }
+
+  .field-group .group {
+    /* @apply mb-0; */
+  }
+
+  .field-group .group.by-2 {
+    @apply w-1/2;
+  }
+  
+  .field-group .group.by-2-3 {
+    @apply w-2/3;
+  }
+
+  .field-group .group.by-3 {
+    @apply w-1/3;
+  }
+}
+
 
 
 /*
-
 .field-group {
   @apply flex;
   @apply flex-wrap;

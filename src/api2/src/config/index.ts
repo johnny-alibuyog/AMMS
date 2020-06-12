@@ -31,10 +31,10 @@ export const config = {
     }
   },
   db: {
-    // name: (NODE_ENV === 'test')
-    //   ? `${DB_NAME}_test`
-    //   : DB_NAME,
-    name: DB_NAME,
+    name: (NODE_ENV === 'test')
+      ? `${DB_NAME}_test`
+      : DB_NAME,
+    // name: DB_NAME,
     username: DB_USERNAME,
     password: DB_PASSWORD,
     host: DB_HOST,

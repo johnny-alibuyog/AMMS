@@ -25,7 +25,8 @@ export function configure(aurelia: Aurelia): Aurelia {
     .plugin(PLATFORM.moduleName('aurelia-animator-css'))
     .plugin(PLATFORM.moduleName('aurelia-store'), {
       initialState,
-      propagateError: true
+      propagateError: true,
+      measurePerformance: 'all'
     })
     .plugin(PLATFORM.moduleName('aurelia-dialog'), (config: DialogConfiguration) => {
       config.useDefaults();

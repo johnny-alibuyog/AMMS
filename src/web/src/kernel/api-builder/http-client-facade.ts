@@ -33,6 +33,7 @@ interface SendParameters {
 }
 
 const send = async <T>(param: SendParameters): Promise<T> => {
+  debugger;
   const response = await httpClient.fetch('/' + param.url, {
     method: param.method || "GET",
     body: param.data ? json(param.data) : null
@@ -40,7 +41,11 @@ const send = async <T>(param: SendParameters): Promise<T> => {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-  return response.json();
+  // return await response?.json();
+  // https://stackoverflow.com/a/51320025
+  const raw = await response.text();
+  return raw ? JSON.parse(raw) : {};
+
 }
 
 const get = <TEntity>(url: string): Promise<TEntity> =>
