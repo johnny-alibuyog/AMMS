@@ -4,18 +4,13 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const project = require("./aurelia_project/aurelia.json");
-const {
-  AureliaPlugin,
-  ModuleDependenciesPlugin
-} = require("aurelia-webpack-plugin");
+const { AureliaPlugin, ModuleDependenciesPlugin } = require("aurelia-webpack-plugin");
 const { ProvidePlugin } = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 // config helpers:
-const ensureArray = config =>
-  (config && (Array.isArray(config) ? config : [config])) || [];
-const when = (condition, config, negativeConfig) =>
-  condition ? ensureArray(config) : ensureArray(negativeConfig);
+const ensureArray = config => (config && (Array.isArray(config) ? config : [config])) || [];
+const when = (condition, config, negativeConfig) => condition ? ensureArray(config) : ensureArray(negativeConfig);
 
 // primary config:
 const title = "Aurelia Navigation Skeleton";
@@ -56,14 +51,7 @@ const cssRules = production => [
   }
 ];
 
-module.exports = ({
-  production,
-  server,
-  extractCss,
-  coverage,
-  analyze,
-  karma
-} = {}) => ({
+module.exports = ({ production, server, extractCss, coverage, analyze, karma } = {}) => ({
   resolve: {
     extensions: [".ts", ".js"],
     modules: [srcDir, "node_modules"],
@@ -160,7 +148,15 @@ module.exports = ({
       // load these fonts normally, as files:
       {
         test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
-        loader: "file-loader"
+        // loader: "file-loader",
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: 'img/[hash]-[name].[ext]'
+            }
+          }
+        ]
       },
       ...when(coverage, {
         test: /\.[jt]s$/i,

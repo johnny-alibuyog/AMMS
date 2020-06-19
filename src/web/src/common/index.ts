@@ -17,5 +17,6 @@ export function configure(config: FrameworkConfiguration) {
     PLATFORM.moduleName("./value-converters/date-time-value-converter"),
     PLATFORM.moduleName("./value-converters/enum-key-value-value-converter"),
     PLATFORM.moduleName("./value-converters/instruction-filter-value-converter"),
+    PLATFORM.moduleName("./value-converters/lookup-name-value-converter"),
   ]);
 }

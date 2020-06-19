@@ -31,7 +31,6 @@ export class Login {
       await auth.signin(this.credential);
     }
     catch (err) {
-      debugger;
       this.serverError = (err.message == 'Unauthorized')
         ? 'Invalid user or password!'
         : err.message;

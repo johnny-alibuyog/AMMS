@@ -82,7 +82,7 @@
           </thead>
           <tbody>
             <tr class="${ $even ? 'striped' : '' }" repeat.for="user of pager.items">
-              <td class="action">
+              <td class="action"> <!-- https://github.com/tailwindcss/tailwindcss/issues/1599 -->
                 <a href="javascript:undefined" class="primary" title="Edit" click.delegate="edit(user)">
                   <i class="fas fa-edit"></i>
                 </a>
@@ -93,9 +93,9 @@
               <td>${user.username}</td>
               <td>${user.person.firstName} ${user.person.lastName}</td>
               <td class="right">${user.email}</td>
-              <td>
+              <td class="flex space-x-1">
                 <span repeat.for="role of user.roles" class="px-2 inline-flex leading-5 rounded-full bg-green-200 text-green-800">
-                  ${toName(role)}
+                  ${role | lookupName:roles }
                 </span>
               </td>
             </tr>

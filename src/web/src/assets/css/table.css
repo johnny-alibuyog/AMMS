@@ -52,11 +52,17 @@
 }
 
 .responsive-table > table > tbody > tr > td.action {
-  @apply flex;
+  /* @apply flex; */
   /* @apply justify-around; */
-  @apply space-x-1;
-  @apply content-center;
-  @apply align-middle;  
+  /* @apply space-x-1; */ /* https://github.com/tailwindcss/tailwindcss/issues/1599 */
+  /* @apply content-center; */
+  /* @apply align-middle;   */
+  /* --space-x-reverse: 0;
+  margin-right: calc(1rem * var(--space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--space-x-reverse))); */
+  @apply text-center;
+  @apply align-middle;
+  @apply block;
 }
 
 .responsive-table > table > thead > tr > th.center,

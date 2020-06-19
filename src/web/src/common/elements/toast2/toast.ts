@@ -32,6 +32,7 @@ export class Toast {
       this._controller.close();
       this._isClosed = true;
     }
+
   }
 
   public activate(options: Partial<ToastSettings>): void {
@@ -41,6 +42,6 @@ export class Toast {
     this.closable = options.closable;
     this.clearable = options.clearable;
     this.position = options.position;
-    setTimeout(() => this.close(), options.duration * 1000);
+    setTimeout(() => this.close(), options.duration * 100000);
   }
 }

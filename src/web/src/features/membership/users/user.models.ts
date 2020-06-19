@@ -1,7 +1,7 @@
 import { SortDirection } from './../../../common/services/pagination';
 import { Role, RoleId } from '../roles/role.models';
 import { ValidationRules } from 'aurelia-validation';
-import { Person, initPerson } from 'features/common/person/person.address';
+import { Person, initPerson } from 'features/common/person/person.model';
 import { Address, initAddress } from 'features/common/address/address.model';
 
 type UserId = string;

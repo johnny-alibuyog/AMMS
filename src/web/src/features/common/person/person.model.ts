@@ -14,6 +14,8 @@ type Person = {
   birthDate?: Date
 }
 
+const fullName = (person: Person) => `${person.firstName} ${person.lastName}`;
+
 const initPerson = (): Person => ({
   firstName: '',
   middleName: '',
@@ -31,6 +33,7 @@ const personRules = ValidationRules
 export {
   Gender,
   Person,
+  fullName,
   initPerson,
   personRules,
 }

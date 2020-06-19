@@ -59,6 +59,22 @@ export class DiagnosisForm {
     this.controller.reset();
     await this._toast.success('reset', 'Sucess');
   }
+
+  public error(): void {
+    this._toast.error('This is an error!', 'Error');
+  }
+
+  public warning(): void {
+    this._toast.warning('This is a warning!', 'Warning');
+  }
+
+  public info(): void {
+    this._toast.info('This is an info!', 'Info');
+  }
+
+  public success(): void {
+    this._toast.success('This is success!', 'Success');
+  }
 }
 
 type User = {

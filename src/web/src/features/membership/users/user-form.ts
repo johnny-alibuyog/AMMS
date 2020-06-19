@@ -2,7 +2,7 @@ import { Lookup } from 'features/common/model';
 import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
 import { User, userRules, initUser, UserId } from "./user.models";
-import { personRules } from 'features/common/person/person.address';
+import { personRules, fullName } from 'features/common/person/person.model';
 import { BreadcrumbItem } from "common/elements/custom-breadcrumbs";
 import { ValidateResult, ValidationController, ValidationControllerFactory } from "aurelia-validation";
 import { ToastService } from 'common/elements/toast/toast-service';
@@ -37,7 +37,6 @@ export class UserForm {
   }
 
   public async activate(params: any): Promise<void> {
-    debugger;
     const id = params['id'];
     const user = id ? await api.users.get(id) : undefined;
     const title = user ? `${user.person.firstName} ${user.person.lastName}` : undefined;
@@ -79,6 +78,7 @@ export class UserForm {
   }
 
   public async canDeactivate(): Promise<boolean> {
+    debugger;
     if (this._isDirty(this.user)) {
       return this._prompt.discard();
     }
@@ -97,20 +97,20 @@ export class UserForm {
       return;
     }
 
-    const promptResult = await this._prompt.show('Do you want to save changes?', 'Save', PromptType.OkCancel);
+    const promptResult = await this._prompt.show('Do you want to save changes?', 'Save User', PromptType.OkCancel);
     if (promptResult == PromptResult.Cancel) {
       return;
     }
 
     const create = async (user: User): Promise<void> => {
       const id = await api.users.create(user);
+      await this._toast.success(`User ${fullName(user.person)} has been created.`, 'Successful');
       this._router.navigateToRoute("users/user-form", id);
-      await this._toast.info(`User ${user.username} has been created.`, 'Successful');
     };
 
     const update = async (id: UserId, user: User): Promise<void> => {
       await api.users.update(id, user);
-      await this._toast.info(`User ${user.username} has been updated.`, 'Successful');
+      await this._toast.success(`User ${fullName(user.person)} has been updated.`, 'Successful');
     };
 
     await ((this.user.id)

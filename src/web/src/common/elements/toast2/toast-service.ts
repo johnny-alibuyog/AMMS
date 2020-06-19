@@ -6,7 +6,7 @@ const defaults: Partial<ToastSettings> = {
   debug: false,
   position: 'toast-top-right',
   startingZIndex: 1000,
-  duration: 60 /* 5 sec */
+  duration: 5 /* 5 sec */
 };
 
 export type ToastType

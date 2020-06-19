@@ -1,6 +1,6 @@
 import { viewEngineHooks } from 'aurelia-templating';
 import { ViewEngineHooks, View } from 'aurelia-framework';
-import { Gender } from './person.address';
+import { Gender } from './person.model';
 
 // http://www.foursails.co/blog/template-constants/
 @viewEngineHooks()

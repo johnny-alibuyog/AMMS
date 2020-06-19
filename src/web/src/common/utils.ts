@@ -40,17 +40,15 @@ const properCase = (value: string) => functor(value)
   .valueOf();
 
 
-const dirtyChecker = <T>(obj1: T) => (obj2: T) => JSON.stringify(obj1) != JSON.stringify(obj2);
+// const dirtyChecker = <T>(obj1: T) => (obj2: T) => JSON.stringify(obj1) != JSON.stringify(obj2);
 
-// const dirtyChecker = <T>(obj1: T) => {
-//   const objStr1 = JSON.stringify(obj1);
-//   return (obj2: T) => {
-//     const objStr2 = JSON.stringify(obj2);
-//     console.log(objStr1);
-//     console.log(objStr2);
-//     return objStr1 != objStr2;
-//   }
-// };
+const dirtyChecker = <T>(obj1: T) => {
+  const objStr1 = JSON.stringify(obj1);
+  return (obj2: T) => {
+    const objStr2 = JSON.stringify(obj2);
+    return objStr1 != objStr2;
+  }
+};
 
 export {
   hasValue,

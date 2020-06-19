@@ -33,7 +33,6 @@ interface SendParameters {
 }
 
 const send = async <T>(param: SendParameters): Promise<T> => {
-  debugger;
   const response = await httpClient.fetch('/' + param.url, {
     method: param.method || "GET",
     body: param.data ? json(param.data) : null

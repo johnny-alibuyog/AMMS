@@ -25,11 +25,17 @@ export class ToastRenderer {
     if (this.toastContainers.has(position)) {
       return this.toastContainers.get(position);
     }
+
     const container = document.createElement('div');
     container.id = 'toast-container';
     container.classList.add(options.position);
     container.setAttribute('aria-live', 'polite');
     container.setAttribute('role', 'alert');
+    // container.setAttribute('class', 'z-50 flex items-end fixed inset-0 space-x-2 justify-center px-4 py-6 pointer-events-none sm:p-6 sm:items-start sm:justify-end');
+    // container.setAttribute('class', 'z-50 flex items-end fixed inset-0 space-x-2 space-x-reverse space-y-2 space-y-reverse justify-center px-4 py-6 pointer-events-none sm:p-6 sm:items-start sm:justify-end');
+    // container.setAttribute('class', 'z-50 flex flex-col space-y-2 fixed inset-0 flex px-4 py-6 pointer-events-none sm:p-6 sm:items-start sm:justify-end');
+    // container.setAttribute('class', 'z-50 space-y-2 fixed inset-0 px-4 py-6 pointer-events-none sm:p-6 sm:items-start sm:justify-end');
+    // container.setAttribute('class', 'z-50 flex flex-col space-y-2 fixed inset-0 flex items-end justify-center px-4 py-6 pointer-events-none sm:p-6 sm:items-start sm:justify-end');
     document.body.insertBefore(container, document.body.firstChild);
     const containerViewSlot = new ViewSlot(container, true);
     this.toastContainers.set(position, containerViewSlot);

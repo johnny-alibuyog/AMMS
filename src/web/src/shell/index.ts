@@ -28,7 +28,7 @@ export class Index {
         // title: 'Profile',
       },
       {
-        route: ["membershipt"],
+        route: ["membership"],
         name: "login",
         moduleId: PLATFORM.moduleName("../accounts/profile")
         // nav: true,
