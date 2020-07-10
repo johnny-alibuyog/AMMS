@@ -42,7 +42,7 @@ export class App {
         title: 'Sandbox',
         name: 'sandbox/property-page',
         route: 'sandbox/property-page',
-        moduleId: PLATFORM.moduleName('./features/sandbox/property-page'),
+        moduleId: PLATFORM.moduleName('./features/sandbox/index'),
         nav: true
       },
       {

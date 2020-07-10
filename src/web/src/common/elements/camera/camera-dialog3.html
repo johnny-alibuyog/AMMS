@@ -1,0 +1,34 @@
+<template>
+  <require from="./camera"></require>
+  <require from="../image-cropper/image-cropper"></require>
+
+  <ux-dialog>
+
+    <ux-dialog-header>
+      <span>${title}</span>
+    </ux-dialog-header>
+
+    <ux-dialog-body class="flex">
+      <div if.bind="view == 'camera'" class="flex flex-col space-y-2">
+        <camera width.bind="width" height.bind="height" view-model.ref="camera" photo.bind="photo">
+        </camera>
+        <button click.delegate="capture()">
+          <i class="fa fa-camera fa-lg mr-2"></i> <span>Capture</span>
+        </button>
+      </div>
+      <div if.bind="view == 'preview'" class="flex flex-col space-y-2">
+        <img width.bind="width" height.bind="height" src.bind="photo" />
+        <button click.delegate="crop()">
+          <i class="fa fa-crop fa-lg mr-2"></i> <span>Crop</span>
+        </button>
+      </div>
+    </ux-dialog-body>
+
+    <ux-dialog-footer>
+      <!-- <button class="primary" type="submit" focus="true" click.delegate="capture()">Capture</button> -->
+      <button class="secondary" type="button" click.delegate="back()">Back</button>
+    </ux-dialog-footer>
+
+  </ux-dialog>
+
+</template>

@@ -1,0 +1,17 @@
+<template>
+  <require from="../../shell/layouts/form-layout"></require>
+
+  <form-layout title.bind="title">
+    <section slot="form-actions">
+      <button type="button" role="button" class="secondary px-4" click.delegate="capture()">
+        <i class="fa fa-camera fa-lg mr-2"></i> <span>Capture Photo</span>
+      </button>
+      <button type="button" role="button" class="secondary px-4" click.delegate="capture2()">
+        <i class="fa fa-camera fa-lg mr-2"></i> <span>Capture Photo2</span>
+      </button>
+      <button type="button" role="button" class="secondary px-4" click.delegate="capture3()">
+        <i class="fa fa-camera fa-lg mr-2"></i> <span>Capture Photo3</span>
+      </button>
+    </section>
+  </form-layout>
+</template>

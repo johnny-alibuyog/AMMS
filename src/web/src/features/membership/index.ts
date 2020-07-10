@@ -1,5 +1,4 @@
 import { PLATFORM } from 'aurelia-framework';
-import { properCase } from 'common/utils';
 import { RouterConfiguration, RouteConfig, Router } from 'aurelia-router';
 
 export class Index {

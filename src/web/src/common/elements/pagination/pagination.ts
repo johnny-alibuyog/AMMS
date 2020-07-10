@@ -1,4 +1,4 @@
-import { appConfig } from '../../app-config';
+import { appConfig } from '../../../app-config';
 import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
 
 @autoinject()

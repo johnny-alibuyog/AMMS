@@ -1,12 +1,11 @@
-import { PromptService } from '../../../common/elements/prompt/prompt-service';
-import { autoinject } from 'aurelia-framework';
-import { ValidationRules, ValidationControllerFactory, ValidationController, ValidateResult } from 'aurelia-validation';
 import { Router } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { PromptService } from '../../../common/elements/prompt/prompt-service';
+import { ValidationRules, ValidationControllerFactory, ValidationController, ValidateResult } from 'aurelia-validation';
 import { ToastService } from 'common/elements/toast/toast-service';
 import { ValidationFormRenderer } from '../../../common/validations/validation-form-renderer';
-import { BreadcrumbItem } from '../../../common/elements/custom-breadcrumbs';
+import { BreadcrumbItem } from '../../../common/elements/breadcrumbs/custom-breadcrumbs';
 import { rules } from '../../../common/validations/validation-custom-rules';
-import { PromptType, PromptResult } from 'common/elements/prompt/prompt';
 
 @autoinject()
 export class DiagnosisForm {
@@ -36,8 +35,8 @@ export class DiagnosisForm {
   }
 
   public async submit(): Promise<void> {
-    const promptResult = await this._prompt.show('Prompt Title', 'Title', PromptType.OkCancel);
-    if (promptResult == PromptResult.Cancel) {
+    const promptResult = await this._prompt.save('Title', 'Prompt Message');
+    if (promptResult) {
       return;
     }
     

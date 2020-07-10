@@ -1,0 +1,30 @@
+<template>
+  <!-- <require from="./image-cropper"></require> -->
+  <require from="./image-cropper-dialog.css"></require>
+
+  <ux-dialog>
+    <ux-dialog-header>
+      <span>${title}</span>
+    </ux-dialog-header>
+
+    <ux-dialog-body>
+      <div class="flex flex-col">
+        <div ref="container"></div>
+        <span class="rotate">
+          <button type="button" class="rotate-left" aria-label="Rotate Left" click.delegate="rotate(90)">
+            <i class="fas fa-undo-alt fa-lg"></i>
+          </button>
+          <button type="button" class="rotate-right" aria-label="Rotate Right" click.delegate="rotate(-90)">
+            <i class="fas fa-redo-alt fa-lg"></i>
+          </button>
+        </span>
+      </div>
+    </ux-dialog-body>
+
+    <ux-dialog-footer>
+      <button class="primary" type="submit" click.delegate="apply()" focus="true">Apply</button>
+      <button class="secondary" type="button" click.delegate="cancel()">Cancel</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+
+</template>

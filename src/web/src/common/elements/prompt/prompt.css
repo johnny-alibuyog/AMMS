@@ -1,37 +1,8 @@
 .prompt {
-  @apply fixed;
-  @apply bottom-0;
-  @apply inset-x-0;
-  @apply px-4;
-  @apply pb-4; 
+  @apply w-full;
 }
 
-.prompt__background {
-  @apply fixed;
-  @apply inset-0;
-  @apply transition-opacity;
-}
-
-.prompt__background-overlay {
-  @apply absolute;
-  @apply inset-0;
-  @apply bg-gray-500;
-  @apply opacity-75;
-}
-
-.prompt__content {
-  @apply bg-white;
-  @apply rounded-lg;
-  @apply px-4;
-  @apply pt-5;
-  @apply pb-4;
-  @apply overflow-hidden;
-  @apply shadow-xl;
-  @apply transform;
-  @apply transition-all;
-}
-
-.prompt__content__body .icon {
+.prompt__body .icon {
   @apply mx-auto;
   @apply flex-shrink-0;
   @apply flex; 
@@ -40,113 +11,206 @@
   @apply h-12;
   @apply w-12; 
   @apply rounded-full;
+}
+
+.prompt__body .icon svg {
+  @apply h-8;
+  @apply w-8;
+}
+
+.alert .icon {
   @apply bg-red-100;
 }
 
-.prompt__content__body .text {
+.inform .icon {
+  @apply bg-blue-100;
+}
+
+.confirm .icon {
+  @apply bg-blue-100;
+}
+
+.alert .icon svg {
+  @apply text-red-600;
+}
+
+.inform .icon svg {
+  @apply text-blue-600;
+}
+
+.confirm .icon svg {
+  @apply text-blue-600;
+}
+
+.prompt__body .message {
   @apply mt-3;
   @apply text-center;
 }
 
-.prompt__content__body .text .header-text {
+.prompt__body .message .header {
   @apply text-lg;
   @apply leading-6;
   @apply font-semibold;
   @apply text-gray-800;
 }
 
-.prompt__content__body .text .prompt-text {
+.prompt__body .message .body {
   @apply mt-2;
   @apply text-sm;
   @apply leading-5;
   @apply text-gray-700;
 }
 
-.prompt__content__footer {
-  @apply mt-5;
-}
-
-.prompt__content__footer .ok {
+/* .prompt__footer {
   @apply flex;
+  @apply flex-col;
   @apply w-full;
-  @apply rounded-md;
-  @apply shadow-sm;
 }
 
-.prompt__content__footer .ok .ok-button {
+.prompt__footer button {
   @apply inline-flex;
   @apply justify-center;
   @apply w-full;
   @apply rounded-md;
   @apply border;
-  @apply border-transparent;
   @apply px-4;
   @apply py-2;
-  @apply bg-red-600;
-  @apply text-base;
+  @apply mx-0;
+  @apply my-1;
   @apply leading-6;
-  @apply font-medium;
-  @apply text-white;
+  @apply text-base;
   @apply shadow-sm;
   @apply transition;
   @apply ease-in-out;
   @apply duration-150; 
+} */
+
+.prompt__footer button.primary {
+  @apply text-white;
+  @apply border-transparent;
+} 
+
+.prompt__footer button.primary.alert {
+  @apply text-red-100;
+  @apply bg-red-600;
 }
 
-.prompt__content__footer .ok .ok-button:hover {
+.prompt__footer button.primary.inform {
+  @apply text-blue-100;
+  @apply bg-blue-600;
+}
+
+.prompt__footer button.primary.confirm {
+  @apply text-blue-100;
+  @apply bg-blue-600;
+}
+
+.prompt__footer button.primary.alert:hover  {
+  @apply text-white;
   @apply bg-red-500;
+  @apply shadow;
 }
 
-.prompt__content__footer .ok .ok-button:focus {
+.prompt__footer button.primary.inform:hover {
+  @apply text-white;
+  @apply bg-blue-500;
+  @apply shadow;
+}
+
+.prompt__footer button.primary.confirm:hover {
+  @apply text-white;
+  @apply bg-blue-500;
+  @apply shadow;
+}
+
+.prompt__footer button.primary:focus {
   @apply outline-none;
+}
+
+.prompt__footer button.primary.alert:focus {
   @apply border-red-700;
   /* @apply shadow-outline-red; */
 }
 
+.prompt__footer button.primary.inform:focus {
+  @apply border-blue-700;
+  /* @apply shadow-outline-blue; */
+}
+
+.prompt__footer button.primary.confirm:focus {
+  @apply border-blue-700;
+  /* @apply shadow-outline-blue; */
+}
+
+.prompt__footer button.secondary {
+  @apply bg-white;
+  @apply text-gray-800;
+  @apply border-gray-300;
+}
+
+.prompt__footer button.secondary:hover {
+  @apply bg-gray-100;
+  @apply text-gray-700;
+  @apply shadow;
+}
+
+.prompt__footer button.secondary:focus {
+  @apply outline-none;
+  @apply border-blue-300;
+  /* @apply shadow-outline; */
+  /* @apply shadow-outline-blue; */
+}
+
 @screen sm {
   .prompt {
-    @apply flex; 
-    @apply inset-0; 
-    @apply items-center;
-    @apply justify-center;
+    /* @apply max-w-lg;
+    @apply w-full; */
+    /* width: 32rem; */
+    @apply w-128;
   }
 
-  .prompt__content {
-    @apply max-w-lg;
-    @apply w-full;
-    @apply p-6;
-  }
-
-  .prompt__content__body {
+  .prompt__body {
     @apply flex; 
     @apply items-start;
   }
 
-  .prompt__content__body .icon {
+  .prompt__body .icon {
     @apply mx-0;
     @apply h-10;
     @apply w-10;
   }
   
-  .prompt__content__body .text {
+  .prompt__body .message {
     @apply mt-0;
     @apply ml-4;
     @apply text-left;
   }
 
-  .prompt__content__footer {
-    @apply mt-4; 
+  /* .prompt__footer {
     @apply flex; 
     @apply flex-row-reverse;
-  }
+  } */
 
-  .prompt__content__footer .ok {
+  /* .prompt__footer .primary {
     @apply ml-3;
     @apply w-auto;
-  }
+  } */
 
-  .prompt__content__footer .ok .ok-button {
+  /* .prompt__footer button {
+    @apply leading-5;
+    @apply w-auto;
+    @apply text-base;
+    @apply ml-2;
+  } */
+
+  /* .prompt__footer .secondary {
+    @apply mt-0;
+    @apply w-auto;
+  } */
+
+  /* .prompt__footer .secondary {
     @apply text-sm;
     @apply leading-5;
-  }
+    @apply w-auto;
+  }   */
 }

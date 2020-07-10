@@ -1,5 +1,5 @@
 import * as KeyCode from "keycode-js";
-import { replaceElementWithTemplate } from "./content-processors";
+import { replaceElementWithTemplate } from "../content-processors";
 import {
   autoinject,
   customElement,

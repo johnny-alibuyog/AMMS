@@ -26,20 +26,22 @@ const { accessTokenSecret } = config;
 const authorize = ({ resource, action }: AuthParam) => {
   return wrap(async (req: Request, res: Response, next?: NextFunction) => {
 
-    const token = req.headers.authorization?.split(' ')[1] ?? null;
+    // const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    // await sleep(5000);
 
+    const parts = req.headers.authorization?.split(' ') ?? null;
+    if (!parts || parts.length < 2) {
+      throw new HTTP401Error();
+    }
+    const token = parts[1];
     if (!token) {
       throw new HTTP401Error();
     }
-
     const payload = jwtService.verify(token);
-
     if (!payload) {
       throw new HTTP401Error();
     }
-
     const db = await initDbContext();
-
     const user = await db.users
       .findById(payload.userId)
       .populate({
@@ -58,19 +60,13 @@ const authorize = ({ resource, action }: AuthParam) => {
         },
       })
       .exec();
-
     // const roleIds = user?.roles.map(x => x as ObjectId);
-
     // db.roles.find({ _id: { $in: roleIds }})
-
     const hasPermission = user?.roles?.length ?? 0 > 0;
-
     context.setUser(user?.id, 'permission_guard_here_man');
-
     if (!hasPermission) {
       throw new HTTP403Error();
     }
-
     if (next) {
       next();
     }

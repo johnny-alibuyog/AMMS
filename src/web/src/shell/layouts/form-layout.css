@@ -29,7 +29,7 @@
 }
 
 .form-layout__content {
-  @apply z-10;
+  /* @apply z-10; */
   @apply flex;
   @apply overflow-auto;
 }
@@ -162,6 +162,7 @@
   /* @apply bg-white; */
 }
 
+.form-actions button,
 .form-actions input[type="submit"],
 .form-actions input[type="button"] {
   @apply font-semibold;

@@ -4,7 +4,7 @@ import { Container } from 'aurelia-framework';
 /// <reference types="aurelia-loader-webpack/src/webpack-hot-interface"/>
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'izitoast/dist/css/iziToast.css';
+import 'croppie/croppie.css';
 import environment from './environment';
 import * as Bluebird from 'bluebird';
 import { Aurelia } from 'aurelia-framework';
@@ -29,12 +29,12 @@ export function configure(aurelia: Aurelia): Aurelia {
       measurePerformance: 'all'
     })
     .plugin(PLATFORM.moduleName('aurelia-dialog'), (config: DialogConfiguration) => {
-      config.useDefaults();
+      // config.useDefaults();
       // config.useCSS('');
-      // config.settings.lock = true;
-      // config.settings.centerVerticalOnly = true;
-      // config.settings.startingZIndex = 5;
-      // config.settings.keyboard = true; //['Enter', 'Escape'];
+      config.settings.lock = true;
+      config.settings.centerVerticalOnly = true;
+      config.settings.startingZIndex = 5;
+      config.settings.keyboard = true; //['Enter', 'Escape'];
     });
 
   // Uncomment the line below to enable animation.

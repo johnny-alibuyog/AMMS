@@ -1,7 +1,7 @@
 // https://auth0.com/blog/2015/08/05/creating-your-first-aurelia-app-from-authentication-to-calling-an-api/
-import { PageConfig } from './common/elements/pagination';
+import { PageConfig } from './common/elements/pagination/pagination';
 
-let apiHosts = {
+const apiHosts = {
   'localhost': 'http://localhost:8081/api/v1',
   'server-pc': 'http://server-pc/ampbiz/api/',
   'DBDC-SERVER': 'http://DBDC-SERVER/ampbiz/api/',
@@ -11,7 +11,7 @@ let apiHosts = {
   'ampbiz.gear.host': 'http://ampbiz-api.gear.host',
 };
 
-export let appConfig = {
+export const appConfig = {
   api: {
     baseUrl: apiHosts[window.location.hostname] 
       || `${window.location.origin}${window.location.pathname}api/`,
@@ -34,5 +34,6 @@ export let appConfig = {
   default: {
     dateFormat: 'MM/DD/YYYY',
     numberFormat: '0,0.00'
-  }
+  },
+  spinnerDebounce: 300 //
 }

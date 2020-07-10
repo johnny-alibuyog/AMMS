@@ -2,11 +2,11 @@ import { FrameworkConfiguration, PLATFORM } from "aurelia-framework";
 
 export function configure(config: FrameworkConfiguration) {
   config.globalResources([
-    PLATFORM.moduleName("./elements/breadcrumbs"),
-    PLATFORM.moduleName("./elements/custom-breadcrumbs"),
-    PLATFORM.moduleName("./elements/custom-datepicker"),
-    PLATFORM.moduleName("./elements/dropdown"),
-    PLATFORM.moduleName("./elements/pagination"),
+    PLATFORM.moduleName("./elements/breadcrumbs/breadcrumbs"),
+    PLATFORM.moduleName("./elements/breadcrumbs/custom-breadcrumbs"),
+    PLATFORM.moduleName("./elements/datepicker/custom-datepicker"),
+    PLATFORM.moduleName("./elements/dropdown/dropdown"),
+    PLATFORM.moduleName("./elements/pagination/pagination"),
     PLATFORM.moduleName("./elements/toast/toast"),
     PLATFORM.moduleName("./elements/tool-bar/tool-bar"),
     PLATFORM.moduleName("./elements/tool-bar/add-tool"),

@@ -158,6 +158,11 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
           }
         ]
       },
+      {
+        test: /\.mp3$/,
+        include: srcDir,
+        loader: 'file-loader'
+      },
       ...when(coverage, {
         test: /\.[jt]s$/i,
         loader: "istanbul-instrumenter-loader",

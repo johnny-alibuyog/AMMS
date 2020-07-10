@@ -1,0 +1,70 @@
+.rotate {
+  @apply z-0;
+  @apply mb-2;
+  @apply w-auto;
+  @apply inline-flex;
+  @apply self-center;
+}
+
+/* .cr-slider {
+  @apply text-gray-600;
+} */
+
+.rotate button {
+  @apply relative;
+  @apply inline-flex;
+  @apply items-center;
+  @apply px-14;
+  @apply py-2;
+  @apply border;
+  @apply border-gray-300;
+  @apply bg-white;
+  @apply text-sm;
+  @apply leading-5;
+  @apply font-medium;
+  @apply text-gray-600;
+  @apply transition;
+  @apply ease-in-out;
+  @apply duration-150;
+  @apply -mt-3;
+}
+
+.rotate .rotate-left {
+  @apply rounded-l-md;
+}
+
+.rotate .rotate-left:hover {
+  @apply text-gray-500;
+}
+
+.rotate .rotate-left:focus {
+  @apply z-10;
+  @apply outline-none;
+  @apply border-blue-300;
+  /* @apply shadow-outline-blue; */
+}
+
+.rotate .rotate-left:active {
+  @apply bg-gray-100;
+  @apply text-gray-600;
+}
+
+.rotate .rotate-right {
+  @apply rounded-r-md;
+}
+
+.rotate .rotate-right:hover {
+  @apply text-gray-500;
+}
+
+.rotate .rotate-right:focus {
+  @apply z-10;
+  @apply outline-none;
+  @apply border-blue-300;
+  /* @apply shadow-outline-blue; */
+}
+
+.rotate .rotate-right:active {
+  @apply bg-gray-100;
+  @apply text-gray-600;
+}

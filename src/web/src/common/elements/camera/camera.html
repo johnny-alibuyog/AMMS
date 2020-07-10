@@ -1,0 +1,7 @@
+<template>
+  <require from="./camera.css"></require>
+  <div id="shutter" class="${shutterState}"></div>
+  <canvas ref="canvas" width.bind="width" height.bind="height" hidden="true"></canvas>
+  <video ref="video" width.bind="width" height.bind="height" autoplay></video>
+  <audio ref="audio" src.bind="shutterSound"></audio>
+</template>

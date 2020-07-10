@@ -13,10 +13,15 @@ type ListPageState = {
   isFilterVisible: boolean  
 }
 
+type FormPageState = {
+  isDiscardPromptVisible: boolean
+}
+
 type State = {
   auth: AuthState,
   user: UserState,
-  listPage: ListPageState
+  listPage: ListPageState,
+  formPage: FormPageState
 }
 
 const initialAuthState: AuthState = {
@@ -34,10 +39,15 @@ const initialListPageState: ListPageState = {
   isFilterVisible: false
 }
 
+const initialFormPageState: FormPageState = {
+  isDiscardPromptVisible: false
+}
+
 const initialState: State = {
   auth: initialAuthState,
   user: initialUserState,
-  listPage: initialListPageState
+  listPage: initialListPageState,
+  formPage: initialFormPageState
 }
 
 export {
@@ -45,8 +55,10 @@ export {
   AuthState,
   UserState,
   ListPageState,
+  FormPageState,
   initialState,
   initialAuthState,
   initialUserState,
-  initialListPageState
+  initialListPageState,
+  initialFormPageState
 }

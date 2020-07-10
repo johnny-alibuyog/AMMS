@@ -72,5 +72,6 @@ const client = {
 
 export {
   client,
+  httpClient,
   SendParameters
 }

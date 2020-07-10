@@ -1,0 +1,13 @@
+<template>
+  <div class="flex flex-col">
+    <div ref="container"></div>
+    <span class="rotate">
+      <button type="button" class="rotate-left" aria-label="Rotate Left" click.delegate="rotate(90)">
+        <i class="fas fa-undo-alt fa-lg"></i>
+      </button>
+      <button type="button" class="rotate-right" aria-label="Rotate Right" click.delegate="rotate(-90)">
+        <i class="fas fa-redo-alt fa-lg"></i>
+      </button>
+    </span>
+  </div>
+</template>

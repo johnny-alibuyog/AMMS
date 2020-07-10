@@ -3,12 +3,11 @@ import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
 import { User, userRules, initUser, UserId } from "./user.models";
 import { personRules, fullName } from 'features/common/person/person.model';
-import { BreadcrumbItem } from "common/elements/custom-breadcrumbs";
+import { BreadcrumbItem } from "common/elements/breadcrumbs/custom-breadcrumbs";
 import { ValidateResult, ValidationController, ValidationControllerFactory } from "aurelia-validation";
 import { ToastService } from 'common/elements/toast/toast-service';
 import { PromptService } from 'common/elements/prompt/prompt-service';
 import { ValidationFormRenderer } from 'common/validations/validation-form-renderer';
-import { PromptResult, PromptType } from 'common/elements/prompt/prompt';
 import { api } from 'features/api';
 import { dirtyChecker } from 'common/utils';
 
@@ -78,11 +77,14 @@ export class UserForm {
   }
 
   public async canDeactivate(): Promise<boolean> {
-    debugger;
-    if (this._isDirty(this.user)) {
-      return this._prompt.discard();
+    try {
+      if (this._isDirty(this.user)) {
+        return await this._prompt.discard();
+      }
     }
-
+    catch(ex) {
+      console.log(ex);
+    }
     return true;
   }
 
@@ -97,8 +99,9 @@ export class UserForm {
       return;
     }
 
-    const promptResult = await this._prompt.show('Do you want to save changes?', 'Save User', PromptType.OkCancel);
-    if (promptResult == PromptResult.Cancel) {
+    // const promptResult = await this._prompt.save('Save User', 'Do you want to save changes?');
+    const promptResult = await this._prompt.save('Save User', 'Do you want to save changes the quick brown fox jumped over the head of the lazy dog?');
+    if (!promptResult) {
       return;
     }
 

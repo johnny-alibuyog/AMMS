@@ -1,18 +1,22 @@
 ux-dialog-overlay {
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  top: 0;
-  right: 0;
-  opacity: 0;
+  @apply absolute;
+  @apply inset-0;
+  @apply bg-gray-500;
+  @apply opacity-0;
+  @apply overflow-hidden;
 }
 
-ux-dialog-overlay:active {
-  opacity: 1;
+ux-dialog-overlay.active {
+  @apply opacity-50;
 } 
 
 ux-dialog-container {
-  display: block;
+  @apply fixed;
+  @apply inset-0;
+  @apply transition-opacity;
+  @apply overflow-hidden;
+
+  /* display: block;
   transition: opacity .2s linear;
   opacity: 0;
   overflow-x: hidden;
@@ -21,8 +25,9 @@ ux-dialog-container {
   top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  -webkit-overflow-scrolling: touch;
+  left: 0; */
+  /* -webkit-overflow-scrolling: touch; */
+  /* overflow: hidden; */
 }
 
 ux-dialog-container:active {
@@ -30,11 +35,13 @@ ux-dialog-container:active {
 }
 
 ux-dialog-container > div {
-  padding: 30px;
+  @apply p-4;
 }
 
 ux-dialog-container > div > div {
-  width: 100%;
+  @apply w-full;
+  @apply block;
+  /* width: 100%;
   display: block;
   min-width: 300px;
   width: -moz-fit-content;
@@ -43,19 +50,27 @@ ux-dialog-container > div > div {
   height: -moz-fit-content;
   height: -webkit-fit-content;
   height: fit-content;
-  margin: auto;
+  margin: auto; */
 }
 
 ux-dialog-container > div > div > div {
-  /**
-   * Prevent Chrome on Windows from adding a focus outline. For details, see
-   * https://github.com/twbs/bootstrap/pull/10951
-   */
-  outline: 0;
-}
+  /* outline: 0; */
+} 
 
 ux-dialog {
-  width: 100%;
+  @apply w-full;
+  @apply bg-white;
+  @apply rounded-lg;
+  @apply px-4;
+  @apply pt-5;
+  @apply pb-4;
+  @apply overflow-hidden;
+  @apply transform;
+  @apply transition-all;
+  /* @apply shadow-xl; */
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  border: 1px solid rgba(0,0,0,.2);
+  /* width: 100%;
   display: table;
   box-shadow: 0 5px 15px rgba(0,0,0,.5);
   border: 1px solid rgba(0,0,0,.2);
@@ -74,13 +89,25 @@ ux-dialog {
   border-image-width: initial;
   border-image-outset: initial;
   border-image-repeat: initial;
-  background: white;
+  background: white; */
 }
 
 ux-dialog > ux-dialog-header {
-  display: block;
+  @apply py-2;
+  @apply block;
+  @apply border-b;
+  @apply border-solid;
+  @apply border-gray-300;
+  /* display: block;
   padding: 16px;
-  border-bottom: 5px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5; */
+}
+
+ux-dialog > ux-dialog-header .dialog-header-content {
+  @apply text-lg;
+  @apply uppercase;
+  @apply self-center;
+  @apply text-gray-700;
 }
 
 ux-dialog > ux-dialog-header > button {
@@ -103,6 +130,79 @@ ux-dialog > ux-dialog-body {
 }
 
 ux-dialog > ux-dialog-footer {
+  /* @apply mt-5; */
+  /* @apply flex; */
+  @apply flex;
+  @apply flex-col;
+  @apply w-full;
+  @apply pl-0;
+  @apply pr-0;
+  @apply pt-1;
+  @apply pb-0;
+}
+
+ux-dialog > ux-dialog-footer > button {
+  @apply inline-flex;
+  @apply justify-center;
+  @apply w-full;
+  @apply rounded-md;
+  @apply border;
+  @apply px-4;
+  @apply py-2;
+  @apply mx-0;
+  @apply my-1;
+  @apply leading-6;
+  @apply text-base;
+  @apply shadow-sm;
+  @apply transition;
+  @apply ease-in-out;
+  @apply duration-150; 
+}
+
+ux-dialog > ux-dialog-footer > button.primary {
+  @apply text-blue-100;
+  @apply bg-blue-500;
+}
+
+ux-dialog > ux-dialog-footer > button.primary:hover {
+  @apply text-white;
+  @apply bg-blue-400;
+  @apply border-blue-600;
+  @apply shadow;
+}
+
+ux-dialog > ux-dialog-footer > button.primary:focus {
+  @apply outline-none;
+  @apply text-blue-100;
+  @apply border-blue-600;
+
+}
+
+ux-dialog > ux-dialog-footer > button.secondary {
+  @apply bg-gray-100;
+  @apply text-gray-700;
+}
+
+ux-dialog > ux-dialog-footer > button.secondary:hover {
+  @apply bg-gray-100;
+  @apply text-gray-600;
+  @apply shadow;
+}
+
+ux-dialog > ux-dialog-footer > button.secondary:focus {
+  @apply outline-none;
+  @apply text-gray-500;
+  @apply border-gray-800;
+}
+
+/* ux-dialog > ux-dialog-footer > button:disabled {
+}
+
+ux-dialog > ux-dialog-footer > button:hover:enabled {
+} */
+
+/*
+ux-dialog > ux-dialog-footer {
   display: block;
   padding: 6px;
   border-top: 1px solid #e5e5e5;
@@ -112,7 +212,6 @@ ux-dialog > ux-dialog-footer {
 ux-dialog > ux-dialog-footer > button {
   color: #333;
   background-color: #fff;
-
   padding: 6px 12px;
   font-size: 14px;
   text-align: center;
@@ -140,4 +239,36 @@ ux-dialog > ux-dialog-footer > button:hover:enabled {
 
 .ux-dialog-open {
   overflow: hidden;
+}
+*/
+
+
+@screen sm {
+  ux-dialog-container {
+    @apply flex; 
+    @apply inset-0; 
+    @apply items-center;
+    @apply justify-center;
+  }
+
+  ux-dialog-container > div {
+    @apply p-5;
+  }
+  
+  ux-dialog {
+    @apply w-full;
+  }
+
+  ux-dialog > ux-dialog-footer {
+    @apply flex; 
+    @apply flex-row-reverse;
+    
+  }
+
+  ux-dialog > ux-dialog-footer button {
+    @apply leading-5;
+    @apply w-auto;
+    @apply text-base;
+    @apply ml-2;
+  }
 }

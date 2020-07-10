@@ -1,0 +1,14 @@
+<template>
+  <require from="../../shell/layouts/form-layout"></require>
+
+  <form-layout title.bind="title">
+
+    <section slot="form-actions">
+      <input type="button" role="button" class="secondary" value="Error" click.delegate="error()" />
+      <input type="button" role="button" class="secondary" value="Warning" click.delegate="warning()" />
+      <input type="button" role="button" class="secondary" value="Info" click.delegate="info()" />
+      <input type="button" role="button" class="secondary" value="Success" click.delegate="success()" />
+    </section>
+
+  </form-layout>
+</template>

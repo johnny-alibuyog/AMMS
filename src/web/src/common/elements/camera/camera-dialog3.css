@@ -1,0 +1,19 @@
+#shutter {
+  opacity: 0;
+  transition: all 30ms ease-in;/* Shutter speed */
+  position: fixed;
+  height: 0%;
+  width: 0%;
+  pointer-events: none;
+  background-color: white;/* Shutter Color */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%)
+}
+
+#shutter.open {
+  opacity: 1;/* Shutter Transparency */
+  height: 100%;
+  width: 100%;
+}

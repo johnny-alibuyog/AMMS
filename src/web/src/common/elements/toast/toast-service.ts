@@ -1,3 +1,4 @@
+import { appConfig } from './../../../app-config';
 import { ToastController } from './toast-controller';
 import { autoinject, Container, CompositionEngine, CompositionContext, Origin } from 'aurelia-framework';
 import { Toast } from './toast';
@@ -6,7 +7,7 @@ const defaults: Partial<ToastSettings> = {
   debug: false,
   position: 'toast-top-right',
   startingZIndex: 1000,
-  duration: 60 /* 5 sec */
+  duration: 5 /* 5 sec */
 };
 
 export type ToastType
@@ -106,7 +107,9 @@ export class ToastService {
         settings: instruction.model,
         controller: await this.compositionEngine.createController(instruction)
       });
-      toastController.open();
+      const delay = appConfig.spinnerDebounce + 100; // show toast after spinner has been closed
+      setTimeout(() => toastController.open(), delay);
+      // toastController.open();
     }
   }
 }

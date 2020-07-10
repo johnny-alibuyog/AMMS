@@ -1,80 +1,25 @@
-<!-- <template>
-  <ux-dialog>
-    <ux-dialog-header>
-      <h1>${options.title}</h1>
-    </ux-dialog-header>
-
-    <ux-dialog-body>
-      <h2>${options.message}</h2>
-    </ux-dialog-body>
-
-    <ux-dialog-footer>
-      <button click.trigger="ok()">Ok</button>
-      <button click.trigger="cancel()">Cancel</button>
-    </ux-dialog-footer>
-  </ux-dialog>  
-</template> -->
-
 <template>
   <require from="./prompt.css"></require>
 
-  <div class="prompt">
-    <!--
-      Background overlay, show/hide based on modal state.
-  
-      Entering: "ease-out duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in duration-200"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
-    <div class="prompt__background">
-      <div class="prompt__background-overlay "></div>
-    </div>
-  
-    <!--
-      Modal panel, show/hide based on modal state.
-  
-      Entering: "ease-out duration-300"
-        From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        To: "opacity-100 translate-y-0 sm:scale-100"
-      Leaving: "ease-in duration-200"
-        From: "opacity-100 translate-y-0 sm:scale-100"
-        To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    -->
-
-    <div class="prompt__content" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-      <div class="prompt__content__body">
-        <div class="icon">
-          <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-          </svg>
-        </div>
-        <div class="text">
-          <h3 class="header-text" id="modal-headline">
-            ${options.message}
-          </h3>
-          <p class="prompt-text">
-            ${options.title}
-          </p>
-        </div>
+  <ux-dialog class="prompt">
+    <ux-dialog-body class="prompt__body ${options.type}">
+      <div class="icon">
+        <svg fill="none" viewBox="0 0 20 20" stroke="currentColor">
+          <use xlink:href="#icon-info"></use>
+        </svg>
       </div>
-
-      <div class="prompt__content__footer">
-        <span class="ok">
-          <button type="button" click.trigger="ok()" focus="true" class="ok-button">
-            Deactivate
-          </button>
-        </span>
-        <!-- prompt__content__footer cancel -->
-        <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
-          <!-- prompt__content__footer cancel-button -->
-          <button type="button" click.trigger="cancel()" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-            Cancel
-          </button>
-        </span>
+      <div class="message">
+        <h3 class="header" id="modal-headline">${options.title}</h3>
+        <p class="body">${options.message}</p>
       </div>
-    </div>
-  </div>
+    </ux-dialog-body>
+
+    <ux-dialog-footer class="prompt__footer">
+      <button repeat.for="action of options.actions" type="${action.type == 'primary' ? 'submit' : 'button'}"
+        class="${options.type} ${action.type}" click.trigger="submit(action)" focus.bind="action.focused">
+        ${action.label}
+      </button>
+    </ux-dialog-footer>
+
+  </ux-dialog>
 </template>
