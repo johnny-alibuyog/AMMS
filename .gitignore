@@ -15,3 +15,6 @@ obj
 bin
 .chrome
 dist
+/src/api2/coverage
+/src/api2/node_modules
+/src/api2/src/logs

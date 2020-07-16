@@ -26,8 +26,8 @@ const { accessTokenSecret } = config;
 const authorize = ({ resource, action }: AuthParam) => {
   return wrap(async (req: Request, res: Response, next?: NextFunction) => {
 
-    // const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-    // await sleep(5000);
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    await sleep(5000);
 
     const parts = req.headers.authorization?.split(' ') ?? null;
     if (!parts || parts.length < 2) {
