@@ -26,8 +26,8 @@ const { accessTokenSecret } = config;
 const authorize = ({ resource, action }: AuthParam) => {
   return wrap(async (req: Request, res: Response, next?: NextFunction) => {
 
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-    await sleep(5000);
+    // const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    // await sleep(5000);
 
     const parts = req.headers.authorization?.split(' ') ?? null;
     if (!parts || parts.length < 2) {
@@ -63,10 +63,10 @@ const authorize = ({ resource, action }: AuthParam) => {
     // const roleIds = user?.roles.map(x => x as ObjectId);
     // db.roles.find({ _id: { $in: roleIds }})
     const hasPermission = user?.roles?.length ?? 0 > 0;
-    context.setUser(user?.id, 'permission_guard_here_man');
     if (!hasPermission) {
       throw new HTTP403Error();
     }
+    context.setUser(user?.id, 'permission_guard_here_man');
     if (next) {
       next();
     }
