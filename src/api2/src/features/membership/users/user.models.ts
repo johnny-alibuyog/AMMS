@@ -1,10 +1,11 @@
-import { Entity } from '../../common';
+import { Entity } from '../../common/kernel';
 import { prop, Ref, arrayProp, pre, post } from '@typegoose/typegoose';
 import { Role } from './../roles/role.models';
 import { encryptor } from '../../../utils/encryptor';
 import { IModelOptions } from '@typegoose/typegoose/lib/types';
 import { Person } from '../../common/person/person.model';
 import { Address } from '../../common/address/address.model';
+import { ImageBase } from '../../common/images/image.models';
 
 
 @pre<User>('save', async function () {
@@ -28,7 +29,10 @@ class User extends Entity {
   @prop()
   public address?: Address;
 
-  @arrayProp({ itemsRef: Role, required: true })
+  @prop({ ref: () => ImageBase })
+  public photo?: Ref<ImageBase>;
+
+  @prop({ ref: () => Role })
   public roles!: Ref<Role>[];
 
   constructor(init?: User) {

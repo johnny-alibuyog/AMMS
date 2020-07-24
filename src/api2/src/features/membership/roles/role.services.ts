@@ -14,8 +14,6 @@ type RolePageRequest = PageRequest<RoleFilterRequest, RoleSortRequest>;
 
 type RolePageResponse = PageResponse<RoleContract>;
 
-const build = builderDef<Role>();
-
 const find = async (request: RolePageRequest) => {
   const db = await initDbContext();
   const { skip, limit } = parsePageFrom(request);
@@ -38,6 +36,7 @@ const get = async (id: RoleIdContract) => {
 
 const lookup = async () => {
   const db = await initDbContext();
+  const build = builderDef<Role>();
   const sort = build().sort([['name', 'asc']])
   const projection = build().projection(['_id', 'name']);
   const roles = await db.roles.find({}, projection, sort).exec();

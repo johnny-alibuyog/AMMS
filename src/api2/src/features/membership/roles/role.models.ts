@@ -1,8 +1,9 @@
-import { ValueObject, Entity } from '../../common';
+import { ValueObject, Entity } from '../../common/kernel';
 import { prop, mapProp, index } from "@typegoose/typegoose";
 
 enum Resource {
   all = 'All',
+  common_image = 'Common:Images',
   membership_tenant = 'Membership:Tenants',
   membership_tenant_user_settings = 'Membership:Tenants.Users.Settings',
   membership_branch = 'Membership:Branches',
@@ -22,7 +23,7 @@ enum Action {
 enum Ownership {
   own = 'Own',
   managed = 'Managed',
-  any = 'Any'
+  all = 'All'
 }
 
 class Permission extends ValueObject {
@@ -42,7 +43,7 @@ class AccessControl extends ValueObject {
   @prop({ enum: Resource, required: true })
   public resource!: Resource;
 
-  @prop()
+  @prop({ type: () => Permission})
   public permissions!: Permission[];
 
   // @mapProp({ of: Action, enum: Ownership, required: true })
@@ -59,7 +60,7 @@ class Role extends Entity {
   @prop({ required: true })
   public name!: string;
 
-  @prop()
+  @prop({ type: () => AccessControl})
   public accessControls!: AccessControl[];
 
   constructor(init?: Role) {
@@ -77,7 +78,7 @@ const roles = {
         permissions: [
           new Permission({
             action: Action.all,
-            ownership: Ownership.any
+            ownership: Ownership.all
           })
         ]
       })

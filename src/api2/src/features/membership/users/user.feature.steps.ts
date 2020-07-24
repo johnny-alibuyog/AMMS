@@ -28,7 +28,7 @@ defineFeature(feature, test => {
         const superToken = await getToken();
         const rolesId = await Promise.all(
           roleSeed.randomRoles(3)
-          .map(x => roleClient(superToken).create(x))
+            .map(x => roleClient(superToken).create(x))
         );
 
         const result = await Promise.all(
@@ -39,9 +39,9 @@ defineFeature(feature, test => {
       })();
 
       const randomUsers = userSeed.randomUsersFn(() => roles);
-      
+
       userToBeCreated = randomUsers(1)[0];
-      
+
       userToBeUpdatedWith = randomUsers(1)[0];
 
       const params = {
@@ -51,10 +51,10 @@ defineFeature(feature, test => {
         accessControl: new AccessControl({
           resource: Resource.membership_user,
           permissions: [
-            new Permission({ action: Action.read, ownership: Ownership.any}),
-            new Permission({ action: Action.create, ownership: Ownership.any}),
-            new Permission({ action: Action.update, ownership: Ownership.any}),
-            new Permission({ action: Action.delete, ownership: Ownership.any}),
+            new Permission({ action: Action.read, ownership: Ownership.all }),
+            new Permission({ action: Action.create, ownership: Ownership.all }),
+            new Permission({ action: Action.update, ownership: Ownership.all }),
+            new Permission({ action: Action.delete, ownership: Ownership.all }),
           ]
         })
       };

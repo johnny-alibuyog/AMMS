@@ -2,6 +2,7 @@ import { autoinject } from 'aurelia-framework';
 import { DialogService } from 'aurelia-dialog';
 import { Camera } from "./camera";
 import { ImageCropperDialog } from '../image-cropper/image-cropper-dialog';
+import { decode } from 'punycode';
 
 type View = 'camera' | 'preview';
 
@@ -16,8 +17,17 @@ export class CameraDialog3 {
 
   constructor(private readonly _dialog: DialogService) {}
 
+  private getSize(image: string) : number {
+    var base64str = image.substr(22);
+    var decoded = atob(base64str);
+    return decoded.length;
+  }
+
   public async capture(): Promise<void> {
     this.photo = await this.camera.capture();
+    const size = this.getSize(this.photo);
+    console.log(size);
+    debugger;
     // this.view = 'preview';
     setTimeout(() => this.view = 'preview', 200);
   }

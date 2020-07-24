@@ -39,7 +39,7 @@ defineFeature(feature, (test) => {
       userBuilder = await createUserBuilder();
       accessControl = new AccessControl({
         resource: Resource.membership_user,
-        permissions: [new Permission({ action: Action.update, ownership: Ownership.any })]
+        permissions: [new Permission({ action: Action.update, ownership: Ownership.all })]
       })
     });
 
@@ -113,7 +113,7 @@ defineFeature(feature, (test) => {
       userBuilder = await createUserBuilder();
       accessControl = new AccessControl({
         resource: Resource.membership_user,
-        permissions: [new Permission({ action: Action.read, ownership: Ownership.any })]
+        permissions: [new Permission({ action: Action.read, ownership: Ownership.all })]
       });
     });
 

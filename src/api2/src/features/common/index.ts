@@ -1,26 +1,3 @@
-import { ObjectId } from "mongodb";
+import images from './images';
 
-class Entity {
-  public _id?: ObjectId;
-  
-  public id?: string = '';
-}
-
-class ValueObject { }
-
-type Mappable<T> = {
-  map: <R>(fn: (x: T) => R) => Mappable<R>;
-  valueOf: () => T;
-}
-
-const functor = <T>(value: T): Mappable<T> => ({
-  map: <R>(fn: (x: T) => R): Mappable<R> => functor(fn(value)),
-  valueOf: () => value,
-});
-
-export {
-  Entity,
-  ValueObject,
-  functor
-}
-
+export default [...images];

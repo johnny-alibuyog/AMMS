@@ -4,7 +4,7 @@ import { config } from '../config';
 import { context } from '../utils/request.context';
 import { Request, Response, NextFunction } from 'express';
 import { HTTP401Error, HTTP403Error } from "../utils/http.errors";
-import { Resource, Action } from "../features/membership/roles/role.models"
+import { Resource, Action, AccessControl, Role } from "../features/membership/roles/role.models"
 import { initDbContext } from './../features/db.context';
 import { logger } from '../utils/logger';
 
@@ -41,10 +41,17 @@ const authorize = ({ resource, action }: AuthParam) => {
     if (!payload) {
       throw new HTTP401Error();
     }
+
+    /*
+     * https://docs.mongodb.com/manual/reference/operator/projection/elemMatch/
+     * https://docs.mongodb.com/manual/tutorial/query-array-of-documents/
+     * https://docs.mongodb.com/manual/tutorial/query-arrays/
+     */
+
     const db = await initDbContext();
     const user = await db.users
       .findById(payload.userId)
-      .populate({
+      .populate({ /* https://mongoosejs.com/docs/populate.html */
         path: 'roles',
         match: {
           $or: [
@@ -60,13 +67,37 @@ const authorize = ({ resource, action }: AuthParam) => {
         },
       })
       .exec();
-    // const roleIds = user?.roles.map(x => x as ObjectId);
-    // db.roles.find({ _id: { $in: roleIds }})
-    const hasPermission = user?.roles?.length ?? 0 > 0;
-    if (!hasPermission) {
+    // logger.warn(JSON.stringify(user, null, 2));
+    const logMe = <T>(value: T, message?: string) => {
+      if (message) {
+        logger.warn(message);
+      }
+      logger.warn(JSON.stringify(value, null, 2));
+      return value;
+    }
+    const permissions = user?.roles
+      .flatMap(x => (<Role>x).accessControls)
+      // .map(x => logMe(x, 'flatMap accessControls'))
+      .filter(x =>
+        x.resource == resource ||
+        x.resource == Resource.all
+      )
+      // .map(x => logMe(x, 'filter resource'))
+      .flatMap(x => x.permissions)
+      // .map(x => logMe(x, 'flatMap permission'))
+      .filter(x =>
+        x.action == action ||
+        x.action == Action.all
+      );
+    // logger.warn(`Permissions: ${JSON.stringify(permissions, null, 2)}`);
+    const permission =
+      permissions?.find(x => x.action == Action.all) ??
+      permissions?.find(x => x.action == action);
+    // logger.warn(`Permission Grant: ${JSON.stringify(permission, null, 2)}`);
+    if (!permission) {
       throw new HTTP403Error();
     }
-    context.setUser(user?.id, 'permission_guard_here_man');
+    context.setUser(user?.id, permission);
     if (next) {
       next();
     }

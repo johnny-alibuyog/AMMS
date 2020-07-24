@@ -1,8 +1,9 @@
 import * as storage from 'cls-hooked';
 import { config } from '../config';
 import { Request, Response, NextFunction } from 'express';
+import { Permission } from '../features/membership/roles/role.models';
 
-type PermissionGuard = string;
+type PermissionGuard = Permission;
 
 type RequestContext = {
   path: string,

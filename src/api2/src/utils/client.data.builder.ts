@@ -3,13 +3,14 @@ import { logger } from "./logger";
 import { userSeed } from './../features/membership/users/user.seed';
 import { roleSeed } from './../features/membership/roles/role.seed';
 import { IClient, buildClient, request } from "../client";
-import { AccessControl, Permission  } from "../features/membership/roles/role.models";
+import { AccessControl, Permission } from "../features/membership/roles/role.models";
 import { RoleIdContract, RoleContract } from "../features/membership/roles/role.services";
 import { UserIdContract, UserContract } from '../features/membership/users/user.services';
 import { basePath as authBasePath } from '../features/membership/auth';
 import { basePath as roleBasePath } from '../features/membership/roles';
 import { basePath as userBasePath } from '../features/membership/users';
 import { LoginRequest, LoginResponse } from "../features/membership/auth/auth.service";
+import { assert } from "console";
 
 class Builder<TId extends Object, TModel extends Object> {
   private _id: TId;
@@ -89,11 +90,11 @@ const createUserBuilder = async (token?: string): Promise<IBuilder<UserBuilderAr
         }
         const role = await roleBuilder.build();
         user = await userBuilder
-          .with({ 
-            username: args.username, 
+          .with({
+            username: args.username,
             password: args.password,
-            email: args.email, 
-            roles: [role] 
+            email: args.email,
+            roles: [role]
           })
           .build();
       }
@@ -114,7 +115,11 @@ const createRoleBuilder = (token?: string) => {
 
 const getToken = async (credentials?: LoginRequest): Promise<string> => {
   const loginUrl = authBasePath().resource('login').build();
-  const response = await request.post(loginUrl).send(credentials ?? config.tenant.superUser);
+  const login = credentials ?? config.tenant.superUser;
+  const response = await request.post(loginUrl).send(login);
+  if (!response) {
+    throw new Error(`Credentials ${login.username} doesn't exists.`);
+  }
   const auth = response.body as LoginResponse;
   return auth.token;
 };

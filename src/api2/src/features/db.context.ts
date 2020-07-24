@@ -2,11 +2,12 @@ import { logger } from './../utils/logger';
 import { config } from '../config';
 import { ConnectionOptions } from 'mongoose';
 import { getModelForClass, mongoose } from '@typegoose/typegoose';
-import { Gender, Person } from './common/person/person.model';
-import { User, userModelOptions } from './membership/users/user.models';
 import { IModelOptions, ReturnModelType } from '@typegoose/typegoose/lib/types';
-import { Role, Resource, AccessControl, Permission, Action, Ownership } from './membership/roles/role.models';
+import { ImageBase } from './common/images/image.models';
 import { Address } from './common/address/address.model';
+import { Gender, Person } from './common/person/person.model';
+import { Role, Resource, AccessControl, Permission, Action, Ownership } from './membership/roles/role.models';
+import { User, userModelOptions } from './membership/users/user.models';
 
 type Args = {
   successFn?: Function,
@@ -66,11 +67,11 @@ const ensureSuperUser = async (db: DbContext): Promise<User> => {
           new AccessControl({
             resource: Resource.all,
             permissions: [
-              new Permission({ action: Action.all, ownership: Ownership.any }),
-              new Permission({ action: Action.read, ownership: Ownership.any }),
-              new Permission({ action: Action.create, ownership: Ownership.any }),
-              new Permission({ action: Action.update, ownership: Ownership.any }),
-              new Permission({ action: Action.delete, ownership: Ownership.any }),
+              new Permission({ action: Action.all, ownership: Ownership.all }),
+              new Permission({ action: Action.read, ownership: Ownership.all }),
+              new Permission({ action: Action.create, ownership: Ownership.all }),
+              new Permission({ action: Action.update, ownership: Ownership.all }),
+              new Permission({ action: Action.delete, ownership: Ownership.all }),
             ]
           })
         ]
@@ -100,6 +101,7 @@ const ensureSuperUser = async (db: DbContext): Promise<User> => {
 }
 
 type DbContext = {
+  images: ReturnModelType<typeof ImageBase, unknown>,
   users: ReturnModelType<typeof User, unknown>,
   roles: ReturnModelType<typeof Role, unknown>,
 }
@@ -128,8 +130,9 @@ export const initDbContext = async ({ successFn, errorFn }: Args = {}) => {
   }
 
   dbContext = {
+    images: getModelForClass(ImageBase, defaultModelOption),
     roles: getModelForClass(Role, defaultModelOption),
-    users: getModelForClass(User, userModelOptions)
+    users: getModelForClass(User, userModelOptions),
   }
 
   await initializeData(dbContext);

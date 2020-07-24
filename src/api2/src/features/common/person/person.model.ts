@@ -1,4 +1,4 @@
-import { ValueObject } from "..";
+import { ValueObject } from "../kernel";
 import { prop } from "@typegoose/typegoose";
 
 enum Gender {

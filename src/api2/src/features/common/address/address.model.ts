@@ -1,7 +1,7 @@
 
 // https://psa.gov.ph/classification/psgc/downloads/PSGC%20Publication%20March2020.xlsx
 
-import { ValueObject } from "..";
+import { ValueObject } from "../kernel";
 import { prop } from "@typegoose/typegoose";
 
 // https://psa.gov.ph/classification/psgc/
