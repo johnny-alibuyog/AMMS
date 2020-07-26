@@ -1,23 +1,24 @@
-import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
+import { DialogController, DialogService } from 'aurelia-dialog';
+
 import { Camera } from "./camera";
 import { ImageCropperDialog } from '../image-cropper/image-cropper-dialog';
-import { decode } from 'punycode';
-
-type View = 'camera' | 'preview';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject()
 export class CameraDialog3 {
   public title: string = 'Camera';
   public width: number = 300;
   public height: number = 225;
-  public view: View = 'camera';
+  public view: 'camera' | 'preview' = 'camera';
   public camera: Camera = null;
   public photo: string = null;
 
-  constructor(private readonly _dialog: DialogService) {}
+  constructor(
+    private readonly _dialog: DialogService,
+    private readonly _controller: DialogController
+  ) { }
 
-  private getSize(image: string) : number {
+  private getSize(image: string): number {
     var base64str = image.substr(22);
     var decoded = atob(base64str);
     return decoded.length;
@@ -27,9 +28,7 @@ export class CameraDialog3 {
     this.photo = await this.camera.capture();
     const size = this.getSize(this.photo);
     console.log(size);
-    debugger;
-    // this.view = 'preview';
-    setTimeout(() => this.view = 'preview', 200);
+    setTimeout(() => this.view = 'preview', 500);
   }
 
   public back(): void {
@@ -46,5 +45,13 @@ export class CameraDialog3 {
       return;
     }
     this.photo = result.output;
+  }
+
+  public accept(): void {
+    this._controller.ok(this.photo);
+  }
+
+  public close(): void {
+    this._controller.cancel();
   }
 }

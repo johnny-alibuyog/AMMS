@@ -1,10 +1,10 @@
-import { ImageBase } from './image.models';
+import { Image } from './image.models';
 import { initDbContext } from '../../db.context';
-import { PageResponse, PageRequest, SortDirection, parsePageFrom, builderDef, Lookup } from '../../common/contract.models';
+import { PageResponse, PageRequest, SortDirection } from '../../common/contract.models';
 
 type ImageIdContract = string;
 
-type ImageContract = ImageBase;
+type ImageContract = Image;
 
 type ImageFilterRequest = { keyword: string }
 
@@ -16,24 +16,24 @@ type ImagePageResponse = PageResponse<ImageContract>;
 
 const get = async (id: ImageIdContract) => {
   const db = await initDbContext();
-  const role = await db.images.findById(id).exec();
-  return <ImageContract>role;
+  const image = await db.images.findById(id).exec();
+  return <ImageContract>image;
 }
 
-const create = async (role: ImageContract) => {
+const create = async (image: ImageContract) => {
   const db = await initDbContext();
-  const { id } = await db.images.create(role);
+  const { id } = await db.images.create(image);
   return <ImageIdContract>id;
 }
 
 const update = async (id: ImageIdContract, role: ImageContract) => {
   const db = await initDbContext();
-  await db.roles.findByIdAndUpdate(id, role).exec();
+  await db.images.findByIdAndUpdate(id, role).exec();
 }
 
 const remove = async (id: ImageIdContract) => {
   const db = await initDbContext();
-  await db.roles.findByIdAndDelete(id).exec();
+  await db.images.findByIdAndDelete(id).exec();
 }
 
 const imageService = {

@@ -129,8 +129,11 @@
 .field-group .group .input:focus {
   @apply outline-none;
   @apply bg-white;
+  @apply border-blue-400;
+  /* 
   @apply border-gray-600;
-  @apply shadow-none;
+    @apply shadow-none; 
+  */
 }
 
 .field-group .group .input-desc {
@@ -271,6 +274,10 @@
 
   .field-group .group {
     /* @apply mb-0; */
+  }
+
+  .field-group .group.by-1 {
+    @apply w-full;
   }
 
   .field-group .group.by-2 {

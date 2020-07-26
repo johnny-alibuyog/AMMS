@@ -1,58 +1,72 @@
-import suppertest from "supertest";
-import { app } from "./app";
 import { ResourceBuilder } from "./utils/resource.builder";
+import { app } from "./app";
+import suppertest from "supertest";
+
+// import { response } from "express";
+// import { token } from "morgan";
+// import { types } from "@typegoose/typegoose";
 
 type IClient<TId extends Object, TModel extends Object> = {
-  get: (id: TId) => Promise<TModel | string>,
-  create: (data: TModel) => Promise<TId | string>,
-  update: (id: TId, data: TModel) => Promise<boolean | string>,
-  remove: (id: TId) => Promise<boolean | string>
+  get: (id: TId) => Promise<TModel>,
+  create: (data: TModel) => Promise<TId>,
+  update: (id: TId, data: TModel) => Promise<boolean>,
+  remove: (id: TId) => Promise<boolean>
+}
+
+type InvokeRequestArgs = {
+  req: suppertest.SuperTest<suppertest.Test>,
+  type: 'get' | 'post' | 'put' | 'delete',
+  url: string,
+  data?: string | object | undefined,
+  token?: string
+}
+
+const invokeRequest = async <TResponse>({ req, type, url, data, token }: InvokeRequestArgs): Promise<TResponse> => {
+  let request = req[type](url);
+  if (data) {
+    request = request.send(data);
+  }
+  if (token) {
+    request = request.set('Authorization', `Bearer ${token}`);
+  }
+  const response = await request;
+  const successStatus: Record<InvokeRequestArgs['type'], number> = {
+    'get': 200,
+    'post': 201,
+    'put': 204,
+    'delete': 204
+  };
+  if (response.status !== successStatus[type]) {
+    throw new Error(response.text);
+  }
+  return response.body as TResponse;
 }
 
 const buildClientFn = (req: suppertest.SuperTest<suppertest.Test>) => {
 
-  return <TId extends Object, TModel extends Object>(builder: () => ResourceBuilder) => {
+  return <TId extends Object, TModel extends Object>(urlBuilder: () => ResourceBuilder) => {
+
 
     return (token?: string): IClient<TId, TModel> => ({
 
-      get: async (id: TId): Promise<TModel | string> => {
-        const url = builder().paramval(id.toString()).build();
-        const response = (token)
-          ? await req.get(url).set('Authorization', `Bearer ${token}`)
-          : await req.get(url);
-        return response.status === 200
-          ? response.body as TModel
-          : response.text;
+      get: async (id: TId): Promise<TModel> => {
+        const url = urlBuilder().paramval(id.toString()).build();
+        return await invokeRequest({ type: 'get', req, url, token });
       },
 
-      create: async (data: TModel): Promise<TId | string> => {
-        const url = builder().build();
-        const response = (token)
-          ? await req.post(url).send(data).set('Authorization', `Bearer ${token}`)
-          : await req.post(url).send(data);
-        return response.status === 201
-          ? response.body as TId
-          : response.text;
+      create: async (data: TModel): Promise<TId> => {
+        const url = urlBuilder().build();
+        return await invokeRequest({ type: 'post', req, url, data, token });
       },
 
-      update: async (id: TId, data: TModel): Promise<boolean | string> => {
-        const url = builder().paramval(id.toString()).build();
-        const response = (token)
-          ? await req.put(url).send(data).set('Authorization', `Bearer ${token}`)
-          : await req.put(url).send(data);
-        return response.status === 204
-          ? response.body as boolean
-          : response.text;
+      update: async (id: TId, data: TModel): Promise<boolean> => {
+        const url = urlBuilder().paramval(id.toString()).build();
+        return await invokeRequest({ type: 'put', req, url, data, token });
       },
 
-      remove: async (id: TId): Promise<boolean | string> => {
-        const url = builder().paramval(id.toString()).build();
-        const response = (token)
-          ? await req.delete(url).set('Authorization', `Bearer ${token}`)
-          : await req.delete(url);
-        return response.status === 204
-          ? response.body as boolean
-          : response.text;
+      remove: async (id: TId): Promise<boolean> => {
+        const url = urlBuilder().paramval(id.toString()).build();
+        return await invokeRequest({ type: 'delete', req, url, token });
       },
     });
   };

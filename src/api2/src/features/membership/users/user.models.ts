@@ -1,18 +1,18 @@
+import { Ref, arrayProp, post, pre, prop } from '@typegoose/typegoose';
+
+import { Address } from '../../common/address/address.model';
 import { Entity } from '../../common/kernel';
-import { prop, Ref, arrayProp, pre, post } from '@typegoose/typegoose';
+import { IModelOptions } from '@typegoose/typegoose/lib/types';
+import { Image } from '../../common/images/image.models';
+import { Person } from '../../common/person/person.model';
 import { Role } from './../roles/role.models';
 import { encryptor } from '../../../utils/encryptor';
-import { IModelOptions } from '@typegoose/typegoose/lib/types';
-import { Person } from '../../common/person/person.model';
-import { Address } from '../../common/address/address.model';
-import { ImageBase } from '../../common/images/image.models';
-
 
 @pre<User>('save', async function () {
   if (this.password) {
     this.password = await encryptor.encrypt(this.password);
   }
-}) 
+})
 class User extends Entity {
   @prop({ unique: true, required: true })
   public email!: string;
@@ -26,11 +26,11 @@ class User extends Entity {
   @prop({ _id: false, required: true })
   public person!: Person;
 
-  @prop()
+  @prop({ _id: false })
   public address?: Address;
 
-  @prop({ ref: () => ImageBase })
-  public photo?: Ref<ImageBase>;
+  @prop({ ref: () => Image })
+  public photo?: Ref<Image>;
 
   @prop({ ref: () => Role })
   public roles!: Ref<Role>[];

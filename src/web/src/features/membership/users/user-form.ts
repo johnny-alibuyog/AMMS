@@ -1,33 +1,38 @@
-import { Lookup } from 'features/common/model';
-import { Router } from 'aurelia-router';
-import { autoinject } from 'aurelia-framework';
-import { User, userRules, initUser, UserId } from "./user.models";
-import { personRules, fullName } from 'features/common/person/person.model';
-import { BreadcrumbItem } from "common/elements/breadcrumbs/custom-breadcrumbs";
+import { Image, ImageId, initImage } from "features/common/images/image.models";
+import { User, UserId, initUser, userRules } from "./user.models";
 import { ValidateResult, ValidationController, ValidationControllerFactory } from "aurelia-validation";
-import { ToastService } from 'common/elements/toast/toast-service';
+import { fullName, personRules } from 'features/common/person/person.model';
+
+import { BreadcrumbItem } from "common/elements/breadcrumbs/custom-breadcrumbs";
+import { CameraDialog3 } from "common/elements/camera/camera-dialog3";
+import { DialogService } from "aurelia-dialog";
+import { Lookup } from 'features/common/model';
 import { PromptService } from 'common/elements/prompt/prompt-service';
+import { Router } from 'aurelia-router';
+import { ToastService } from 'common/elements/toast/toast-service';
 import { ValidationFormRenderer } from 'common/validations/validation-form-renderer';
 import { api } from 'features/api';
+import { autoinject } from 'aurelia-framework';
 import { dirtyChecker } from 'common/utils';
 
 @autoinject()
 export class UserForm {
   public user: User = initUser();
+  public photo: Image = initImage();
+  public blankPhoto: any = require('./blank-profile-picture.jpg');
   public roles: Lookup[] = [];
   public breadcrumbItems: BreadcrumbItem[] = [];
   public readonly errors: ValidateResult[] = [];
   public readonly validator: ValidationController;
-  public video: HTMLVideoElement;
-  public canvas: HTMLCanvasElement;
-  public captures: string[] = [];
 
-  private _isDirty: (user: User) => boolean;
+  private _isUserDirty: (user: User) => boolean;
+  private _isPhotoDirty: (photo: Image) => boolean;
 
   constructor(
     private readonly _router: Router,
     private readonly _toast: ToastService,
     private readonly _prompt: PromptService,
+    private readonly _dialog: DialogService,
     renderer: ValidationFormRenderer,
     factory: ValidationControllerFactory
   ) {
@@ -36,61 +41,40 @@ export class UserForm {
   }
 
   public async activate(params: any): Promise<void> {
+    debugger;
     const id = params['id'];
-    const user = id ? await api.users.get(id) : undefined;
-    const title = user ? `${user.person.firstName} ${user.person.lastName}` : undefined;
-
-    this.user = user ?? initUser();
+    this.user = id ? await api.users.get(id) : initUser();
+    this.photo = this.user?.photo ? await api.images.get(this.user.photo as ImageId) : initImage();
     this.roles = await api.roles.lookup();
+    const title = this.user ? `${this.user.person.firstName} ${this.user.person.lastName}` : undefined;
     this.validator.addObject(this.user, userRules);
     this.validator.addObject(this.user.person, personRules);
-    this._isDirty = dirtyChecker(user);
-
+    this._isUserDirty = dirtyChecker(this.user);
+    this._isPhotoDirty = dirtyChecker(this.photo);
     this.breadcrumbItems = [
       { title: 'Users', url: this._router.generate("users/user-list") },
       { title: 'New User', url: this._router.generate("users/user-form"), ...{ title } }
     ];
-
-    /*
-    if (navigator?.mediaDevices?.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-        this.video.srcObject = stream;
-        this.video.onloadedmetadata = (_) => this.video.play();
-      });
-    }
-
-    // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    //   navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-    //     this.video.srcObject = stream;
-    //     this.video.onloadedmetadata = (e) => this.video.play();
-    //     // this.video.src = window.URL.createObjectURL(stream);
-    //     // this.video.nativeElement.play();
-    //   });
-    // }
-    */
   }
 
-  public capture(): void {
-    const context = this.canvas.getContext('2d').drawImage(this.video, 0, 0, 640, 480);
-    const capture = this.canvas.toDataURL('image/png');
-    this.captures.push(capture);
+  public async changePhoto(): Promise<void> {
+    const settings = { viewModel: CameraDialog3 };
+    const result = await this._dialog.open(settings).whenClosed();
+    if (result.wasCancelled) {
+      return;
+    }
+    this.photo.data = result.output;
+
+    // const context = this.canvas.getContext('2d').drawImage(this.video, 0, 0, 640, 480);
+    // const capture = this.canvas.toDataURL('image/png');
+    // this.captures.push(capture);
   }
 
   public async canDeactivate(): Promise<boolean> {
-    try {
-      if (this._isDirty(this.user)) {
-        return await this._prompt.discard();
-      }
-    }
-    catch(ex) {
-      console.log(ex);
+    if (this._isUserDirty(this.user) || this._isPhotoDirty(this.photo)) {
+      return await this._prompt.discard();
     }
     return true;
-  }
-
-  public async deactivate(): Promise<void> {
-    // const stream = this.video.srcObject as MediaStream;
-    // stream.getTracks().forEach(track => track.stop());
   }
 
   public async save(): Promise<void> {
@@ -98,31 +82,50 @@ export class UserForm {
     if (!valResult.valid) {
       return;
     }
-
-    // const promptResult = await this._prompt.save('Save User', 'Do you want to save changes?');
-    const promptResult = await this._prompt.save('Save User', 'Do you want to save changes the quick brown fox jumped over the head of the lazy dog?');
+    const promptResult = await this._prompt.save('Save User', 'Do you want to save changes?');
     if (!promptResult) {
       return;
     }
+    const photoId = await this.savePhoto(this.photo);
+    const userId = await this.saveUser(this.user, photoId);
+    await this._toast.success(`User ${fullName(this.user.person)} has been saved.`, 'Successful');
+    await this.reload(userId);
+  }
 
-    const create = async (user: User): Promise<void> => {
-      const id = await api.users.create(user);
-      await this._toast.success(`User ${fullName(user.person)} has been created.`, 'Successful');
-      this._router.navigateToRoute("users/user-form", id);
-    };
+  private async savePhoto(photo: Image): Promise<ImageId> {
+    if (!this._isPhotoDirty(photo)) {
+      return photo.id;
+    }
+    if (photo.id) {
+      await api.images.update(photo.id, photo);
+    }
+    else {
+      photo.id = await api.images.create(photo);
+    }
+    return photo.id;
+  }
 
-    const update = async (id: UserId, user: User): Promise<void> => {
-      await api.users.update(id, user);
-      await this._toast.success(`User ${fullName(user.person)} has been updated.`, 'Successful');
-    };
+  private async saveUser(user: User, photoId: ImageId): Promise<UserId> {
+    user.photo = photoId;
+    if (!this._isUserDirty(user)) {
+      return user.id;
+    }
+    if (user.id) {
+      await api.users.update(user.id, user);
+    }
+    else {
+      user.id = await api.users.create(user);
+    }
+    return user.id;
+  }
 
-    await ((this.user.id)
-      ? update(this.user.id, this.user)
-      : create(this.user)
-    );
+  public async reload(userId: UserId) {
+    await this.activate({ id: userId });
+    // this._router.navigateToRoute("users/user-form", userId);
   }
 
   public cancel(): void {
-    this._router.navigateBack();
+    // this._router.navigateBack();
+    this._router.navigateToRoute("users/user-list");
   }
 }

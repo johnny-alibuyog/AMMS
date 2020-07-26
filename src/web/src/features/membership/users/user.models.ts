@@ -1,8 +1,10 @@
-import { SortDirection } from './../../../common/services/pagination';
-import { Role, RoleId } from '../roles/role.models';
-import { ValidationRules } from 'aurelia-validation';
-import { Person, initPerson } from 'features/common/person/person.model';
 import { Address, initAddress } from 'features/common/address/address.model';
+import { Image, ImageId } from 'features/common/images/image.models';
+import { Person, initPerson } from 'features/common/person/person.model';
+import { Role, RoleId } from '../roles/role.models';
+
+import { SortDirection } from './../../../common/services/pagination';
+import { ValidationRules } from 'aurelia-validation';
 
 type UserId = string;
 
@@ -13,6 +15,7 @@ type User = {
   password?: string,
   person: Person,
   address?: Address,
+  photo?: Image | ImageId,
   roles: Role[] | RoleId[]
 }
 

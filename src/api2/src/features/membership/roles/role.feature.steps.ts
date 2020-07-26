@@ -24,7 +24,7 @@ defineFeature(feature, test => {
     beforeAll(async () => {
       roleToBeCreated = roleSeed.randomRoles(1)[0];
       roleToBeUpdatedWith = roleSeed.randomRoles(1)[0];
-      const user = {
+      const user: UserBuilderArgs = {
         email: 'some_email@gmail.com',
         username: 'some_user_with_role_admin',
         password: 'some_password',
@@ -48,7 +48,7 @@ defineFeature(feature, test => {
     });
 
     given('a role has been created', async () => {
-      roleId = await client(token).create(roleToBeCreated) as RoleIdContract;
+      roleId = await client(token).create(roleToBeCreated);
     });
 
     when('the role is updated', async () => {
@@ -56,15 +56,29 @@ defineFeature(feature, test => {
     });
 
     then('the role reflects the changes', async () => {
-      const roleFromServer = await client(token).get(roleId) as RoleContract;
+      const roleFromServer = await client(token).get(roleId);
       expect(roleFromServer.name).toBe(roleToBeUpdatedWith.name);
     });
 
     then('the role is deletable', async () => {
-      await client(token).remove(roleId);
-      const notFound = new HTTP404Error();
-      const roleFromServer = await client(token).get(roleId);
-      expect(roleFromServer).toEqual(notFound.message);
+      try {
+        await client(token).remove(roleId);
+        await client(token).get(roleId);
+      }
+      catch (err) {
+        const notFound = new HTTP404Error();
+        expect(err.message).toBe(notFound.message);
+      }
+
+      // expect(async () => {
+      //   await client(token).remove(roleId);
+      //   await client(token).get(roleId);
+      // })
+      // .toThrow(new HTTP404Error().message);
+      // await client(token).remove(roleId);
+      // const notFound = new HTTP404Error();
+      // const roleFromServer = await client(token).get(roleId);
+      // expect(roleFromServer).toEqual(notFound.message);
     });
   });
 });

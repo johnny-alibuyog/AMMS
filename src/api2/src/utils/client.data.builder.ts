@@ -1,3 +1,5 @@
+
+import * as faker from 'faker';
 import { config } from "../config";
 import { logger } from "./logger";
 import { userSeed } from './../features/membership/users/user.seed';
@@ -10,7 +12,6 @@ import { basePath as authBasePath } from '../features/membership/auth';
 import { basePath as roleBasePath } from '../features/membership/roles';
 import { basePath as userBasePath } from '../features/membership/users';
 import { LoginRequest, LoginResponse } from "../features/membership/auth/auth.service";
-import { assert } from "console";
 
 class Builder<TId extends Object, TModel extends Object> {
   private _id: TId;
@@ -91,9 +92,9 @@ const createUserBuilder = async (token?: string): Promise<IBuilder<UserBuilderAr
         const role = await roleBuilder.build();
         user = await userBuilder
           .with({
-            username: args.username,
-            password: args.password,
-            email: args.email,
+            username: args.username ?? faker.internet.userName(),
+            password: args.password ?? faker.internet.password(),
+            email: args.email ?? faker.internet.email(),
             roles: [role]
           })
           .build();

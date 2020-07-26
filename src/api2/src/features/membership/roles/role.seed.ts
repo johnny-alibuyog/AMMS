@@ -11,7 +11,7 @@ const randomElementsFn = <T>(elements: T[]) => () => faker.helpers.shuffle(eleme
 
 const randomElementFn = <T>(elements: T[]) => () => faker.random.arrayElement(ownerships);
 
-const randomPermission2Fn = (
+const randomPermissionFn = (
   getActions: () => Action[],
   getOwnership: () => Ownership) => {
   return () => {
@@ -44,7 +44,7 @@ const randomAccessControlsFn = (
 
 const randomAccessControls = randomAccessControlsFn(
   randomElementsFn(resources),
-  randomPermission2Fn(
+  randomPermissionFn(
     randomElementsFn(actions),
     randomElementFn(ownerships)
   )

@@ -111,15 +111,12 @@ const find = async (request: UserPageRequest) => {
     total: total,
     items: items
   };
-  logger.info(`RESPONSE: ${JSON.stringify(response)}`);
   return response;
 }
 
 const get = async (id: UserIdContract) => {
-  logger.info(`CONTEXT MAN: ${JSON.stringify(context.current())}`);
   const db = await initDbContext();
   const user = await db.users.findById(id).exec();
-  // const user = await db.users.findById(id).populate('roles').exec();
   return <UserContract>user;
 }
 

@@ -242,6 +242,8 @@
 
 #filter-form .field-group .group .input:focus {
   @apply bg-white;
+  @apply border-blue-500;
+  @apply shadow-outline;
 } 
 
 /*

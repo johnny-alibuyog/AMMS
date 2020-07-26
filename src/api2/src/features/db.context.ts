@@ -1,9 +1,9 @@
 import { logger } from './../utils/logger';
 import { config } from '../config';
 import { ConnectionOptions } from 'mongoose';
-import { getModelForClass, mongoose } from '@typegoose/typegoose';
+import { getModelForClass, mongoose, getDiscriminatorModelForClass } from '@typegoose/typegoose';
 import { IModelOptions, ReturnModelType } from '@typegoose/typegoose/lib/types';
-import { ImageBase } from './common/images/image.models';
+import { Image } from './common/images/image.models';
 import { Address } from './common/address/address.model';
 import { Gender, Person } from './common/person/person.model';
 import { Role, Resource, AccessControl, Permission, Action, Ownership } from './membership/roles/role.models';
@@ -101,7 +101,7 @@ const ensureSuperUser = async (db: DbContext): Promise<User> => {
 }
 
 type DbContext = {
-  images: ReturnModelType<typeof ImageBase, unknown>,
+  images: ReturnModelType<typeof Image, unknown>, 
   users: ReturnModelType<typeof User, unknown>,
   roles: ReturnModelType<typeof Role, unknown>,
 }
@@ -129,8 +129,12 @@ export const initDbContext = async ({ successFn, errorFn }: Args = {}) => {
     }
   }
 
+  // const imageModel = getModelForClass(ImageBase, defaultModelOption);
+  // const blobImageModel = getDiscriminatorModelForClass(imageModel, ImageBlob);
+  // const base64ImageModel = getDiscriminatorModelForClass(imageModel, ImageBase64);
+
   dbContext = {
-    images: getModelForClass(ImageBase, defaultModelOption),
+    images: getModelForClass(Image, defaultModelOption),
     roles: getModelForClass(Role, defaultModelOption),
     users: getModelForClass(User, userModelOptions),
   }

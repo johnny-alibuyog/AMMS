@@ -1,5 +1,5 @@
-import { ValueObject, Entity } from '../../common/kernel';
-import { prop, mapProp, index } from "@typegoose/typegoose";
+import { Entity, ValueObject } from '../../common/kernel';
+import { index, mapProp, prop } from "@typegoose/typegoose";
 
 enum Resource {
   all = 'All',
@@ -40,10 +40,10 @@ class Permission extends ValueObject {
 }
 
 class AccessControl extends ValueObject {
-  @prop({ enum: Resource, required: true })
+  @prop({ _id: false, enum: Resource, required: true })
   public resource!: Resource;
 
-  @prop({ type: () => Permission})
+  @prop({ _id: false, type: () => Permission})
   public permissions!: Permission[];
 
   // @mapProp({ of: Action, enum: Ownership, required: true })
@@ -55,12 +55,12 @@ class AccessControl extends ValueObject {
   }
 }
 
-@index({ name: 1, accessControl: 1 }, { unique: true })
+// @index({ name: 1, accessControl: 1 }, { unique: true })
 class Role extends Entity {
   @prop({ required: true })
   public name!: string;
 
-  @prop({ type: () => AccessControl})
+  @prop({  _id: false, type: () => AccessControl})
   public accessControls!: AccessControl[];
 
   constructor(init?: Role) {

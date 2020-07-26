@@ -9,7 +9,7 @@ import { ImageCropperDialog } from '../image-cropper/image-cropper-dialog';
 //https://stackoverflow.com/questions/12024770/access-camera-from-a-browser
 //https://makitweb.com/how-to-capture-picture-from-webcam-with-webcam-js/@autoinject()
 @autoinject()
-export class CameraDialog {
+export class CameraDialog1 {
 
   private readonly title: string = 'Camera';
 
