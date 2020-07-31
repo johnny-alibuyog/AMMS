@@ -10,35 +10,28 @@
     </ux-dialog-header>
 
     <ux-dialog-body class="flex">
-      <div if.bind="view == 'camera'" class="flex flex-col space-y-2">
-        <camera width.bind="width" height.bind="height" view-model.ref="camera" photo.bind="photo">
-        </camera>
-        <!-- <button click.delegate="capture()">
-          <i class="fa fa-camera fa-lg mr-2"></i> <span>Capture</span>
-        </button> -->
+      <div if.bind="view === 'camera'" class="flex flex-col space-y-2">
+        <camera width.bind="width" height.bind="height" view-model.ref="camera" photo.bind="photo"></camera>
       </div>
-      <div if.bind="view == 'preview'" class="flex flex-col space-y-2">
+      <div if.bind="view === 'preview'" class="flex flex-col space-y-2">
         <img width.bind="width" height.bind="height" src.bind="photo" />
-        <!-- <button click.delegate="crop()">
-          <i class="fa fa-crop fa-lg mr-2"></i> <span>Crop</span>
-        </button> -->
       </div>
     </ux-dialog-body>
 
     <ux-dialog-footer class="pr-4">
-      <button class="primary" type="submit" if.bind="view === 'preview'" click.delegate="accept()" focus.bind="view === 'preview'">
+      <button class="primary" type="submit" if.bind="isPreview" click.delegate="accept()" focus.from-view="isPreview">
         <i class="far fa-check-circle fa-lg"></i>
         <!-- <span>Accept</span> -->
       </button>
-      <button class="secondary" type="button" if.bind="view === 'preview'" click.delegate="crop()">
+      <button class="secondary" type="button" if.bind="isPreview" click.delegate="crop()">
         <i class="fa fa-crop fa-lg"></i>
         <!-- <span>Crop</span> -->
       </button>
-      <button class="secondary" type="button" if.bind="view === 'preview'" click.delegate="back()">
+      <button class="secondary" type="button" if.bind="isPreview" click.delegate="back()">
         <i class="far fa-arrow-alt-circle-left fa-lg"></i>
         <!-- <span>Back</span> -->
       </button>
-      <button class="secondary" type="button" if.bind="view === 'camera'" click.delegate="capture()" focus.bind="view === 'camera'">
+      <button class="secondary" type="button" if.bind="isCamera" click.delegate="capture()" focus.from-view="isCamera">
         <i class="fa fa-camera fa-lg"></i>
         <!-- <span>Capture</span> -->
       </button>

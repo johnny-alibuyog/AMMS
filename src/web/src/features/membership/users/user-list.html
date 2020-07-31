@@ -6,26 +6,19 @@
     <section slot="tool-section">
       <tool-bar>
         <add-tool exec.call="add()"></add-tool>
-        <tile-tool exec.call="add()"></tile-tool>
-        <list-tool exec.call="add()"></list-tool>
-        <dropdown-menu-tool>
+        <list-tool exec.call="setView('list')"></list-tool>
+        <tile-tool exec.call="setView('tile')"></tile-tool>
+        <!-- <dropdown-menu-tool>
           <tool-bar>
-            <list-tool exec.call="add()"></list-tool>
-            <tile-tool exec.call="add()"></tile-tool>
+            <list-tool exec.call="setView('list')"></list-tool>
+            <tile-tool exec.call="setView('tile')"></tile-tool>
             <add-tool exec.call="add()"></add-tool>
           </tool-bar>
-          <!-- <dropdown-menu-tool-item>
-            <tool-bar>
-              <list-tool exec.call="add()"></list-tool>
-              <tile-tool exec.call="add()"></tile-tool>
-              <add-tool exec.call="add()"></add-tool>
-            </tool-bar>
-          </dropdown-menu-tool-item> -->
           <dropdown-menu-tool-item exec.call="add()">Men</dropdown-menu-tool-item>
           <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
           <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
           <dropdown-menu-tool-item exec.call="add()">Men 2</dropdown-menu-tool-item>
-        </dropdown-menu-tool>
+        </dropdown-menu-tool> -->
       </tool-bar>
     </section>
 
@@ -55,12 +48,17 @@
     </section>
 
     <section slot="list-section" class="list-section">
-      <div class="responsive-table">
+
+
+      <div if.bind="view === 'list'" class="responsive-table">
         <table>
           <thead>
             <tr>
               <th class="action">
                 <span>Action</span>
+              </th>
+              <th>
+                <span>Photo</span>
               </th>
               <th click.delegate="sorter.doSort('username')" class="highlightable">
                 <span>Username</span>
@@ -90,10 +88,15 @@
                   <i class="fas fa-trash"></i>
                 </a>
               </td>
+              <td>    
+                <img class="w-10 h-10 bg-gray-300 rounded-full flex-nogrow object-cover"
+                  src.bind="user.photo.data"
+                  alt="" />
+              </td>
               <td>${user.username}</td>
               <td>${user.person.firstName} ${user.person.lastName}</td>
               <td class="right">${user.email}</td>
-              <td class="flex space-x-1">
+              <td class="space-x-1">
                 <span repeat.for="role of user.roles" class="px-2 inline-flex leading-5 rounded-full bg-green-200 text-green-800">
                   ${role | lookupName:roles }
                 </span>
@@ -101,6 +104,50 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div else> 
+        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <li class="col-span-1 bg-white rounded-lg shadow" repeat.for="user of pager.items">
+            <div class="w-full flex items-center justify-between p-6 space-x-6">
+              <div class="flex-1 truncate">
+                <div class="flex items-center space-x-3">
+                  <h3 class="text-gray-900 text-sm leading-5 font-medium truncate">${user.person.firstName} ${user.person.lastName}</h3>
+                  <span repeat.for="role of user.roles"
+                    class="flex-shrink-0 inline-block px-2 py-0.5 text-teal-800 text-xs leading-4 font-medium bg-teal-100 rounded-full">${role | lookupName:roles }</span>
+                </div>
+                <p class="mt-1 text-gray-500 text-sm leading-5 truncate">Regional Paradigm Technician</p>
+              </div>
+              <img class="w-10 h-10 bg-gray-300 rounded-full flex-nogrow object-cover"
+                src.bind="user.photo.data"
+                alt="" />
+            </div>
+            <div class="border-t border-gray-200">
+              <div class="-mt-px flex">
+                <div class="w-0 flex-1 flex border-r border-gray-200">
+                  <a href="#"
+                    class="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm leading-5 text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 transition ease-in-out duration-150">
+                    <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    <span class="ml-3">Email</span>
+                  </a>
+                </div>
+                <div class="-ml-px w-0 flex-1 flex">
+                  <a href="#"
+                    class="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm leading-5 text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 transition ease-in-out duration-150">
+                    <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path
+                        d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                    <span class="ml-3">Call</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
 
       <pagination current-page.bind="pager.page" total-items.bind="pager.total"

@@ -1,8 +1,8 @@
 import { DialogController, DialogService } from 'aurelia-dialog';
+import { autoinject, computedFrom } from 'aurelia-framework';
 
 import { Camera } from "./camera";
 import { ImageCropperDialog } from '../image-cropper/image-cropper-dialog';
-import { autoinject } from 'aurelia-framework';
 
 @autoinject()
 export class CameraDialog3 {
@@ -22,6 +22,16 @@ export class CameraDialog3 {
     var base64str = image.substr(22);
     var decoded = atob(base64str);
     return decoded.length;
+  }
+
+  @computedFrom("view")
+  public get isCamera(): boolean {
+    return this.view === 'camera';
+  }
+
+  @computedFrom("view")
+  public get isPreview(): boolean {
+    return this.view === 'camera';
   }
 
   public async capture(): Promise<void> {

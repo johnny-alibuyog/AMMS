@@ -50,6 +50,8 @@ const initFilter = (): UserFilter => ({
   roles: []
 });
 
+const isUserNew = (user: User) => !user?.id;
+
 const userRules = ValidationRules
   .ensure((user: User) => user.username).required()
   .ensure((user: User) => user.email).required().email()
@@ -69,5 +71,6 @@ export {
   initUser,
   initSort,
   initFilter,
-  userRules
+  userRules,
+  isUserNew
 }

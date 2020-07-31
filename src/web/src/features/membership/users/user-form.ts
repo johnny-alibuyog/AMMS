@@ -1,5 +1,5 @@
-import { Image, ImageId, initImage } from "features/common/images/image.models";
-import { User, UserId, initUser, userRules } from "./user.models";
+import { Image, ImageId, initImage, isImageNew } from "features/common/images/image.models";
+import { User, UserId, initUser, isUserNew, userRules } from "./user.models";
 import { ValidateResult, ValidationController, ValidationControllerFactory } from "aurelia-validation";
 import { fullName, personRules } from 'features/common/person/person.model';
 
@@ -46,7 +46,7 @@ export class UserForm {
     this.user = id ? await api.users.get(id) : initUser();
     this.photo = this.user?.photo ? await api.images.get(this.user.photo as ImageId) : initImage();
     this.roles = await api.roles.lookup();
-    const title = this.user ? `${this.user.person.firstName} ${this.user.person.lastName}` : undefined;
+    const title = isUserNew(this.user) ? 'New User' : `${this.user.person.firstName} ${this.user.person.lastName}`;
     this.validator.addObject(this.user, userRules);
     this.validator.addObject(this.user.person, personRules);
     this._isUserDirty = dirtyChecker(this.user);
@@ -64,10 +64,6 @@ export class UserForm {
       return;
     }
     this.photo.data = result.output;
-
-    // const context = this.canvas.getContext('2d').drawImage(this.video, 0, 0, 640, 480);
-    // const capture = this.canvas.toDataURL('image/png');
-    // this.captures.push(capture);
   }
 
   public async canDeactivate(): Promise<boolean> {
@@ -96,11 +92,11 @@ export class UserForm {
     if (!this._isPhotoDirty(photo)) {
       return photo.id;
     }
-    if (photo.id) {
-      await api.images.update(photo.id, photo);
+    if (isImageNew(photo)) {
+      photo.id = await api.images.create(photo);
     }
     else {
-      photo.id = await api.images.create(photo);
+      await api.images.update(photo.id, photo);
     }
     return photo.id;
   }
@@ -110,11 +106,11 @@ export class UserForm {
     if (!this._isUserDirty(user)) {
       return user.id;
     }
-    if (user.id) {
-      await api.users.update(user.id, user);
+    if (isUserNew(user)) {
+      user.id = await api.users.create(user);
     }
     else {
-      user.id = await api.users.create(user);
+      await api.users.update(user.id, user);
     }
     return user.id;
   }

@@ -62,7 +62,7 @@
   margin-left: calc(1rem * calc(1 - var(--space-x-reverse))); */
   @apply text-center;
   @apply align-middle;
-  @apply block;
+  /* @apply block; */
 }
 
 .responsive-table > table > thead > tr > th.center,

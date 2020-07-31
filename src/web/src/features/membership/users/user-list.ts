@@ -1,17 +1,19 @@
-import { Router } from 'aurelia-router';
-import { autoinject } from 'aurelia-framework';
-import { User, UserFilter, UserSort, initFilter, initSort } from './user.models';
-import { Filter, Sorter, Pager } from 'common/services/pagination';
+import { Filter, Pager, Sorter } from 'common/services/pagination';
 import { Lookup, PageRequest } from 'features/common/model';
-import { UrlState } from 'features/common/url.states';
+import { User, UserFilter, UserSort, initFilter, initSort } from './user.models';
+
 import { RoleId } from '../roles/role.models';
+import { Router } from 'aurelia-router';
+import { UrlState } from 'features/common/url.states';
 import { api } from 'features/api';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class UserList {
   private readonly _url: UrlState
   private _activated: boolean = false ;
   public title: string = "Users";
+  public view: 'list' | 'tile' = 'list';
   public roles: Lookup[] = [];
   public filter: Filter<UserFilter>;
   public sorter: Sorter<UserSort>;
@@ -20,6 +22,10 @@ export class UserList {
   constructor(private readonly _router: Router) {
     this.init();
     this._url = new UrlState(this._router);
+  }
+
+  public setView(value: UserList['view']) {
+    this.view = value;
   }
 
   private init(): void {

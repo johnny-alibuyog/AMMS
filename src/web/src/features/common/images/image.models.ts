@@ -14,10 +14,13 @@ const initImage = (): Image => ({
   data: null
 });
 
+const isImageNew = (image: Image) => !image?.id;
+
 export {
   Image,
   ImageId,
   ImageSort,
   ImageFilter,
-  initImage
+  initImage,
+  isImageNew
 }

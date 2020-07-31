@@ -1,5 +1,6 @@
+import { RouteConfig, Router, RouterConfiguration } from 'aurelia-router';
+
 import { PLATFORM } from 'aurelia-framework';
-import { RouterConfiguration, RouteConfig, Router } from 'aurelia-router';
 
 export class Index {
   public router: Router;
@@ -63,6 +64,16 @@ const generateUsersRoutes = (): RouteConfig[] => {
       nav: true,
       settings: {
         icon: 'fa-camera'
+      }
+    },
+    {
+      title: 'Sample Grid List',
+      name: 'sample-grid-list',
+      route: 'sample-grid-list',
+      moduleId: PLATFORM.moduleName('./sample-grid-list'),
+      nav: true,
+      settings: {
+        icon: 'fa-portrait'
       }
     },
     {
