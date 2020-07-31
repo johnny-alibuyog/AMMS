@@ -1,14 +1,14 @@
-import { basePath } from ".";
-import { Image } from "./image.models";
-import { imageSeed } from './image.seed';
-import { buildClient } from "../../../client";
-import { loadFeature, defineFeature } from "jest-cucumber";
-import { ImageContract, ImageIdContract } from "./image.service";
-import { UserContract } from "../../membership/users/user.services";
-import { UserBuilderArgs, IBuilder, createUserBuilder, getToken } from "../../../utils/client.data.builder";
-import { AccessControl, Resource, Permission, Action, Ownership } from "../../membership/roles/role.models";
-import { HTTP404Error } from "../../../utils/http.errors";
-import { expectCt } from "helmet";
+import { AccessControl, Action, Ownership, Permission, Resource } from "../../../membership/roles/role.models";
+import { IBuilder, UserBuilderArgs, createUserBuilder, getToken } from "../../../../utils/client.data.builder";
+import { ImageContract, ImageIdContract } from "../image.service";
+import { defineFeature, loadFeature } from "jest-cucumber";
+
+import { HTTP404Error } from "../../../../utils/http.errors";
+import { Image } from "../image.models";
+import { UserContract } from "../../../membership/users/user.services";
+import { basePath } from "..";
+import { buildClient } from "../../../../client";
+import { randomizeBase64Image } from '../data/image.randomizer';
 
 const feature = loadFeature('./image.feature', { loadRelativePath: true });
 
@@ -24,8 +24,8 @@ defineFeature(feature, (test) => {
     let token: string;
 
     beforeAll(async () => {
-      imageToBeCreated = imageSeed.randomBase64Image(1)[0];
-      imageToBeUpdatedWith = imageSeed.randomBase64Image(1)[0];
+      imageToBeCreated = randomizeBase64Image(1)[0];
+      imageToBeUpdatedWith = randomizeBase64Image(1)[0];
       userBuilder = await createUserBuilder();
       const user: UserBuilderArgs = {
         email: 'some_email@gmail.com',
@@ -50,7 +50,7 @@ defineFeature(feature, (test) => {
     })
 
     given(/^a base64Image has been created$/, async () => {
-      imageId = await client(token).create(imageToBeUpdatedWith);
+      imageId = await client(token).create(imageToBeCreated);
     });
 
     when(/^the base64Image has been updated$/, async () => {

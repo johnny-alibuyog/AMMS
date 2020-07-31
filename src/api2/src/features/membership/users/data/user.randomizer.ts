@@ -1,13 +1,14 @@
 import * as faker from 'faker';
-import { User } from './user.models';
-import { Role } from '../roles/role.models';
-import { Person } from '../../common/person/person.model';
-import { randomPerson } from '../../common/person/person.seed';
-import { randomAddress } from '../../common/address/address.seed';
+
+import { Person } from '../../../common/person/person.model';
+import { Role } from '../../roles/role.models';
+import { User } from '../user.models';
+import { randomAddress } from '../../../common/address/address.seed';
+import { randomPerson } from '../../../common/person/person.seed';
 
 const generateUsername = (person: Person) => faker.internet.userName(person.firstName, person.lastName); 
 
-const randomUsersFn = (getRoles: () => Role[]) => (count: number = 12) => {
+const randomizeUsersFn = (getRoles: () => Role[]) => (count: number = 12) => {
 
   return Array.from({ length: count }, (x, i) => {
     const person = randomPerson();
@@ -23,11 +24,4 @@ const randomUsersFn = (getRoles: () => Role[]) => (count: number = 12) => {
   });
 };
 
-const defaultUsers = () => {
-
-};
-
-export const userSeed = {
-  randomUsersFn,
-  defaultUsers
-};
+export { randomizeUsersFn }

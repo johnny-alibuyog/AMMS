@@ -1,5 +1,6 @@
 import { Entity, ValueObject } from '../../common/kernel';
-import { index, mapProp, prop } from "@typegoose/typegoose";
+
+import { prop } from "@typegoose/typegoose";
 
 enum Resource {
   all = 'All',
@@ -68,26 +69,7 @@ class Role extends Entity {
     Object.assign(this, init);
   }
 }
-
-const roles = {
-  super: new Role({
-    name: 'Super Role',
-    accessControls: [
-      new AccessControl({
-        resource: Resource.all,
-        permissions: [
-          new Permission({
-            action: Action.all,
-            ownership: Ownership.all
-          })
-        ]
-      })
-    ]
-  })
-};
-
 export {
-  roles,
   Role,
   AccessControl,
   Resource,

@@ -1,4 +1,4 @@
-import { Ref, arrayProp, post, pre, prop } from '@typegoose/typegoose';
+import { Ref, pre, prop } from '@typegoose/typegoose';
 
 import { Address } from '../../common/address/address.model';
 import { Entity } from '../../common/kernel';
@@ -8,11 +8,13 @@ import { Person } from '../../common/person/person.model';
 import { Role } from './../roles/role.models';
 import { encryptor } from '../../../utils/encryptor';
 
-@pre<User>('save', async function () {
-  if (this.password) {
-    this.password = await encryptor.encrypt(this.password);
+const preUserSave = async (user: User) => {
+  if (user.password) {
+    user.password = await encryptor.encrypt(user.password);
   }
-})
+}
+
+@pre<User>('save', async function () { await preUserSave(this) })
 class User extends Entity {
   @prop({ unique: true, required: true })
   public email!: string;
@@ -59,5 +61,6 @@ const userModelOptions: IModelOptions = {
 
 export {
   User,
+  preUserSave,
   userModelOptions
 }

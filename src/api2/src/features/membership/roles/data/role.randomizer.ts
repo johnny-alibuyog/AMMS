@@ -1,5 +1,7 @@
 import * as faker from 'faker';
-import { Role, AccessControl, Resource, Permission, Action, Ownership } from './role.models';
+
+import { AccessControl, Action, Ownership, Permission, Resource, Role } from '../role.models';
+import { randomizeElementFn, randomizeElementsFn } from '../../../common/tests/helpers';
 
 const resources = Object.values(Resource).filter(x => x != Resource.all);
 
@@ -7,16 +9,12 @@ const actions = Object.values(Action);
 
 const ownerships = Object.values(Ownership);
 
-const randomElementsFn = <T>(elements: T[]) => () => faker.helpers.shuffle(elements).slice(0, faker.random.number({ min: 1, max: elements.length }))
-
-const randomElementFn = <T>(elements: T[]) => () => faker.random.arrayElement(ownerships);
-
-const randomPermissionFn = (
+const randomizePermissionFn = (
   getActions: () => Action[],
   getOwnership: () => Ownership) => {
   return () => {
     return getActions()
-      .map(x => 
+      .map(x =>
         new Permission({
           action: x,
           ownership: getOwnership()
@@ -28,7 +26,7 @@ const randomPermissionFn = (
   }
 }
 
-const randomAccessControlsFn = (
+const randomizeAccessControlsFn = (
   getResource: () => Resource[],
   getPermissions: () => Permission[]) => {
   return () => {
@@ -42,28 +40,23 @@ const randomAccessControlsFn = (
   };
 };
 
-const randomAccessControls = randomAccessControlsFn(
-  randomElementsFn(resources),
-  randomPermissionFn(
-    randomElementsFn(actions),
-    randomElementFn(ownerships)
+const randomizeAccessControls = randomizeAccessControlsFn(
+  randomizeElementsFn(resources),
+  randomizePermissionFn(
+    randomizeElementsFn(actions),
+    randomizeElementFn(ownerships)
   )
 );
 
-const randomRoles = (count: number = 12) => {
+const randomizeRoles = (count: number = 12) => {
   return Array.from({ length: count },
     (x, i) => new Role({
       name: faker.name.jobTitle(),
-      accessControls: randomAccessControls()
+      accessControls: randomizeAccessControls()
     })
   );
 };
 
-const defaultRoles = () => {
-
-};
-
-export const roleSeed = {
-  randomRoles,
-  defaultRoles
+export {
+  randomizeRoles
 };

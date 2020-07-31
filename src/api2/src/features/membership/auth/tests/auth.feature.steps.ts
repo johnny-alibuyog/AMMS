@@ -1,11 +1,12 @@
+import { AccessControl, Action, Ownership, Permission, Resource } from '../../roles/role.models';
+import { IBuilder, UserBuilderArgs, createUserBuilder } from '../../../../utils/client.data.builder';
+import { LoginRequest, LoginResponse } from '../auth.service';
 import { defineFeature, loadFeature } from 'jest-cucumber';
-import { basePath } from '.';
-import { logger } from '../../../utils/logger';
-import { request } from '../../../client';
-import { UserContract } from '../users/user.services';
-import { LoginRequest, LoginResponse } from './auth.service';
-import { Resource, AccessControl, Action, Ownership, Permission } from '../roles/role.models';
-import { createUserBuilder, IBuilder, UserBuilderArgs } from '../../../utils/client.data.builder';
+
+import { UserContract } from '../../users/user.services';
+import { basePath } from '..';
+import { logger } from '../../../../utils/logger';
+import { request } from '../../../../client';
 
 const feature = loadFeature('./auth.feature', { loadRelativePath: true });
 

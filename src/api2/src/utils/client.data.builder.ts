@@ -2,8 +2,8 @@
 import * as faker from 'faker';
 import { config } from "../config";
 import { logger } from "./logger";
-import { userSeed } from './../features/membership/users/user.seed';
-import { roleSeed } from './../features/membership/roles/role.seed';
+import { randomizeUsersFn } from '../features/membership/users/data/user.randomizer';
+import { randomizeRoles } from '../features/membership/roles/data/role.randomizer';
 import { IClient, buildClient, request } from "../client";
 import { AccessControl, Permission } from "../features/membership/roles/role.models";
 import { RoleIdContract, RoleContract } from "../features/membership/roles/role.services";
@@ -79,8 +79,8 @@ const createUserBuilder = async (token?: string): Promise<IBuilder<UserBuilderAr
   }
   const userClient = buildClient<UserIdContract, UserContract>(() => userBasePath());
   const roleClient = buildClient<RoleIdContract, RoleContract>(() => roleBasePath());
-  const userBuilder = new Builder(() => userSeed.randomUsersFn(() => [])(1)[0], userClient(token));
-  const roleBuilder = new Builder(() => roleSeed.randomRoles(1)[0], roleClient(token));
+  const userBuilder = new Builder(() => randomizeUsersFn(() => [])(1)[0], userClient(token));
+  const roleBuilder = new Builder(() => randomizeRoles(1)[0], roleClient(token));
   let user: UserContract;
 
   return {

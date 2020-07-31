@@ -1,12 +1,13 @@
-import { basePath } from '.';
-import { roleSeed } from './role.seed';
-import { UserContract } from '../users/user.services';
-import { buildClient } from '../../../client';
-import { HTTP404Error } from '../../../utils/http.errors';
+import { AccessControl, Action, Ownership, Permission, Resource } from '../role.models';
+import { IBuilder, UserBuilderArgs, createUserBuilder, getToken } from '../../../../utils/client.data.builder';
+import { RoleContract, RoleIdContract } from '../role.services';
 import { defineFeature, loadFeature } from 'jest-cucumber';
-import { RoleIdContract, RoleContract } from './role.services';
-import { AccessControl, Resource, Permission, Action, Ownership } from './role.models';
-import { IBuilder, createUserBuilder, getToken, UserBuilderArgs } from './../../../utils/client.data.builder';
+
+import { HTTP404Error } from '../../../../utils/http.errors';
+import { UserContract } from '../../users/user.services';
+import { basePath } from '..';
+import { buildClient } from '../../../../client';
+import { randomizeRoles } from '../data/role.randomizer';
 
 const feature = loadFeature('./role.feature', { loadRelativePath: true });
 
@@ -22,8 +23,8 @@ defineFeature(feature, test => {
     let token: string;
 
     beforeAll(async () => {
-      roleToBeCreated = roleSeed.randomRoles(1)[0];
-      roleToBeUpdatedWith = roleSeed.randomRoles(1)[0];
+      roleToBeCreated = randomizeRoles(1)[0];
+      roleToBeUpdatedWith = randomizeRoles(1)[0];
       const user: UserBuilderArgs = {
         email: 'some_email@gmail.com',
         username: 'some_user_with_role_admin',

@@ -105,7 +105,7 @@ const find = async (request: UserPageRequest) => {
   const { skip, limit } = parsePageFrom(request);
   const [total, items] = await Promise.all([
     db.users.find(filter).countDocuments().exec(),
-    db.users.find(filter, null, sort).skip(skip).limit(limit).exec()
+    db.users.find(filter, null, sort).populate('photo').skip(skip).limit(limit).exec()
   ]);
   const response: UserPageResponse = {
     total: total,

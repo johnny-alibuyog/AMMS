@@ -1,13 +1,14 @@
-import { userSeed } from './user.seed';
-import { roleSeed } from './../roles/role.seed';
-import { buildClient } from '../../../client';
-import { basePath as userPath } from '.';
-import { basePath as rolePath } from '../roles';
+import { AccessControl, Action, Ownership, Permission, Resource } from '../../roles/role.models';
+import { IBuilder, UserBuilderArgs, createUserBuilder, getToken } from '../../../../utils/client.data.builder';
+import { RoleContract, RoleIdContract } from '../../roles/role.services';
+import { UserContract, UserIdContract } from '../user.services';
 import { defineFeature, loadFeature } from 'jest-cucumber';
-import { UserIdContract, UserContract } from './user.services';
-import { RoleIdContract, RoleContract } from '../roles/role.services';
-import { AccessControl, Resource, Permission, Action, Ownership } from '../roles/role.models';
-import { IBuilder, createUserBuilder, getToken, UserBuilderArgs } from '../../../utils/client.data.builder';
+
+import { buildClient } from '../../../../client';
+import { randomizeRoles } from '../../roles/data/role.randomizer';
+import { randomizeUsersFn } from '../data/user.randomizer';
+import { basePath as rolePath } from '../../roles';
+import { basePath as userPath } from '..';
 
 const feature = loadFeature('./user.feature', { loadRelativePath: true });
 
@@ -26,24 +27,13 @@ defineFeature(feature, test => {
     beforeAll(async () => {
       const roles = await (async () => {
         const superToken = await getToken();
-        const rolesId = await Promise.all(
-          roleSeed.randomRoles(3)
-            .map(x => roleClient(superToken).create(x))
-        );
-
-        const result = await Promise.all(
-          rolesId.map(x => roleClient(superToken).get(x))
-        );
-
+        const roleIds = await Promise.all(randomizeRoles(3).map(x => roleClient(superToken).create(x)));
+        const result = await Promise.all(roleIds.map(x => roleClient(superToken).get(x)));
         return result.map(x => x as RoleContract);
       })();
-
-      const randomUsers = userSeed.randomUsersFn(() => roles);
-
-      userToBeCreated = randomUsers(1)[0];
-
-      userToBeUpdatedWith = randomUsers(1)[0];
-
+      const randomizeUsers = randomizeUsersFn(() => roles);
+      userToBeCreated = randomizeUsers(1)[0];
+      userToBeUpdatedWith = randomizeUsers(1)[0];
       const params = {
         email: 'some.user@gmail.com',
         username: 'some_user_with_user_admin',
