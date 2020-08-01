@@ -10,8 +10,10 @@
 }
 
 .account-bar__image {
-  @apply h-10;
-  @apply w-10;
+  /* @apply h-10; */
+  /* @apply w-10; */
+  height: 36px;
+  width: 36px;
   @apply object-cover;
   @apply rounded-full;
   @apply border-2;
@@ -49,8 +51,8 @@
 
 .account-bar__dropdown-target {
   @apply block;
-  @apply h-8;
-  @apply w-8;
+  @apply h-10;
+  @apply w-10;
   @apply overflow-hidden;
   @apply rounded-full;
   @apply border-2;
@@ -124,5 +126,8 @@
   }
   .account-bar__dropdown-content {
     @apply border;
+  }
+  .account-bar__image {
+    @apply border-0;
   }
 }

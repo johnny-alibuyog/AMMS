@@ -31,7 +31,7 @@ export class CameraDialog3 {
 
   @computedFrom("view")
   public get isPreview(): boolean {
-    return this.view === 'camera';
+    return this.view === 'preview';
   }
 
   public async capture(): Promise<void> {

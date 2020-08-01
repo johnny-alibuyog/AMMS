@@ -1,4 +1,4 @@
-import { ValidationRules } from 'aurelia-validation';
+import { User } from '../users/user.models';
 
 type LoginCredential = {
   username: string,
@@ -7,14 +7,9 @@ type LoginCredential = {
 }
 
 type LoginResponse = {
+  user: User,
   token: string
 }
-
-const credentialRules = ValidationRules
-  .ensure((x: LoginCredential) => x.username).required()
-  .ensure((x: LoginCredential) => x.password).required()
-  .rules;
-
 
 const intitCredential = () : LoginCredential => ({
   username: '',
@@ -25,6 +20,5 @@ const intitCredential = () : LoginCredential => ({
 export {
   LoginResponse,
   LoginCredential,
-  intitCredential,
-  credentialRules
+  intitCredential
 }

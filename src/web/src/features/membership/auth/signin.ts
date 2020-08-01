@@ -1,10 +1,11 @@
-import { autoinject } from 'aurelia-framework';
-import { auth } from '.';
-import { ToastService } from 'common/elements/toast/toast-service';
-import { LoginCredential, intitCredential, credentialRules } from './auth.models';
+import { LoginCredential, intitCredential } from './auth.models';
 import { ValidateResult, ValidationController, ValidationControllerFactory } from 'aurelia-validation';
-import { ValidationFormRenderer } from 'common/validations/validation-form-renderer';
 
+import { ToastService } from 'common/elements/toast/toast-service';
+import { ValidationFormRenderer } from 'common/validations/validation-form-renderer';
+import { auth } from '.';
+import { autoinject } from 'aurelia-framework';
+import { credentialRules } from './auth.validation';
 
 @autoinject()
 export class Login {

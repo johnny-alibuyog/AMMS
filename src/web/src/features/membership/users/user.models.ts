@@ -52,16 +52,6 @@ const initFilter = (): UserFilter => ({
 
 const isUserNew = (user: User) => !user?.id;
 
-const userRules = ValidationRules
-  .ensure((user: User) => user.username).required()
-  .ensure((user: User) => user.email).required().email()
-  // .ensure('person.firstName').required()
-  // .ensure('person.lastName').required()
-  // .ensure((user: User) => user.password).required()
-  // .ensure((user: User) => user.confirmPassword).required().satisfiesRule(rules.matchesProperty, 'password')
-  // .ensure((user: User) => user.addressInfo).required()
-  // .ensure((user: User) => user.roles).required()
-  .rules;
 
 export {
   User,
@@ -71,6 +61,5 @@ export {
   initUser,
   initSort,
   initFilter,
-  userRules,
   isUserNew
 }

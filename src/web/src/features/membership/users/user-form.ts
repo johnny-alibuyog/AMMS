@@ -1,7 +1,6 @@
 import { Image, ImageId, initImage, isImageNew } from "features/common/images/image.models";
-import { User, UserId, initUser, isUserNew, userRules } from "./user.models";
+import { User, UserId, initUser, isUserNew } from "./user.models";
 import { ValidateResult, ValidationController, ValidationControllerFactory } from "aurelia-validation";
-import { fullName, personRules } from 'features/common/person/person.model';
 
 import { BreadcrumbItem } from "common/elements/breadcrumbs/custom-breadcrumbs";
 import { CameraDialog3 } from "common/elements/camera/camera-dialog3";
@@ -14,6 +13,9 @@ import { ValidationFormRenderer } from 'common/validations/validation-form-rende
 import { api } from 'features/api';
 import { autoinject } from 'aurelia-framework';
 import { dirtyChecker } from 'common/utils';
+import { fullName } from 'features/common/person/person.model';
+import { personRules } from "features/common/person/person.validation";
+import { userRules } from "./user.validation";
 
 @autoinject()
 export class UserForm {

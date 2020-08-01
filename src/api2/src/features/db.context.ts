@@ -2,6 +2,7 @@ import { IModelOptions, ReturnModelType } from '@typegoose/typegoose/lib/types';
 import { User, userModelOptions } from './membership/users/user.models';
 import { getModelForClass, mongoose } from '@typegoose/typegoose';
 
+import { Branch } from './membership/branches/branch.models';
 import { ConnectionOptions } from 'mongoose';
 import { Image } from './common/images/image.models';
 import { Role } from './membership/roles/role.models';
@@ -15,8 +16,9 @@ type Args = {
 
 export type DbContext = {
   images: ReturnModelType<typeof Image, unknown>, 
-  users: ReturnModelType<typeof User, unknown>,
+  branches: ReturnModelType<typeof Branch, unknown>,
   roles: ReturnModelType<typeof Role, unknown>,
+  users: ReturnModelType<typeof User, unknown>,
 }
 
 let dbContext: DbContext;
@@ -71,6 +73,7 @@ export const initDbContext = async ({ successFn, errorFn }: Args = {}) => {
   await initConnection({ successFn, errorFn });
   dbContext = {
     images: getModelForClass(Image, defaultModelOption),
+    branches: getModelForClass(Branch, defaultModelOption),
     roles: getModelForClass(Role, defaultModelOption),
     users: getModelForClass(User, userModelOptions),
   };

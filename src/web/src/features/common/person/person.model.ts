@@ -1,5 +1,3 @@
-import { ValidationRules } from "aurelia-validation";
-
 enum Gender {
   male = 'Male',
   female = 'Female',
@@ -24,16 +22,9 @@ const initPerson = (): Person => ({
   birthDate: null
 });
 
-const personRules = ValidationRules
-  .ensure((person: Person) => person.firstName).required()
-  .ensure((person: Person) => person.lastName).required()
-  .ensure((person: Person) => person.gender).required()
-  .rules;
-
 export {
   Gender,
   Person,
   fullName,
   initPerson,
-  personRules,
 }

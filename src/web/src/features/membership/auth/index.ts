@@ -1,8 +1,10 @@
-import { Aurelia, PLATFORM, Container } from 'aurelia-framework';
+import { Aurelia, Container, PLATFORM } from 'aurelia-framework';
+
 import { AuthState } from '../../../kernel/state/models';
-import { state } from '../../../kernel/state';
-import { authApi } from './auth.api';
 import { LoginCredential } from './auth.models';
+import { api } from 'features/api';
+import { fullName } from 'features/common/person/person.model';
+import { state } from '../../../kernel/state';
 
 const app: Aurelia = Container.instance.get(Aurelia);
 
@@ -11,14 +13,14 @@ const getState = (): Promise<AuthState> => {
 }
 
 const signin = async (credential: LoginCredential): Promise<void> => {
-  const response = await authApi.login(credential);
-  state.auth.set({ token: response.token, signedIn: true, remember: false });
-  state.user.set({ id: 'some_id', name: 'some_name' });
+  const { token, user } = await api.auth.login(credential);
+  state.auth.set({ token: token, signedIn: true, remember: false });
+  state.user.set({ id: user.id, name: fullName(user.person) });
   changeRoot('dashboard');
 }
 
-const signout = async () : Promise<void> => {
-  await authApi.logout();
+const signout = async (): Promise<void> => {
+  await api.auth.logout();
   state.auth.reset();
   state.user.reset();
   changeRoot('signin');
