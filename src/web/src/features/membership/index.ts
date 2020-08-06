@@ -10,6 +10,8 @@ export class Index {
     config.title = "Membership";
     config.map([
       ...generateUsersRoutes(),
+      ...generateRolesRoutes(),
+      ...generateBranchesRoutes(),
     ]);
   }
 }
@@ -35,23 +37,14 @@ const generateUsersRoutes = (prefix: string = 'users'): RouteConfig[] => {
       nav: false
     },
     {
-      title: 'Roles',
-      name: `${prefix}/role-list`,
-      route: `${prefix}/role-list`,
-      moduleId: PLATFORM.moduleName('./roles/role-list'),
-      nav: true,
-      settings: {
-        // group: properCase(prefix),
-        icon: 'fa-user-shield'
-      }
-    },
-    {
-      title: 'Role',
-      name: `${prefix}/role-form`,
-      route: `${prefix}/role-form`,
-      moduleId: PLATFORM.moduleName('./roles/role-form'),
-      nav: false
-    },
+      route: '',
+      redirect: `${prefix}/user-list`
+    }
+  ];
+}
+
+const generateBranchesRoutes = (prefix: string = 'branches'): RouteConfig[] => {
+  return [
     {
       title: 'Branches',
       name: `${prefix}/branch-list`,
@@ -70,9 +63,29 @@ const generateUsersRoutes = (prefix: string = 'users'): RouteConfig[] => {
       moduleId: PLATFORM.moduleName('./branches/branch-form'),
       nav: false
     },
+  ];
+}
+
+
+const generateRolesRoutes = (prefix: string = 'roles'): RouteConfig[] => {
+  return [
     {
-      route: '',
-      redirect: `${prefix}/user-list`
-    }
+      title: 'Roles',
+      name: `${prefix}/role-list`,
+      route: `${prefix}/role-list`,
+      moduleId: PLATFORM.moduleName('./roles/role-list'),
+      nav: true,
+      settings: {
+        // group: properCase(prefix),
+        icon: 'fa-user-shield'
+      }
+    },
+    {
+      title: 'Role',
+      name: `${prefix}/role-form`,
+      route: `${prefix}/role-form`,
+      moduleId: PLATFORM.moduleName('./roles/role-form'),
+      nav: false
+    },
   ];
 }

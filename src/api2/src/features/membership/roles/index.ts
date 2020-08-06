@@ -1,10 +1,11 @@
-import { wrap } from '../../../utils/error.handlers';
-import { handle } from '../../../utils/response.handlers';
-import { authorize } from '../../../middlewares/auth';
-import { Resource, Action } from './role.models';
+import { Action, Resource } from './role.models';
 import { Request, Response } from 'express';
+import { RoleContract, RoleIdContract, RolePageRequest, roleService } from './role.services';
 import { Route, resourceBuilder } from '../../../utils';
-import { roleService, RolePageRequest, RoleIdContract, RoleContract } from './role.services';
+
+import { authorize } from '../../../middlewares/auth';
+import { handle } from '../../../utils/response.handlers';
+import { wrap } from '../../../utils/error.handlers';
 
 const basePath = () => resourceBuilder('roles');
 
@@ -13,6 +14,17 @@ const guard = (action: Action) =>
 
 const routes: Route[] = [
   {
+    path: basePath().resource('lookup').build(),
+    method: 'get',
+    handlers: [
+      guard(Action.read),
+      wrap(async (req: Request, res: Response) => {
+        const result = await roleService.lookup();
+        handle(req, res, result);
+      })
+    ]
+  },
+  {
     path: basePath().build(),
     method: 'get',
     handlers: [
@@ -20,17 +32,6 @@ const routes: Route[] = [
       wrap(async (req: Request, res: Response) => {
         const params = req.query as RolePageRequest;
         const result = await roleService.find(params);
-        handle(req, res, result);
-      })
-    ]
-  },
-  {
-    path: basePath().resource('lookup').build(),
-    method: 'get',
-    handlers: [
-      guard(Action.read),
-      wrap(async (req: Request, res: Response) => {
-        const result = await roleService.lookup();
         handle(req, res, result);
       })
     ]
@@ -73,6 +74,18 @@ const routes: Route[] = [
     ]
   },
   {
+    path: basePath().param('id').build(),
+    method: 'patch',
+    handlers: [
+      guard(Action.update),
+      wrap(async (req: Request, res: Response) => {
+        const id = req.params['id'] as RoleIdContract;
+        const role = req.body as Partial<RoleContract>;
+        await roleService.patch(id, role);
+        handle(req, res, true);
+      })
+    ]
+  }, {
     path: basePath().param('id').build(),
     method: 'delete',
     handlers: [

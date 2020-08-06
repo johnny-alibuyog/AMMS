@@ -10,7 +10,8 @@ type UserState = {
 }
 
 type ListPageState = {
-  isFilterVisible: boolean  
+  isFilterVisible: boolean,
+  view: 'list-view' | 'grid-view'
 }
 
 type FormPageState = {
@@ -36,7 +37,8 @@ const initialUserState: UserState = {
 }
 
 const initialListPageState: ListPageState = {
-  isFilterVisible: false
+  isFilterVisible: false,
+  view: 'grid-view'
 }
 
 const initialFormPageState: FormPageState = {

@@ -8,6 +8,7 @@ const branches = {
     name: 'Cubao Branch',
     active: true,
     mobile: '0998392403',
+    landline: '2345643',
     email: 'cubao@rapide.com',
     address: new Address({
       line1: 'Ocean Street, Virginia Summer Ville',
@@ -21,6 +22,7 @@ const branches = {
     name: 'Marikina Branch',
     active: true,
     mobile: '0998392403',
+    landline: '4325677',
     email: 'marikina@rapide.com',
     address: new Address({
       line1: 'Ocean Street, Virginia Summer Ville',
@@ -33,4 +35,4 @@ const branches = {
 
 const data = Object.values(branches);
 
-export { branches as users, data };
+export { branches, data };

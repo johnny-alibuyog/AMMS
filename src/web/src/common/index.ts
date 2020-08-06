@@ -13,6 +13,7 @@ export function configure(config: FrameworkConfiguration) {
     PLATFORM.moduleName("./elements/tool-bar/list-tool"),
     PLATFORM.moduleName("./elements/tool-bar/tile-tool"),
     PLATFORM.moduleName("./elements/tool-bar/dropdown-menu-tool"),
+    PLATFORM.moduleName("./value-converters/address-value-converter"),
     PLATFORM.moduleName("./value-converters/currency-value-converter"),
     PLATFORM.moduleName("./value-converters/date-time-value-converter"),
     PLATFORM.moduleName("./value-converters/enum-key-value-value-converter"),

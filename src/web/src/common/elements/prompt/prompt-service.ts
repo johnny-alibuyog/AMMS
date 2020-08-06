@@ -1,8 +1,9 @@
+import { Action, Prompt, PromptOptions, PromptType, defaultActions } from './prompt';
+import { DialogService, DialogSettings } from 'aurelia-dialog';
+
+import { FormPageState } from 'kernel/state/models';
 import { autoinject } from 'aurelia-framework';
 import { state } from 'kernel/state';
-import { FormPageState } from 'kernel/state/models';
-import { DialogService, DialogSettings } from 'aurelia-dialog';
-import { Prompt, PromptType, PromptOptions, Action, defaultActions } from './prompt';
 
 type Params = {
   title: string, 
@@ -84,6 +85,50 @@ export class PromptService {
     }
     const result = await this.show(params);
     return result === 'Save';
+  }
+
+  public async activate(title: string, message: string): Promise<boolean> {
+    const params: Params = {
+      title: title,
+      message: message,
+      type: 'confirm',
+      actions: [
+        {
+          label: 'Activate',
+          focused: true,
+          type: 'primary'
+        },
+        {
+          label: 'Cancel',
+          focused: false,
+          type: 'secondary'
+        }
+      ]
+    }
+    const result = await this.show(params);
+    return result === 'Activate';
+  }
+
+  public async deactivate(title: string, message: string): Promise<boolean> {
+    const params: Params = {
+      title: title,
+      message: message,
+      type: 'alert',
+      actions: [
+        {
+          label: 'Deactivate',
+          focused: true,
+          type: 'primary'
+        },
+        {
+          label: 'Cancel',
+          focused: false,
+          type: 'secondary'
+        }
+      ]
+    }
+    const result = await this.show(params);
+    return result === 'Deactivate';
   }
 
   public async inform(title: string, message: string): Promise<boolean> {

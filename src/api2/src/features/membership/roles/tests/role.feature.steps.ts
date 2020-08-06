@@ -62,24 +62,8 @@ defineFeature(feature, test => {
     });
 
     then('the role is deletable', async () => {
-      try {
-        await client(token).remove(roleId);
-        await client(token).get(roleId);
-      }
-      catch (err) {
-        const notFound = new HTTP404Error();
-        expect(err.message).toBe(notFound.message);
-      }
-
-      // expect(async () => {
-      //   await client(token).remove(roleId);
-      //   await client(token).get(roleId);
-      // })
-      // .toThrow(new HTTP404Error().message);
-      // await client(token).remove(roleId);
-      // const notFound = new HTTP404Error();
-      // const roleFromServer = await client(token).get(roleId);
-      // expect(roleFromServer).toEqual(notFound.message);
+      await client(token).remove(roleId);
+      await expect(client(token).get(roleId)).rejects.toEqual(new HTTP404Error());
     });
   });
 });

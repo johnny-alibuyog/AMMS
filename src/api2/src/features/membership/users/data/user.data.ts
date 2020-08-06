@@ -3,6 +3,7 @@ import { Gender, Person } from "../../../common/person/person.model";
 import { Address } from "../../../common/address/address.model";
 import { ObjectId } from 'mongodb';
 import { User } from "../user.models";
+import { data as branchData } from '../../branches/data/branch.data';
 import { config } from "../../../../config";
 import { roles } from "../../roles/data/role.data";
 
@@ -24,6 +25,7 @@ const users = {
       municipality: 'Antipolo City',
       province: 'Rizal'
     }),
+    branches: branchData.map(x => x._id),
     roles: [roles.superRole._id]
   })
 }

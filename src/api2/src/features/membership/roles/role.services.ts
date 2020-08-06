@@ -14,6 +14,16 @@ type RolePageRequest = PageRequest<RoleFilterRequest, RoleSortRequest>;
 
 type RolePageResponse = PageResponse<RoleContract>;
 
+const lookup = async () => {
+  const db = await initDbContext();
+  const build = builderDef<Role>();
+  const sort = build().sort([['name', 'asc']])
+  const projection = build().projection(['_id', 'name']);
+  const roles = await db.roles.find({ active: true }, projection, sort).exec();
+  const lookups = roles.map<Lookup>(x => ({ id: x._id, name: x.name }));
+  return lookups;
+}
+
 const find = async (request: RolePageRequest) => {
   const db = await initDbContext();
   const { skip, limit } = parsePageFrom(request);
@@ -34,16 +44,6 @@ const get = async (id: RoleIdContract) => {
   return <RoleContract>role;
 }
 
-const lookup = async () => {
-  const db = await initDbContext();
-  const build = builderDef<Role>();
-  const sort = build().sort([['name', 'asc']])
-  const projection = build().projection(['_id', 'name']);
-  const roles = await db.roles.find({}, projection, sort).exec();
-  const lookups: Lookup[] = roles.map(x => ({ id: x._id, name: x.name }));
-  return lookups;
-}
-
 const create = async (role: RoleContract) => {
   const db = await initDbContext();
   const { id } = await db.roles.create(role);
@@ -55,17 +55,23 @@ const update = async (id: RoleIdContract, role: RoleContract) => {
   await db.roles.findByIdAndUpdate(id, role).exec();
 }
 
+const patch = async (id: RoleIdContract, role: Partial<RoleContract>) => {
+  const db = await initDbContext();
+  await db.roles.findByIdAndUpdate(id, role).exec();
+}
+
 const remove = async (id: RoleIdContract) => {
   const db = await initDbContext();
   await db.roles.findByIdAndDelete(id).exec();
 }
 
 const roleService = {
-  find,
   get,
+  find,
   lookup,
   create,
   update,
+  patch,
   remove
 };
 

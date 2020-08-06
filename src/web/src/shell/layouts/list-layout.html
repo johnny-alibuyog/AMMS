@@ -3,11 +3,11 @@
 
   <section class="list-layout">
     <header class="list-layout__header">
-      <div class="list-layout__header__filter-toggler ${isFilterVisible ? 'open' : '' }">
+      <div class="list-layout__header__filter-toggler ${settings.isFilterVisible ? 'open' : '' }">
         <div class="list-layout__header__filter-toggler-button noselect" click.delegate="toggleFilter()">
           <i class="fas fa-filter"></i> Filter
         </div>
-        <div class="list-layout__header__filter-toggler-close ${isFilterVisible ? 'open' : '' }"
+        <div class="list-layout__header__filter-toggler-close ${settings.isFilterVisible ? 'open' : '' }"
           click.delegate="toggleFilter()">
           <i <i class="fas fa-times"></i>
         </div>

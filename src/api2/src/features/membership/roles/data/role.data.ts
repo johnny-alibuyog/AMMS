@@ -7,6 +7,7 @@ const roles = {
 
   superRole: new Role({
     _id: new ObjectId('5f23d6a506fd041e7fc210d3'),
+    active: true,
     name: config.tenant.superRole.name,
     accessControls: [
       new AccessControl({
@@ -23,6 +24,7 @@ const roles = {
 
   sysAdmin: new Role({
     _id: new ObjectId('5f23d862280be05226e556e1'),
+    active: true,
     name: 'SysAdmin',
     accessControls: [
       new AccessControl({
@@ -39,6 +41,7 @@ const roles = {
 
   manager: new Role({
     _id: new ObjectId('5f23d878fdb967f538a2fe13'),
+    active: true,
     name: 'Manager',
     accessControls: [
       new AccessControl({
@@ -55,6 +58,7 @@ const roles = {
 
   technician: new Role({
     _id: new ObjectId('5f23d87e00799b9e229a57b6'),
+    active: true,
     name: 'Technician',
     accessControls: [
       new AccessControl({
@@ -71,6 +75,7 @@ const roles = {
 
   partsman: new Role({
     _id: new ObjectId('5f23d8883845e2fee41f4625'),
+    active: true,
     name: 'Partsman',
     accessControls: [
       new AccessControl({
@@ -87,6 +92,7 @@ const roles = {
 
   accounting1: new Role({
     _id: new ObjectId('5f23d88df3ad56faa11a233b'),
+    active: true,
     name: 'Accounting 1',
     accessControls: [
       new AccessControl({
@@ -104,6 +110,7 @@ const roles = {
   accounting2: new Role({
     _id: new ObjectId('5f23d8953f0413c612e3bd63'),
     name: 'Accounting 2',
+    active: true,
     accessControls: [
       new AccessControl({
         resource: Resource.all,

@@ -61,6 +61,9 @@ class Role extends Entity {
   @prop({ required: true })
   public name!: string;
 
+  @prop()
+  public active!: boolean;
+
   @prop({  _id: false, type: () => AccessControl})
   public accessControls!: AccessControl[];
 

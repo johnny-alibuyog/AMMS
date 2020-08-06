@@ -23,6 +23,7 @@ export class UserForm {
   public photo: Image = initImage();
   public blankPhoto: any = require('./blank-profile-picture.jpg');
   public roles: Lookup[] = [];
+  public branches: Lookup[] = [];
   public breadcrumbItems: BreadcrumbItem[] = [];
   public readonly errors: ValidateResult[] = [];
   public readonly validator: ValidationController;
@@ -43,11 +44,10 @@ export class UserForm {
   }
 
   public async activate(params: any): Promise<void> {
-    debugger;
     const id = params['id'];
     this.user = id ? await api.users.get(id) : initUser();
     this.photo = this.user?.photo ? await api.images.get(this.user.photo as ImageId) : initImage();
-    this.roles = await api.roles.lookup();
+    [this.roles, this.branches] = await Promise.all([api.roles.lookup(), api.branches.lookup()]);
     const title = isUserNew(this.user) ? 'New User' : `${this.user.person.firstName} ${this.user.person.lastName}`;
     this.validator.addObject(this.user, userRules);
     this.validator.addObject(this.user.person, personRules);

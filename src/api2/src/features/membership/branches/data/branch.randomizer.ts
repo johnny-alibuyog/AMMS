@@ -3,7 +3,7 @@ import * as faker from 'faker';
 import { Branch } from '../branch.models';
 import { randomAddress } from '../../../common/address/address.seed';
 
-const randomizeBranches = (count: number = 12) => {
+const randomizeBranches = (count: number = 12, partial?: Partial<Branch>) => {
   return Array.from({ length: count }, (x, i) => {
     return new Branch({
       name: faker.company.companyName(),
@@ -12,6 +12,7 @@ const randomizeBranches = (count: number = 12) => {
       landline: faker.phone.phoneNumber(),
       mobile: faker.phone.phoneNumber(),
       address: randomAddress(),
+      ...partial
     })
   });
 };

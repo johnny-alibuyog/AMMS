@@ -7,7 +7,7 @@ const branchSeederFn = (branches: Branch[]) => {
   return async (model: ReturnModelType<typeof Branch, unknown>) => {
     logger.info('Seeding branches ...');
     const bulk = model.collection.initializeOrderedBulkOp();
-    branches.forEach(branch => bulk.find({ 'name': branch.name }).upsert().updateOne({ "$setOnInsert": branch }))
+    branches.forEach(branch => bulk.find({ '_id': branch._id }).upsert().updateOne({ "$setOnInsert": branch }))
     await bulk.execute();
   }
 }

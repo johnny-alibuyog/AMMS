@@ -1,11 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
+import { Action, Resource } from '../roles/role.models';
+import { NextFunction, Request, Response } from 'express';
 import { Route, resourceBuilder } from './../../../utils/index';
+import { UserContract, UserIdContract, UserPageRequest, userService } from './user.services';
+
 import { authorize } from '../../../middlewares/auth';
 import { handle } from '../../../utils/response.handlers';
-import { wrap } from '../../../utils/error.handlers';
-import { Resource, Action } from '../roles/role.models';
-import { userService, UserPageRequest, UserIdContract, UserContract } from './user.services';
 import { logger } from '../../../utils/logger';
+import { wrap } from '../../../utils/error.handlers';
 
 const basePath = () => resourceBuilder('users')
 
@@ -58,6 +59,19 @@ const routes: Route[] = [
         const id = req.params['id'] as UserIdContract;
         const user = req.body as UserContract;
         await userService.update(id, user);
+        handle(req, res, true);
+      })
+    ]
+  },
+  {
+    path: basePath().param('id').build(),
+    method: 'patch',
+    handlers: [
+      guard(Action.update),
+      wrap(async (req: Request, res: Response) => {
+        const id = req.params['id'] as UserIdContract;
+        const user = req.body as Partial<UserContract>;
+        await userService.patch(id, user);
         handle(req, res, true);
       })
     ]

@@ -1,29 +1,31 @@
-import { bindable } from "aurelia-framework";
 import { ListPageState } from "kernel/state/models";
-import { state } from "kernel/state";
 import { Subscription } from "rxjs";
+import { bindable } from "aurelia-framework";
+import { state } from "kernel/state";
 
 export class ListLayout {
 
   @bindable()
   public title: string = "";
 
-  public isFilterVisible: boolean = false;
-
   public settings: ListPageState;
 
   private subscriptions: Subscription[] = [];
 
   public toggleFilter(): void {
-    // this.isFilterVisible = !this.isFilterVisible;
     this.settings.isFilterVisible = !this.settings.isFilterVisible;
+    state.listPage.set(this.settings);
+  }
+
+  public setView(view: ListPageState['view']): void {
+    this.settings.view = view;
     state.listPage.set(this.settings);
   }
 
   public async attached(): Promise<void> {
     this.settings = await state.listPage.current();
     this.subscriptions = [
-      state.listPage.state().subscribe(val => this.settings = val)
+      state.listPage.state().subscribe(value => this.settings = value)
     ];
   }
 

@@ -1,5 +1,6 @@
 import * as faker from 'faker';
 
+import { Branch } from '../../branches/branch.models';
 import { Person } from '../../../common/person/person.model';
 import { Role } from '../../roles/role.models';
 import { User } from '../user.models';
@@ -8,7 +9,7 @@ import { randomPerson } from '../../../common/person/person.seed';
 
 const generateUsername = (person: Person) => faker.internet.userName(person.firstName, person.lastName); 
 
-const randomizeUsersFn = (getRoles: () => Role[]) => (count: number = 12) => {
+const randomizeUsersFn = (getRoles: () => Role[], getBranches: () => Branch[]) => (count: number = 12) => {
 
   return Array.from({ length: count }, (x, i) => {
     const person = randomPerson();
@@ -19,6 +20,7 @@ const randomizeUsersFn = (getRoles: () => Role[]) => (count: number = 12) => {
       password: faker.internet.password(),
       person: person,
       address: randomAddress(),
+      branches: getBranches(),
       roles: getRoles()
     })
   });

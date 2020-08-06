@@ -52,6 +52,7 @@ const randomizeRoles = (count: number = 12) => {
   return Array.from({ length: count },
     (x, i) => new Role({
       name: faker.name.jobTitle(),
+      active: faker.random.boolean(),
       accessControls: randomizeAccessControls()
     })
   );

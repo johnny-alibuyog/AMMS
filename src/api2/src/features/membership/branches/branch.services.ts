@@ -2,11 +2,13 @@ import { Branch } from './branch.models';
 import { logger } from '../../../utils/logger';
 import { context } from '../../../utils/request.context';
 import { initDbContext } from '../../db.context';
-import { PageResponse, PageRequest, SortDirection, parsePageFrom } from '../../common/contract.models';
+import { PageResponse, PageRequest, SortDirection, parsePageFrom, builderDef, Lookup } from '../../common/contract.models';
 
 type BranchIdContract = string;
 
 type BranchContract = Branch;
+
+// type BranchActiveContract = Pick<Branch, 'active'>;
 
 type BranchFilterRequest = { keyword?: string }
 
@@ -54,6 +56,16 @@ const addEntryWhen = <T, M>(value: T, evaluator: EvalParam<T, M>): {} =>
 const addEntryIf = (condition: () => boolean, entry: {}): {} =>
   condition() && entry;
 
+const lookup = async () => {
+  const db = await initDbContext();
+  const build = builderDef<Branch>();
+  const sort = build().sort([['name', 'asc']])
+  const projection = build().projection(['_id', 'name']);
+  const branches = await db.branches.find({ active: true }, projection, sort).exec();
+  const lookups = branches.map<Lookup>(x => ({ id: x._id, name: x.name }));
+  return lookups;
+}
+
 const find = async (request: BranchPageRequest) => {
   const db = await initDbContext();
   // https://stackoverflow.com/questions/56021631/add-elements-inside-array-conditionally-in-javascript
@@ -63,7 +75,7 @@ const find = async (request: BranchPageRequest) => {
       when: isNotNullOrDefault,
       map: (value) => ({
         $or: [
-          { 'name': { $regex: `${value}` } },
+          { 'name': { $regex: new RegExp(`${value}`, 'i') } },
           { 'address.line1': { $regex: `${value}` } },
           { 'address.line2': { $regex: `${value}` } },
           { 'address.municipality': { $regex: `${value}` } },
@@ -113,17 +125,24 @@ const update = async (id: BranchIdContract, branch: BranchContract) => {
   await db.branches.findByIdAndUpdate(id, branch).exec();
 }
 
+const patch = async (id: BranchIdContract, branch: Partial<BranchContract>) => {
+  const db = await initDbContext();
+  await db.branches.findByIdAndUpdate(id, branch).exec();
+}
+
 const remove = async (id: BranchIdContract) => {
   const db = await initDbContext();
   await db.branches.findByIdAndDelete(id).exec();
 }
 
 const branchService = {
+  lookup,
   find,
   get,
   create,
   update,
-  remove
+  patch,
+  remove,
 };
 
 export {
@@ -131,5 +150,6 @@ export {
   BranchContract,
   BranchIdContract,
   BranchPageRequest,
-  BranchPageResponse
+  BranchPageResponse,
+  // BranchActiveContract
 }

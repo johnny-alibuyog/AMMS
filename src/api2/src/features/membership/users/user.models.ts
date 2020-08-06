@@ -1,6 +1,7 @@
 import { Ref, pre, prop } from '@typegoose/typegoose';
 
 import { Address } from '../../common/address/address.model';
+import { Branch } from '../branches/branch.models';
 import { Entity } from '../../common/kernel';
 import { IModelOptions } from '@typegoose/typegoose/lib/types';
 import { Image } from '../../common/images/image.models';
@@ -33,6 +34,9 @@ class User extends Entity {
 
   @prop({ ref: () => Image })
   public photo?: Ref<Image>;
+
+  @prop({ ref: () => Branch })
+  public branches!: Ref<Branch>[];
 
   @prop({ ref: () => Role })
   public roles!: Ref<Role>[];

@@ -1,10 +1,10 @@
 import { Address, initAddress } from 'features/common/address/address.model';
+import { Branch, BranchId } from '../branches/branch.models';
 import { Image, ImageId } from 'features/common/images/image.models';
 import { Person, initPerson } from 'features/common/person/person.model';
 import { Role, RoleId } from '../roles/role.models';
 
 import { SortDirection } from './../../../common/services/pagination';
-import { ValidationRules } from 'aurelia-validation';
 
 type UserId = string;
 
@@ -16,6 +16,7 @@ type User = {
   person: Person,
   address?: Address,
   photo?: Image | ImageId,
+  branches: Branch[] | BranchId[],
   roles: Role[] | RoleId[]
 }
 
@@ -27,7 +28,8 @@ type UserSort = {
 
 type UserFilter = {
   keyword?: string,
-  roles?: RoleId[]
+  roles?: RoleId[],
+  branches?: BranchId[]
 }
 
 const initUser = (): User => ({
@@ -36,6 +38,7 @@ const initUser = (): User => ({
   email: '',
   person: initPerson(),
   address: initAddress(),
+  branches: [],
   roles: []
 });
 
@@ -47,6 +50,7 @@ const initSort = (): UserSort => ({
 
 const initFilter = (): UserFilter => ({
   keyword: '',
+  branches: [],
   roles: []
 });
 

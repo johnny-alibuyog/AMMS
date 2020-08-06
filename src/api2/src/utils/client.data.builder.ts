@@ -10,8 +10,11 @@ import { RoleIdContract, RoleContract } from "../features/membership/roles/role.
 import { UserIdContract, UserContract } from '../features/membership/users/user.services';
 import { basePath as authBasePath } from '../features/membership/auth';
 import { basePath as roleBasePath } from '../features/membership/roles';
+import { basePath as branchBasePath } from '../features/membership/branches';
 import { basePath as userBasePath } from '../features/membership/users';
 import { LoginRequest, LoginResponse } from "../features/membership/auth/auth.service";
+import { BranchIdContract, BranchContract } from '../features/membership/branches/branch.services';
+import { randomizeBranches } from '../features/membership/branches/data/branch.randomizer';
 
 class Builder<TId extends Object, TModel extends Object> {
   private _id: TId;
@@ -79,8 +82,10 @@ const createUserBuilder = async (token?: string): Promise<IBuilder<UserBuilderAr
   }
   const userClient = buildClient<UserIdContract, UserContract>(() => userBasePath());
   const roleClient = buildClient<RoleIdContract, RoleContract>(() => roleBasePath());
-  const userBuilder = new Builder(() => randomizeUsersFn(() => [])(1)[0], userClient(token));
+  const branchClient = buildClient<BranchIdContract, BranchContract>(() => branchBasePath());
+  const userBuilder = new Builder(() => randomizeUsersFn(() => [], () => [])(1)[0], userClient(token));
   const roleBuilder = new Builder(() => randomizeRoles(1)[0], roleClient(token));
+  const branchBuilder = new Builder(() => randomizeBranches(1)[0], branchClient(token));
   let user: UserContract;
 
   return {
@@ -90,11 +95,13 @@ const createUserBuilder = async (token?: string): Promise<IBuilder<UserBuilderAr
           roleBuilder.with({ accessControls: [args.accessControl] });
         }
         const role = await roleBuilder.build();
+        const branch = await branchBuilder.build();
         user = await userBuilder
           .with({
             username: args.username ?? faker.internet.userName(),
             password: args.password ?? faker.internet.password(),
             email: args.email ?? faker.internet.email(),
+            branches: [branch],
             roles: [role]
           })
           .build();

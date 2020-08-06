@@ -181,6 +181,26 @@
 
         <div class="form-group">
           <div class="form-group__title">
+            <h3 class="label">Branches</h3>
+            <p class="desc">Branch where the user is assigned to.</p>
+          </div>
+          <div class="form-group__content">
+            <div class="checkbox-group">
+              <span class="label">Branches</span>
+              <div class="checkboxes">
+                <label class="group" repeat.for="branch of branches">
+                  <input class="input form-checkbox" type="checkbox" model.bind="branch.id" checked.bind="user.branches" />
+                  <span class="desc">${branch.name}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group__divider"></div>
+
+        <div class="form-group">
+          <div class="form-group__title">
             <h3 class="label">Access Rights</h3>
             <p class="desc">A user role defines permissions for users to perform a group of tasks.</p>
           </div>

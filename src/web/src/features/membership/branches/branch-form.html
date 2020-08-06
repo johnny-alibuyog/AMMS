@@ -1,3 +1,109 @@
 <template>
-  ${title}
+  <require from="../../common/person/gender.binder"></require>
+  <require from="../../../shell/layouts/form-layout"></require>
+
+  <form-layout title.bind="title">
+
+    <section slot="title-section">
+      <custom-breadcrumbs items.bind="breadcrumbItems"></custom-breadcrumbs>
+    </section>
+
+    <section slot="tool-section">
+      <tool-bar>
+        <add-tool exec.call="add()"></add-tool>
+        <tile-tool exec.call="add()"></tile-tool>
+        <list-tool exec.call="add()"></list-tool>
+      </tool-bar>
+
+    </section>
+
+    <!-- form section -->
+    <section slot="form-section">
+      <form id="input-form" class="form" validation-errors="errors.bind: errors; controller.bind: validator"
+        submit.delegate="save()">
+
+        <div class="form-group">
+          <div class="form-group__title">
+            <h3 class="label">Info</h3>
+            <p class="desc">This information will be the contact reference of the branch.</p>
+          </div>
+          <div class="form-group__content">
+
+            <div class="field-group">
+              <label class="group by-2">
+                <span class="label">Name</span>
+                <input class="input form-input" type="text" placeholder="Name" value.bind="branch.name & validate"
+                  focus="true" />
+              </label>
+
+              <label class="group by-2">
+                <span class="label">Email</span>
+                <input class="input form-input" type="email" placeholder="Email" value.bind="branch.email & validate" />
+              </label>
+            </div>
+
+            <div class="field-group">
+              <label class="group by-2">
+                <span class="label">Mobile</span>
+                <input class="input form-input" type="text" placeholder="Mobile" value.bind="branch.mobile & validate" />
+              </label>
+
+              <label class="group by-2">
+                <span class="label">Landline</span>
+                <input class="input form-input" type="text" placeholder="Landline"
+                  value.bind="branch.landline & validate" />
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group__divider"></div>
+
+        <div class="form-group">
+          <div class="form-group__title">
+            <h3 class="label">Location</h3>
+            <p class="desc">The physical location where the service takes place.</p>
+          </div>
+          <div class="form-group__content">
+
+            <div class="field-group" with.bind="branch">
+              <label class="group by-2-3">
+                <span class="label">Address Line 1</span>
+                <input class="input form-input" placeholder="Address Line 1" value.bind="address.line1 & validate" />
+                <p class="input-desc">Unit Number + House/Building/Street Number, Street Name</p>
+              </label>
+            </div>
+
+            <div class="field-group" with.bind="branch">
+              <label class="group by-2-3">
+                <span class="label">Address Line 2</span>
+                <input class="input form-input" placeholder="Address Line 2" value.bind="address.line2 & validate" />
+                <p class="input-desc">Subdivision/Village, Barangay/District Name</p>
+              </label>
+            </div>
+
+            <div class="field-group" with.bind="branch">
+              <label class="group by-2">
+                <span class="label">City / Municipality</span>
+                <input class="input form-input" placeholder="City / Municipality"
+                  value.bind="address.municipality & validate" />
+              </label>
+              <label class="group by-2">
+                <span class="label">Province / Metro Manila</span>
+                <input class="input form-input" placeholder="Province / Metro Manila"
+                  value.bind="address.province & validate" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section slot="form-actions">
+      <input type="submit" class="primary" role="button" value="Save" form="input-form" />
+      <input type="button" class="secondary" role="button" value="Cancel" click.delegate="cancel()" />
+    </section>
+
+  </form-layout>
 </template>

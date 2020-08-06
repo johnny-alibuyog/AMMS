@@ -80,6 +80,10 @@
   @apply text-left;
 }
 
+.responsive-table > table > tbody > tr > td.action > a {
+  @apply mx-1;
+}
+
 .responsive-table > table > tbody > tr > td.action > a.primary {
   /* @apply mx-1; */
   @apply text-blue-400;
@@ -99,12 +103,21 @@
 }
 
 .responsive-table > table > tbody > tr > td.action > a.warning {
-  @apply mx-1;
+  /* @apply mx-1; */
   @apply text-red-400;  
 }
 
 .responsive-table > table > tbody > tr > td.action > a.warning:hover {
   @apply text-red-600;  
+}
+
+.responsive-table > table > tbody > tr > td.action > a.toggle {
+  @apply mx-1;
+  @apply text-blue-400;  
+}
+
+.responsive-table > table > tbody > tr > td.action > a.toggle:hover {
+  @apply text-blue-600;  
 }
 
 .responsive-table > table > tbody > tr.striped {

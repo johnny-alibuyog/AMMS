@@ -3,13 +3,14 @@ import { logger } from '../../../utils/logger';
 import { context } from '../../../utils/request.context';
 import { initDbContext } from '../../db.context';
 import { RoleIdContract } from '../roles/role.services';
-import { PageResponse, PageRequest, SortDirection, parsePageFrom } from '../../common/contract.models';
+import { PageResponse, PageRequest, SortDirection, parsePageFrom, builderDef, Lookup } from '../../common/contract.models';
+import { BranchIdContract } from '../branches/branch.services';
 
 type UserIdContract = string;
 
 type UserContract = Omit<User, 'passwordHash' | 'passwordSalt'>;
 
-type UserFilterRequest = { keyword?: string, roles?: RoleIdContract[] }
+type UserFilterRequest = { keyword?: string, branches?: BranchIdContract, roles?: RoleIdContract[] }
 
 type UserSortRequest = { username?: SortDirection, email?: SortDirection, name?: SortDirection }
 
@@ -55,6 +56,15 @@ const addEntryWhen = <T, M>(value: T, evaluator: EvalParam<T, M>): {} =>
 const addEntryIf = (condition: () => boolean, entry: {}): {} =>
   condition() && entry;
 
+const lookup = async () => {
+  const db = await initDbContext();
+  const sort = [['person.firstName', 'asc'], ['person.lastName', 'asc'],];
+  const projection = ['_id', 'person.firstName', 'person.lastName'];
+  const roles = await db.users.find({}, projection, sort).exec();
+  const lookups: Lookup[] = roles.map(x => ({ id: x._id, name: `${x.person.firstName} ${x.person.lastName}` }));
+  return lookups;
+}
+
 const find = async (request: UserPageRequest) => {
   const db = await initDbContext();
   // https://stackoverflow.com/questions/56021631/add-elements-inside-array-conditionally-in-javascript
@@ -70,6 +80,12 @@ const find = async (request: UserPageRequest) => {
           { 'person.middleName': { $regex: `${value}` } },
           { 'person.lastName': { $regex: `${value}` } },
         ]
+      })
+    }),
+    ...addEntryWhen(request.filter?.branches, {
+      when: isNotNullOrDefault,
+      map: (value) => ({
+        branches: { $in: value }
       })
     }),
     ...addEntryWhen(request.filter?.roles, {
@@ -131,16 +147,23 @@ const update = async (id: UserIdContract, user: UserContract) => {
   await db.users.findByIdAndUpdate(id, user).exec();
 }
 
+const patch = async (id: UserIdContract, user: Partial<UserContract>) => {
+  const db = await initDbContext();
+  await db.users.findByIdAndUpdate(id, user).exec();
+}
+
 const remove = async (id: UserIdContract) => {
   const db = await initDbContext();
   await db.users.findByIdAndDelete(id).exec();
 }
 
 const userService = {
+  lookup,
   find,
   get,
   create,
   update,
+  patch,
   remove
 };
 

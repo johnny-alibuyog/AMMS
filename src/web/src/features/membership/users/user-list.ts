@@ -2,7 +2,6 @@ import { Filter, Pager, Sorter } from 'common/services/pagination';
 import { Lookup, PageRequest } from 'features/common/model';
 import { User, UserFilter, UserSort, initFilter, initSort } from './user.models';
 
-import { RoleId } from '../roles/role.models';
 import { Router } from 'aurelia-router';
 import { UrlState } from 'features/common/url.states';
 import { api } from 'features/api';
@@ -15,6 +14,7 @@ export class UserList {
   public title: string = "Users";
   public view: 'list' | 'tile' = 'list';
   public roles: Lookup[] = [];
+  public branches: Lookup[] = [];
   public filter: Filter<UserFilter>;
   public sorter: Sorter<UserSort>;
   public pager: Pager<User>;
@@ -47,8 +47,9 @@ export class UserList {
     this.sorter.set(param?.sort);
     this.pager.set({ page: param.page, size: param.size });
 
-    [this.roles] = await Promise.all([
+    [this.roles, this.branches] = await Promise.all([
       api.roles.lookup(),
+      api.branches.lookup(),
       this.paginate()
     ]);
 
@@ -69,11 +70,6 @@ export class UserList {
 
   public doFilter(): void {
     alert(`do filter man`);
-  }
-
-  public toName(id: RoleId) {
-    const role = this.roles.find(x => x.id == id);
-    return role?.name;
   }
 
   public async paginate(): Promise<void> {
