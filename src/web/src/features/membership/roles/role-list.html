@@ -1,3 +1,120 @@
 <template>
-  ${title}
+  <require from="../../../shell/layouts/list-layout"></require>
+
+  <list-layout title.bind="title">
+
+    <section slot="tool-section">
+      <tool-bar>
+        <add-tool exec.call="add()"></add-tool>
+        <list-tool exec.call="setView('list-view')"></list-tool>
+        <tile-tool exec.call="setView('grid-view')"></tile-tool>
+      </tool-bar>
+    </section>
+
+    <section slot="filter-section" class="filter-section">
+      <form id="filter-form" role="form" submit.trigger="dofilter()">
+        <div class="field-group">
+          <label class="group">
+            <span class="label">Keyword</span>
+            <input class="input form-input" value.bind="filter.data.keyword" type="text" />
+          </label>
+        </div>
+        <div class="field-group">
+          <label class="group">
+            <span class="label">Sort</span>
+            <select class="input form-select" value.bind="sorter.selectedItem" change.delegate="sorter.propagateSelected(sorter.selectedItem)">
+              <option repeat.for="item of sorter.items" model.bind="item">${item.label}</option>
+            </select>
+          </label>
+        </div>
+      </form>
+
+      <div id="filter-actions">
+        <input type="button" class="secondary" value="Reset" click.delegate="reset()" />
+        <input type="submit" class="primary" value="Apply" form="filter-form" click.delegate="paginate()" />
+      </div>
+    </section>
+
+    <section slot="list-section" class="list-section">
+
+      <div if.bind="settings.view === 'list-view'" class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th class="action">
+                <span>Action</span>
+              </th>
+              <th click.delegate="sorter.doSort('name')" class="highlightable">
+                <span>Name</span>
+                <i class="${sorter.class(sorter.data.name)}"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="${ $even ? 'striped' : '' }" repeat.for="item of pager.items">
+              <td class="action"> <!-- https://github.com/tailwindcss/tailwindcss/issues/1599 -->
+                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="edit(item)">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a if.bind="item.active" href="javascript:undefined" class="toggle" title="Deactivate" click.delegate="toggleActiveStatus(item)">
+                  <i class="fas fa-toggle-on"></i>
+                </a>
+                <a else href="javascript:undefined" class="toggle" title="Activate" click.delegate="toggleActiveStatus(item)">
+                  <i class="fas fa-toggle-off"></i>
+                </a>
+              </td>
+              <td>${item.name}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div else> 
+        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <li class="col-span-1 bg-white rounded-lg shadow" repeat.for="item of pager.items">
+            <div class="w-full flex items-center justify-between p-6 space-x-6">
+              <div class="flex-1 truncate">
+                <div class="flex items-center space-x-3">
+                  <h3 class="text-gray-900 text-sm leading-5 font-medium truncate">${item.name}</h3>
+                </div>
+                <p class="mt-1 text-gray-500 text-sm leading-5 truncate">Regional Paradigm Technician</p>
+              </div>
+              <i class="fas fa-map-marked-alt"></i>
+              <!-- <img class="w-10 h-10 bg-gray-300 rounded-full flex-nogrow object-cover"
+                src.bind="item.photo.data"
+                alt="" /> -->
+            </div>
+            <div class="border-t border-gray-200">
+              <div class="-mt-px flex">
+                <div class="w-0 flex-1 flex border-r border-gray-200">
+                  <a href="#"
+                    class="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm leading-5 text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 transition ease-in-out duration-150">
+                    <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    <span class="ml-3">Email</span>
+                  </a>
+                </div>
+                <div class="-ml-px w-0 flex-1 flex">
+                  <a href="#"
+                    class="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm leading-5 text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 transition ease-in-out duration-150">
+                    <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path
+                        d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                    <span class="ml-3">Call</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <pagination current-page.bind="pager.page" total-items.bind="pager.total"
+        change.delegate="pager.doPage($event)" />
+    </section>
+
+  </list-layout>
 </template>

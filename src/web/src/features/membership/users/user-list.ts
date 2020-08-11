@@ -1,94 +1,38 @@
-import { Filter, Pager, Sorter } from 'common/services/pagination';
-import { Lookup, PageRequest } from 'features/common/model';
 import { User, UserFilter, UserSort, initFilter, initSort } from './user.models';
 
+import { ListLayout } from 'shell/layouts/list-layout';
+import { Lookup } from 'features/common/model';
+import { PromptService } from 'common/elements/prompt/prompt-service';
 import { Router } from 'aurelia-router';
-import { UrlState } from 'features/common/url.states';
+import { ToastService } from 'common/elements/toast/toast-service';
 import { api } from 'features/api';
 import { autoinject } from 'aurelia-framework';
 
 @autoinject
-export class UserList {
-  private readonly _url: UrlState
-  private _activated: boolean = false ;
-  public title: string = "Users";
-  public view: 'list' | 'tile' = 'list';
+export class UserList extends ListLayout<User, UserFilter, UserSort> {
   public roles: Lookup[] = [];
   public branches: Lookup[] = [];
-  public filter: Filter<UserFilter>;
-  public sorter: Sorter<UserSort>;
-  public pager: Pager<User>;
 
-  constructor(private readonly _router: Router) {
-    this.init();
-    this._url = new UrlState(this._router);
-  }
-
-  public setView(value: UserList['view']) {
-    this.view = value;
-  }
-
-  private init(): void {
-    this.filter = new Filter({
-      init: () => initFilter(),
-      action: () => this.paginate()
+  constructor(
+    router: Router,
+    toast: ToastService,
+    prompt: PromptService
+  ) {
+    super(router, toast, prompt)
+    this.title = 'Roles';
+    this.setOperations({
+      initSort: () => initSort(),
+      initFilter: () => initFilter(),
+      loadData: async () => {
+        [this.roles, this.branches] = await Promise.all([
+          api.roles.lookup(),
+          api.branches.lookup(),
+          this.paginate()
+        ]);
+      },
+      add: () => router.navigateToRoute('users/user-form'),
+      edit: (item) => router.navigateToRoute('users/user-form', { id: item.id }),
+      dataSource: (request) => api.users.find(request)
     });
-    this.sorter = new Sorter({
-      init: () => initSort(),
-      action: () => this.paginate()
-    });
-    this.pager = new Pager({
-      action: () => this.paginate()
-    });
-  }
-
-  public async activate(param: PageRequest<UserFilter, UserSort>): Promise<void> {
-    this.filter.set(param?.filter);
-    this.sorter.set(param?.sort);
-    this.pager.set({ page: param.page, size: param.size });
-
-    [this.roles, this.branches] = await Promise.all([
-      api.roles.lookup(),
-      api.branches.lookup(),
-      this.paginate()
-    ]);
-
-    this._activated = true;
-  }
-
-  public add(): void {
-    this._router.navigateToRoute('users/user-form');
-  }
-
-  public edit(item: User): void {
-    this._router.navigateToRoute('users/user-form', { id: item.id });
-  }
-
-  public delete(item: User): void {
-    alert(`delete: ${item.username}`);
-  }
-
-  public doFilter(): void {
-    alert(`do filter man`);
-  }
-
-  public async paginate(): Promise<void> {
-    const request: PageRequest<UserFilter, UserSort> = {
-      filter: this.filter.valueOf(),
-      sort: this.sorter.valueOf(),
-      page: this.pager.page,
-      size: this.pager.size
-    };
-    const result = await api.users.find(request);
-    this.pager.total = result.total;
-    this.pager.items = result.items;
-    if (this._activated) {
-      this._url.rewrite(request);
-    }
-  }
-
-  public async reset(): Promise<void> {
-    this.init();
-    await this.paginate();
   }
 }

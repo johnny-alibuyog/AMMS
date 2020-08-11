@@ -5,7 +5,6 @@
   @apply shadow-md;
   @apply rounded;
   @apply mt-2;
-  @apply mb-4;
 }
 
 .responsive-table > table {

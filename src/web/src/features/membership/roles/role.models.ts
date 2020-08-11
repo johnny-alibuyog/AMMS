@@ -37,13 +37,31 @@ type AccessControl = {
 type RoleId = string;
 
 type Role = {
+  id: RoleId,
   name: string,
+  active: boolean,
   accessControls: AccessControl[],
 }
 
-type RoleSort = { username: SortDirection, name: SortDirection }
+type RoleSort = { name: SortDirection, active: SortDirection }
 
 type RoleFilter = { keyword: string }
+
+const initRole = (): Role => ({
+  id: '',
+  name: '',
+  active: true,
+  accessControls: []
+});
+
+const initSort = (): RoleSort => ({
+  name: 'asc',
+  active: 'none'
+});
+
+const initFilter = (): RoleFilter => ({ 
+  keyword: '',
+});
 
 export {
   Resource,
@@ -54,5 +72,8 @@ export {
   Role,
   RoleId,
   RoleSort,
-  RoleFilter
+  RoleFilter,
+  initRole,
+  initFilter,
+  initSort
 }

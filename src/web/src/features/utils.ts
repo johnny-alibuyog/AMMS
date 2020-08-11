@@ -6,3 +6,10 @@ const properCase = (value: string) => functor(value)
   .map(x => x.split(' '))
   .map(x => x.map(capitalize))
   .map(x => x.join(' '));
+
+
+const camelToTitle = (camelCase: string) => camelCase
+  .replace(/([A-Z])/g, (match) => ` ${match}`)
+  .replace(/^./, (match) => match.toUpperCase());
+
+export { camelToTitle }

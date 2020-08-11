@@ -99,7 +99,7 @@ const find = async (request: UserPageRequest) => {
   const sortDirectionIsNotNone = (dir: SortDirection = 'none') =>
     isNotNullOrDefault(dir) && dir != 'none';
 
-  const valueOrNone = (dir?: SortDirection) => dir ? dir : 'none';
+    const valueOrNone = (dir?: SortDirection) => dir ? dir : 'none';
 
   const sort: string[][] = [
     ...addItemWhen(valueOrNone(request.sort?.email), {
@@ -118,10 +118,11 @@ const find = async (request: UserPageRequest) => {
       ]
     }).flat()
   ];
+
   const { skip, limit } = parsePageFrom(request);
   const [total, items] = await Promise.all([
     db.users.find(filter).countDocuments().exec(),
-    db.users.find(filter, null, sort).populate('photo').skip(skip).limit(limit).exec()
+    db.users.find(filter).sort(sort).skip(skip).limit(limit).populate('photo').exec()
   ]);
   const response: UserPageResponse = {
     total: total,

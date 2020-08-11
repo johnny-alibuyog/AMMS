@@ -16,11 +16,9 @@ type Branch = {
 
 type BranchSort = {
   name?: SortDirection,
-  active?: SortDirection,
   mobile?: SortDirection,
   landline?: SortDirection,
   email?: SortDirection,
-  address?: SortDirection
 }
 
 type BranchFilter = {
@@ -31,7 +29,6 @@ type BranchFilter = {
   email?: string,
   address?: string
 }
-
 
 const initBranch = (): Branch => ({
   id: '',
@@ -45,11 +42,9 @@ const initBranch = (): Branch => ({
 
 const initSort = (): BranchSort => ({
   name: 'asc',
-  active: 'none',
   mobile: 'none',
   landline: 'none',
   email: 'none',
-  address: 'none'
 });
 
 const initFilter = (): BranchFilter => ({ 

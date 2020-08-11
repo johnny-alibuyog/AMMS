@@ -12,7 +12,12 @@ type BranchContract = Branch;
 
 type BranchFilterRequest = { keyword?: string }
 
-type BranchSortRequest = { email?: SortDirection, name?: SortDirection }
+type BranchSortRequest = { 
+  name?: SortDirection,
+  mobile?: SortDirection,
+  landline?: SortDirection,
+  email?: SortDirection, 
+}
 
 type BranchPageRequest = PageRequest<BranchFilterRequest, BranchSortRequest>;
 
@@ -95,11 +100,23 @@ const find = async (request: BranchPageRequest) => {
       when: sortDirectionIsNotNone,
       map: (value) => ['name', value]
     }),
+    ...addItemWhen(valueOrNone(request.sort?.mobile), {
+      when: sortDirectionIsNotNone,
+      map: (value) => ['mobile', value]
+    }),
+    ...addItemWhen(valueOrNone(request.sort?.landline), {
+      when: sortDirectionIsNotNone,
+      map: (value) => ['landline', value]
+    }),
+    ...addItemWhen(valueOrNone(request.sort?.email), {
+      when: sortDirectionIsNotNone,
+      map: (value) => ['email', value]
+    }),
   ];
   const { skip, limit } = parsePageFrom(request);
   const [total, items] = await Promise.all([
     db.branches.find(filter).countDocuments().exec(),
-    db.branches.find(filter, null, sort).skip(skip).limit(limit).exec()
+    db.branches.find(filter).sort(sort).skip(skip).limit(limit).exec()
   ]);
   const response: BranchPageResponse = {
     total: total,

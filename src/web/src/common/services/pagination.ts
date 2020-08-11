@@ -1,5 +1,7 @@
 import { appConfig } from '../../app-config';
 import { isNotNullOrDefault } from 'common/utils';
+import { isPropertyName } from 'typescript';
+import { camelToTitle } from 'features/utils';
 
 type Param<T> = {
   init: () => T,
@@ -44,13 +46,25 @@ export class Filter<T> {
   }
 }
 
+type SortItem = {
+  key: string,
+  label: string,
+  field: string,
+  value: SortDirection
+}
+
 export class Sorter<T> {
-  public data: T;
+
+  public data: T; // JSON representation of sort data
+
+  public items: SortItem[];
+
+  public selectedItem: SortItem;
 
   constructor(param: Param<T>) {
     this.init = () => param.init();
     this.sort = () => param.action();
-    this.data = this.init();
+    this.set(this.init());
   }
 
   public valueOf = (): T => {
@@ -70,29 +84,27 @@ export class Sorter<T> {
     if (!value) {
       return;
     }
-
     this.data = Object.assign(this.init(), value);
+    this.populateItemsWith(this.data);
   }
 
-  public doSort(field: keyof T): void {
+  public doSort(target: keyof T): void {
     if (!this.sort) {
       return;
     }
-
-    // toggle sort, just sort only one field for now
-    for (let key of Object.keys(this.data)) {
-      const currentSort: SortDirection = this.data[key.valueOf()];
-      const newSort: SortDirection = (() => {
-        if (key === field) {
-          return currentSort === 'asc' ? 'desc' : 'asc';
-        }
-        else {
+    for (let [key, value] of Object.entries(this.data)) {
+      // toggle sort, just sort only one field for now
+      const getNewValue = (): SortDirection => {
+        if (key !== target) {
           return 'none';
         }
-      })();
-      this.data[key.valueOf()] = newSort;
+        return value === 'asc' ? 'desc' : 'asc';
+      };
+      this.data[key] = getNewValue();
+      if (key === target) {
+        this.selectItem(target, this.data[key]);
+      }
     }
-
     this.sort();
   }
 
@@ -102,6 +114,28 @@ export class Sorter<T> {
       case 'desc': return 'fas fa-fw fa-sort-down';
       default: return 'fas fa-fw fa-sort';
     }
+  }
+
+  private populateItemsWith(source: T): void {
+    const directions: SortDirection[] = ['asc', 'desc'];
+    this.items = Object.keys(source)
+      .map(key => directions.map(value => ({
+        key: `${key} - ${value}`,
+        label: `${camelToTitle(key)} - ${camelToTitle(value)}`,
+        field: key,
+        value: value
+      })))
+      .flat();
+    const [key, value] = Object.entries(source).find(([_, value]) => value != 'none');
+    this.selectedItem = this.items.find(x => x.key == key && x.value == value);
+  }
+
+  private selectItem(key: keyof T, value: SortDirection): void {
+    this.selectedItem = this.items.find(x => x.field === key && x.value == value);
+  }
+
+  public propagateSelected(item: SortItem): void {
+    this.doSort(item.field as keyof T);
   }
 }
 

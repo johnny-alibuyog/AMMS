@@ -6,8 +6,8 @@
     <section slot="tool-section">
       <tool-bar>
         <add-tool exec.call="add()"></add-tool>
-        <list-tool exec.call="setView('list')"></list-tool>
-        <tile-tool exec.call="setView('tile')"></tile-tool>
+        <list-tool exec.call="setView('list-view')"></list-tool>
+        <tile-tool exec.call="setView('grid-view')"></tile-tool>
       </tool-bar>
     </section>
 
@@ -37,17 +37,25 @@
             </label>
           </div>
         </div>
+        <div class="field-group">
+          <label class="group">
+            <span class="label">Sort</span>
+            <select class="input form-select" value.bind="sorter.selectedItem" change.delegate="sorter.propagateSelected(sorter.selectedItem)">
+              <option repeat.for="item of sorter.items" model.bind="item">${item.label}</option>
+            </select>
+          </label>
+        </div>
       </form>
 
       <div id="filter-actions">
-        <input type="button" class="secondary" value="Reset" click.delegate="reset()" />
+        <input type="button" class="secondary" value="Reset" click.delegate="resetPage()" />
         <input type="submit" class="primary" value="Apply" form="filter-form" click.delegate="paginate()" />
       </div>
     </section>
 
     <section slot="list-section" class="list-section">
 
-      <div if.bind="view === 'list'" class="responsive-table">
+      <div if.bind="settings.view === 'list-view'" class="responsive-table">
         <table>
           <thead>
             <tr>

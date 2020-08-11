@@ -61,7 +61,7 @@ const initConnection = ({ successFn, errorFn }: Args = {}) => {
       reject(error);
     });
     if (config.environment !== 'production') {
-      // mongoose.set('debug', true);
+      mongoose.set('debug', true);
     }
   });
 }

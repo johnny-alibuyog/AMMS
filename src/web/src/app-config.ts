@@ -18,7 +18,7 @@ export const appConfig = {
   },
   page: <PageConfig>{
     maxSize: 5,
-    pageSize: 10,
+    pageSize: 9,
     boundaryLinks: true,
     directionLinks: true,
     firstText: 'fas fa-angle-double-left fa-sm',

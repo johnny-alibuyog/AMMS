@@ -6,6 +6,7 @@ ul.pagination {
   /* list-style: none; */
   @apply flex;
   @apply text-gray-700;
+  @apply my-4;
 }
 
 ul.pagination > li {
