@@ -18,7 +18,7 @@ export const appConfig = {
   },
   page: <PageConfig>{
     maxSize: 5,
-    pageSize: 9,
+    pageSize: 12,
     boundaryLinks: true,
     directionLinks: true,
     firstText: 'fas fa-angle-double-left fa-sm',
@@ -35,5 +35,6 @@ export const appConfig = {
     dateFormat: 'MM/DD/YYYY',
     numberFormat: '0,0.00'
   },
-  spinnerDebounce: 300 //
+  spinnerDebounce: 300,
+  env: 'dev'
 }

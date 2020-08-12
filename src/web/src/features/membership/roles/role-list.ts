@@ -20,9 +20,9 @@ export class RoleList extends ListLayout<Role, RoleFilter, RoleSort> {
     this.setOperations({
       initSort: () => initSort(),
       initFilter: () => initFilter(),
-      loadData: () => this.paginate(),
-      add: () => router.navigateToRoute('roles/role-form'),
-      edit: (item) => router.navigateToRoute('roles/role-form', { id: item.id }),
+      initData: () => this.paginate(),
+      create: () => router.navigateToRoute('roles/role-form'),
+      update: (item) => router.navigateToRoute('roles/role-form', { id: item.id }),
       dataSource: (request) => api.roles.find(request)
     });
   }

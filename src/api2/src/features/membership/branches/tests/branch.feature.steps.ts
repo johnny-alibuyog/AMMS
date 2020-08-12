@@ -1,13 +1,15 @@
-import { AccessControl, Action, Ownership, Permission, Resource } from '../../roles/role.models';
+import { AccessControl, Action, Permission } from '../../roles/role.models';
 import { BranchContract, BranchIdContract } from '../branch.services';
 import { IBuilder, UserBuilderArgs, createUserBuilder, getToken } from '../../../../utils/client.data.builder';
 import { defineFeature, loadFeature } from 'jest-cucumber';
 
 import { HTTP404Error } from '../../../../utils/http.errors';
+import { Ownership } from '../../../common/ownership/ownership.model';
 import { UserContract } from '../../users/user.services';
 import { basePath } from '..';
 import { buildClient } from '../../../../client';
 import { randomizeBranches } from '../data/branch.randomizer';
+import { resources } from '../../resources/data/resource.data';
 
 const feature = loadFeature('./branch.feature', { loadRelativePath: true });
 
@@ -24,7 +26,7 @@ defineFeature(feature, test => {
       username: 'some_user_with_user_admin',
       password: 'some_password',
       accessControl: new AccessControl({
-        resource: Resource.membership_branch,
+        resource: resources.membership.branch._id,
         permissions: [
           new Permission({ action: Action.read, ownership: Ownership.all }),
           new Permission({ action: Action.create, ownership: Ownership.all }),
@@ -108,7 +110,6 @@ defineFeature(feature, test => {
       expect(branch).not.toBeUndefined();
     });
   });
-
 
 
   test('Branch Deactivation', ({ given, when, then }) => {

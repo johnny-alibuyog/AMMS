@@ -1,5 +1,6 @@
 import * as faker from 'faker';
-import { Gender, Person } from './person.model';
+
+import { Gender, Person } from '../person.model';
 
 const randomGender = () => faker.random.arrayElement(Object.values(Gender));
 

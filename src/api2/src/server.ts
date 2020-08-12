@@ -1,15 +1,15 @@
-import http from 'http';
+import { AddressInfo } from "net";
 import { app } from "./app";
 import { config } from "./config";
-import { AddressInfo } from "net";
-import { logger } from "./utils/logger";
+import http from 'http';
 import { initDbContext } from "./features/db.context";
+import { logger } from "./utils/logger";
 
 const server = http.createServer(app);
 
 server.listen(config.port, () => {
   const address = server.address() as AddressInfo;
-  logger.info(`Server http://localhost:${address.port} is running ...`)
+  logger.info(`Server http://localhost:${address.port} is running ...`);
   logger.info(`Listening on port ${config.port}`);
   initDbContext({
     successFn: () => logger.info('Connected to Mongo'),

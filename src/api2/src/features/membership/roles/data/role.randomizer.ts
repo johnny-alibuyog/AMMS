@@ -1,9 +1,11 @@
 import * as faker from 'faker';
 
-import { AccessControl, Action, Ownership, Permission, Resource, Role } from '../role.models';
-import { randomizeElementFn, randomizeElementsFn } from '../../../common/tests/helpers';
+import { AccessControl, Action, Permission, Role } from '../role.models';
+import { randomizeElementFn, randomizeElementsFn } from '../../../common/helpers/test.helpers';
 
-const resources = Object.values(Resource).filter(x => x != Resource.all);
+import { Ownership } from "../../../common/ownership/ownership.model";
+import { Resource } from '../../resources/resource.model';
+import { data as resources } from '../../resources/data/resource.data';
 
 const actions = Object.values(Action);
 
@@ -27,13 +29,14 @@ const randomizePermissionFn = (
 }
 
 const randomizeAccessControlsFn = (
-  getResource: () => Resource[],
+  // getResource: () => Resource[],
+  getResource1: () => Resource[],
   getPermissions: () => Permission[]) => {
   return () => {
-    return getResource()
+    return getResource1()
       .map((x, i) =>
         new AccessControl({
-          resource: x,
+          resource: x._id,
           permissions: getPermissions()
         })
       );

@@ -17,7 +17,7 @@ const title = "Rapide";
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, "src");
 const nodeModulesDir = path.resolve(__dirname, "node_modules");
-const baseUrl = "/";
+const baseUrl = (production) => production ? "./" : "/";
 
 const purgecss = require("@fullhuman/postcss-purgecss")({
   // Specify the paths to all of the template files in your project
@@ -68,7 +68,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
   mode: production ? "production" : "development",
   output: {
     path: outDir,
-    publicPath: baseUrl,
+    publicPath: baseUrl(production),
     filename: production
       ? "[name].[chunkhash].bundle.js"
       : "[name].[hash].bundle.js",
@@ -192,9 +192,9 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
         : undefined,
       metadata: {
         // available in index.ejs //
-        title,
-        server,
-        baseUrl
+        title: title,
+        server: server,
+        baseUrl: baseUrl(production)
       }
     }),
     ...when(

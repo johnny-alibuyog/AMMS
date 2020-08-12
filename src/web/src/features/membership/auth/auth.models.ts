@@ -1,4 +1,5 @@
 import { User } from '../users/user.models';
+import { appConfig } from 'app-config';
 
 type LoginCredential = {
   username: string,
@@ -12,8 +13,8 @@ type LoginResponse = {
 }
 
 const intitCredential = () : LoginCredential => ({
-  username: '',
-  password: '',
+  username: appConfig.env === 'dev' ? 'super_user@rapide' : '',
+  password: appConfig.env === 'dev' ? '0Al}._bYf3G-@XN' : '',
   remember: false
 })
 

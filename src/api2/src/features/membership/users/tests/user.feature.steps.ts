@@ -1,4 +1,4 @@
-import { AccessControl, Action, Ownership, Permission, Resource } from '../../roles/role.models';
+import { AccessControl, Action, Permission } from '../../roles/role.models';
 import { BranchContract, BranchIdContract } from '../../branches/branch.services';
 import { IBuilder, UserBuilderArgs, createUserBuilder, getToken } from '../../../../utils/client.data.builder';
 import { RoleContract, RoleIdContract } from '../../roles/role.services';
@@ -6,11 +6,13 @@ import { UserContract, UserIdContract } from '../user.services';
 import { defineFeature, loadFeature } from 'jest-cucumber';
 
 import { HTTP404Error } from '../../../../utils/http.errors';
+import { Ownership } from '../../../common/ownership/ownership.model';
 import { basePath as branchPath } from '../../branches';
 import { buildClient } from '../../../../client';
 import { randomizeBranches } from '../../branches/data/branch.randomizer';
 import { randomizeRoles } from '../../roles/data/role.randomizer';
 import { randomizeUsersFn } from '../data/user.randomizer';
+import { resources } from '../../resources/data/resource.data';
 import { basePath as rolePath } from '../../roles';
 import { basePath as userPath } from '..';
 
@@ -31,7 +33,7 @@ defineFeature(feature, test => {
       username: 'some_user_with_user_admin',
       password: 'some_password',
       accessControl: new AccessControl({
-        resource: Resource.membership_user,
+        resource: resources.membership.user._id,
         permissions: [
           new Permission({ action: Action.read, ownership: Ownership.all }),
           new Permission({ action: Action.create, ownership: Ownership.all }),
@@ -48,7 +50,6 @@ defineFeature(feature, test => {
   afterAll(async () => {
     await userBuilder.clean();
   });
-
 
   test('User Crud', ({ given, when, then }) => {
     let userToBeCreated: UserContract;

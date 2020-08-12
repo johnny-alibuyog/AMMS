@@ -1,6 +1,7 @@
 import { RouteConfig, Router, RouterConfiguration } from 'aurelia-router';
 
 import { PLATFORM } from 'aurelia-framework';
+import { resources } from './resources/resource.data';
 
 export class Index {
   public router: Router;
@@ -26,6 +27,7 @@ const generateUsersRoutes = (prefix: string = 'users'): RouteConfig[] => {
       nav: true,
       settings: {
         // group: properCase(prefix),
+        resources: [resources.membership.user],
         icon: 'fa-user'
       }
     },
@@ -34,7 +36,10 @@ const generateUsersRoutes = (prefix: string = 'users'): RouteConfig[] => {
       name: `${prefix}/user-form`,
       route: `${prefix}/user-form`,
       moduleId: PLATFORM.moduleName('./users/user-form'),
-      nav: false
+      nav: false,
+      settings: {
+        resources: [resources.membership.user],
+      }
     },
     {
       route: '',
@@ -53,6 +58,7 @@ const generateBranchesRoutes = (prefix: string = 'branches'): RouteConfig[] => {
       nav: true,
       settings: {
         // group: properCase(prefix),
+        resources: [resources.membership.branch],
         icon: 'fa-map-marked-alt'
       }
     },

@@ -5,6 +5,7 @@ import { getModelForClass, mongoose } from '@typegoose/typegoose';
 import { Branch } from './membership/branches/branch.models';
 import { ConnectionOptions } from 'mongoose';
 import { Image } from './common/images/image.models';
+import { Resource } from './membership/resources/resource.model';
 import { Role } from './membership/roles/role.models';
 import { config } from '../config';
 import { seedData } from './db.seeder';
@@ -17,6 +18,7 @@ type Args = {
 export type DbContext = {
   images: ReturnModelType<typeof Image, unknown>, 
   branches: ReturnModelType<typeof Branch, unknown>,
+  resources: ReturnModelType<typeof Resource, unknown>,
   roles: ReturnModelType<typeof Role, unknown>,
   users: ReturnModelType<typeof User, unknown>,
 }
@@ -63,6 +65,15 @@ const initConnection = ({ successFn, errorFn }: Args = {}) => {
     if (config.environment !== 'production') {
       mongoose.set('debug', true);
     }
+    /// REF: https://stackoverflow.com/questions/37377310/how-to-enable-auditing-and-log-all-crud-operations-in-mongodb-node-app
+    // mongoose.set('debug', (coll: unknown, method: unknown, query: unknown, doc: unknown, options?: unknown) => {
+    //   //do your thing
+    //   console.log(coll);
+    //   console.log(method);
+    //   console.log(query);
+    //   console.log(doc);
+    //   console.log(options);
+    //  });
   });
 }
 
@@ -74,9 +85,11 @@ export const initDbContext = async ({ successFn, errorFn }: Args = {}) => {
   dbContext = {
     images: getModelForClass(Image, defaultModelOption),
     branches: getModelForClass(Branch, defaultModelOption),
+    resources: getModelForClass(Resource, defaultModelOption),
     roles: getModelForClass(Role, defaultModelOption),
     users: getModelForClass(User, userModelOptions),
   };
+  
   await seedData(dbContext);
   return dbContext;
 }

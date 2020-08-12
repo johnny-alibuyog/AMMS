@@ -1,13 +1,15 @@
-import { AccessControl, Action, Ownership, Permission, Resource } from '../role.models';
+import { AccessControl, Action, Permission } from '../role.models';
 import { IBuilder, UserBuilderArgs, createUserBuilder, getToken } from '../../../../utils/client.data.builder';
 import { RoleContract, RoleIdContract } from '../role.services';
 import { defineFeature, loadFeature } from 'jest-cucumber';
 
 import { HTTP404Error } from '../../../../utils/http.errors';
+import { Ownership } from '../../../common/ownership/ownership.model';
 import { UserContract } from '../../users/user.services';
 import { basePath } from '..';
 import { buildClient } from '../../../../client';
 import { randomizeRoles } from '../data/role.randomizer';
+import { resources } from '../../resources/data/resource.data';
 
 const feature = loadFeature('./role.feature', { loadRelativePath: true });
 
@@ -30,12 +32,12 @@ defineFeature(feature, test => {
         username: 'some_user_with_role_admin',
         password: 'some_password',
         accessControl: new AccessControl({
-          resource: Resource.membership_role,
+          resource: resources.membership.role._id,
           permissions: [
-            new Permission({ action: Action.read, ownership: Ownership.own }),
-            new Permission({ action: Action.create, ownership: Ownership.own }),
-            new Permission({ action: Action.update, ownership: Ownership.own }),
-            new Permission({ action: Action.delete, ownership: Ownership.own }),
+            new Permission({ action: Action.read, ownership: Ownership.owned }),
+            new Permission({ action: Action.create, ownership: Ownership.owned }),
+            new Permission({ action: Action.update, ownership: Ownership.owned }),
+            new Permission({ action: Action.delete, ownership: Ownership.owned }),
           ]
         })
       };

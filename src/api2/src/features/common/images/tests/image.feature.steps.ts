@@ -1,14 +1,16 @@
-import { AccessControl, Action, Ownership, Permission, Resource } from "../../../membership/roles/role.models";
+import { AccessControl, Action, Permission } from "../../../membership/roles/role.models";
 import { IBuilder, UserBuilderArgs, createUserBuilder, getToken } from "../../../../utils/client.data.builder";
 import { ImageContract, ImageIdContract } from "../image.service";
 import { defineFeature, loadFeature } from "jest-cucumber";
 
 import { HTTP404Error } from "../../../../utils/http.errors";
 import { Image } from "../image.models";
+import { Ownership } from "../../ownership/ownership.model";
 import { UserContract } from "../../../membership/users/user.services";
 import { basePath } from "..";
 import { buildClient } from "../../../../client";
 import { randomizeBase64Image } from '../data/image.randomizer';
+import { resources } from "../../../membership/resources/data/resource.data";
 
 const feature = loadFeature('./image.feature', { loadRelativePath: true });
 
@@ -32,12 +34,12 @@ defineFeature(feature, (test) => {
         username: 'some_user_with_role_admin',
         password: 'some_password',
         accessControl: new AccessControl({
-          resource: Resource.common_image,
+          resource: resources.common.image._id,
           permissions: [
-            new Permission({ action: Action.read, ownership: Ownership.own }),
-            new Permission({ action: Action.create, ownership: Ownership.own }),
-            new Permission({ action: Action.update, ownership: Ownership.own }),
-            new Permission({ action: Action.delete, ownership: Ownership.own }),
+            new Permission({ action: Action.read, ownership: Ownership.owned }),
+            new Permission({ action: Action.create, ownership: Ownership.owned }),
+            new Permission({ action: Action.update, ownership: Ownership.owned }),
+            new Permission({ action: Action.delete, ownership: Ownership.owned }),
           ]
         })
       };
@@ -46,7 +48,7 @@ defineFeature(feature, (test) => {
     });
 
     afterAll(async () => {
-      userBuilder.clean();
+      await userBuilder.clean();
     })
 
     given(/^a base64Image has been created$/, async () => {
@@ -71,15 +73,6 @@ defineFeature(feature, (test) => {
         const notFound = new HTTP404Error();
         expect(err.message).toBe(notFound.message);
       }
-      // expect(async () => {
-      //   await client(token).remove(imageId);
-      //   await client(token).get(imageId);
-      // })
-      // .toThrow(new HTTP404Error().message);
-      // await client(token).remove(imageId);
-      // const notFound = new HTTP404Error();
-      // const roleFromServer = await client(token).get(imageId);
-      // expect(roleFromServer).toEqual(notFound.message);
     });
   });
 });

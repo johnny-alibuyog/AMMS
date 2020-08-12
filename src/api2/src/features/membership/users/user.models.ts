@@ -4,6 +4,7 @@ import { Address } from '../../common/address/address.model';
 import { Branch } from '../branches/branch.models';
 import { Entity } from '../../common/kernel';
 import { IModelOptions } from '@typegoose/typegoose/lib/types';
+import { IOwnable } from '../../common/ownership/ownership.model';
 import { Image } from '../../common/images/image.models';
 import { Person } from '../../common/person/person.model';
 import { Role } from './../roles/role.models';
@@ -16,7 +17,16 @@ const preUserSave = async (user: User) => {
 }
 
 @pre<User>('save', async function () { await preUserSave(this) })
-class User extends Entity {
+class User extends Entity implements IOwnable {
+  @prop({ ref: () => User })
+  public ownedBy?: Ref<User>;
+
+  @prop({ ref: () => User })
+  public managedBy?: Ref<User>;
+  
+  @prop({ ref: () => Branch })
+  public branches!: Ref<Branch>[];
+
   @prop({ unique: true, required: true })
   public email!: string;
 
@@ -34,9 +44,6 @@ class User extends Entity {
 
   @prop({ ref: () => Image })
   public photo?: Ref<Image>;
-
-  @prop({ ref: () => Branch })
-  public branches!: Ref<Branch>[];
 
   @prop({ ref: () => Role })
   public roles!: Ref<Role>[];

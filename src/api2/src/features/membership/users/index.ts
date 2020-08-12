@@ -1,17 +1,18 @@
-import { Action, Resource } from '../roles/role.models';
-import { NextFunction, Request, Response } from 'express';
+import { Action } from '../roles/role.models';
+import { Request, Response } from 'express';
 import { Route, resourceBuilder } from './../../../utils/index';
 import { UserContract, UserIdContract, UserPageRequest, userService } from './user.services';
 
 import { authorize } from '../../../middlewares/auth';
 import { handle } from '../../../utils/response.handlers';
 import { logger } from '../../../utils/logger';
+import { resources } from '../resources/data/resource.data';
 import { wrap } from '../../../utils/error.handlers';
 
 const basePath = () => resourceBuilder('users')
 
 const guard = (action: Action) =>
-  authorize({ resource: Resource.membership_user, action: action });
+  authorize({ resource: resources.membership.user, action: action });
 
 const routes: Route[] = [
   {
@@ -20,7 +21,7 @@ const routes: Route[] = [
     handlers: [
       guard(Action.read),
       wrap(async (req: Request, res: Response) => {
-        const params = req.query as UserPageRequest;
+        const params = <unknown>req.query as UserPageRequest;
         const result = await userService.find(params);
         handle(req, res, result);
       })

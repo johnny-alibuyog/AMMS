@@ -23,15 +23,15 @@ export class UserList extends ListLayout<User, UserFilter, UserSort> {
     this.setOperations({
       initSort: () => initSort(),
       initFilter: () => initFilter(),
-      loadData: async () => {
+      initData: async () => {
         [this.roles, this.branches] = await Promise.all([
           api.roles.lookup(),
           api.branches.lookup(),
           this.paginate()
         ]);
       },
-      add: () => router.navigateToRoute('users/user-form'),
-      edit: (item) => router.navigateToRoute('users/user-form', { id: item.id }),
+      create: () => router.navigateToRoute('users/user-form'),
+      update: (item) => router.navigateToRoute('users/user-form', { id: item.id }),
       dataSource: (request) => api.users.find(request)
     });
   }

@@ -1,5 +1,7 @@
-import { Router, RouterConfiguration } from 'aurelia-router';
+import { NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration } from 'aurelia-router';
 import { PLATFORM, autoinject } from 'aurelia-framework';
+
+import { resources } from 'features/membership/resources/resource.data';
 
 @autoinject()
 export class App {
@@ -15,7 +17,7 @@ export class App {
         name: 'dashboard',
         route: 'dashboard',
         moduleId: PLATFORM.moduleName('./features/dashboard/index'),
-        nav: true
+        nav: true,
       },
       {
         title: 'Services',
@@ -52,3 +54,17 @@ export class App {
     ]);
   }
 }
+
+class AuthorizeStep implements PipelineStep {
+  public run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {
+    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('admin') !== -1)) {
+      var isAdmin = /* insert magic here */false;
+      if (!isAdmin) {
+        return next.cancel(new Redirect('services'));
+      }
+    }
+
+    return next();
+  }
+}
+

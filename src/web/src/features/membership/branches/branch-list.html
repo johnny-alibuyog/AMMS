@@ -5,7 +5,7 @@
 
     <section slot="tool-section">
       <tool-bar>
-        <add-tool exec.call="add()"></add-tool>
+        <add-tool exec.call="create()"></add-tool>
         <list-tool exec.call="setView('list-view')"></list-tool>
         <tile-tool exec.call="setView('grid-view')"></tile-tool>
       </tool-bar>
@@ -22,7 +22,8 @@
         <div class="field-group">
           <label class="group">
             <span class="label">Sort</span>
-            <select class="input form-select" value.bind="sorter.selectedItem" change.delegate="sorter.propagateSelected(sorter.selectedItem)">
+            <select class="input form-select" value.bind="sorter.selectedItem"
+              change.delegate="sorter.propagateSelected(sorter.selectedItem)">
               <option repeat.for="item of sorter.items" model.bind="item">${item.label}</option>
             </select>
           </label>
@@ -60,27 +61,24 @@
                 <span>Email</span>
                 <i class="${sorter.class(sorter.data.email)}"></i>
               </th>
-              <th class="highlightable">
+              <!-- <th class="highlightable">
                 <span>Address</span>
-              </th>
+              </th> -->
             </tr>
           </thead>
           <tbody>
             <tr class="${ $even ? 'striped' : '' }" repeat.for="item of pager.items">
-              <td class="action"> <!-- https://github.com/tailwindcss/tailwindcss/issues/1599 -->
-                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="edit(item)">
+              <td class="action">
+                <!-- https://github.com/tailwindcss/tailwindcss/issues/1599 -->
+                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="update(item)">
                   <i class="fas fa-edit"></i>
                 </a>
-                <!-- <a if.bind="item.active" href="javascript:undefined" class="primary" title="Deactivate" click.delegate="toggleActiveStatus(item)">
-                  <i class="far fa-check-circle"></i>
-                </a>
-                <a else href="javascript:undefined" class="warning" title="Activate" click.delegate="toggleActiveStatus(item)">
-                  <i class="fas fa-ban"></i>
-                </a> -->
-                <a if.bind="item.active" href="javascript:undefined" class="toggle" title="Deactivate" click.delegate="toggleActiveStatus(item)">
+                <a if.bind="item.active" href="javascript:undefined" class="toggle" title="Deactivate"
+                  click.delegate="toggleActiveStatus(item)">
                   <i class="fas fa-toggle-on"></i>
                 </a>
-                <a else href="javascript:undefined" class="toggle" title="Activate" click.delegate="toggleActiveStatus(item)">
+                <a else href="javascript:undefined" class="toggle" title="Activate"
+                  click.delegate="toggleActiveStatus(item)">
                   <i class="fas fa-toggle-off"></i>
                 </a>
               </td>
@@ -88,13 +86,13 @@
               <td>${item.mobile}</td>
               <td>${item.landline}</td>
               <td>${item.email}</td>
-              <td>${item.address | address}</td>
+              <!-- <td>${item.address | address}</td> -->
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div else> 
+      <div else>
         <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <li class="col-span-1 bg-white rounded-lg shadow" repeat.for="item of pager.items">
             <div class="w-full flex items-center justify-between p-6 space-x-6">
@@ -137,7 +135,7 @@
         </ul>
       </div>
 
-      <pagination current-page.bind="pager.page" total-items.bind="pager.total"
+      <pagination current-page.bind="pager.page" total-items.bind="pager.total" page-size.bind="pager.size"
         change.delegate="pager.doPage($event)" />
     </section>
 

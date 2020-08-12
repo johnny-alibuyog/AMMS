@@ -1,14 +1,7 @@
-import { SortDirection } from "common/services/pagination";
+import { Resource, ResourceId } from "../resources/resource.model";
 
-enum Resource {
-  all = 'All',
-  membership_tenant = 'Membership:Tenants',
-  membership_tenant_user_settings = 'Membership:Tenants.Users.Settings',
-  membership_branch = 'Membership:Branches',
-  membership_role = 'Membership:Role',
-  membership_user = 'Membership:Users',
-  membership_user_password = 'Membership:Users.Password',
-}
+import { Ownership } from "features/common/ownership/ownership.model";
+import { SortDirection } from "common/services/pagination";
 
 enum Action {
   all = 'All',
@@ -18,19 +11,13 @@ enum Action {
   delete = 'Delete',
 }
 
-enum Ownership {
-  own = 'Own',
-  managed = 'Managed',
-  any = 'Any'
-}
-
 type Permission = {
   action: Action,
   ownership: Ownership
 }
 
 type AccessControl = {
-  resource: Resource,
+  resource: Resource | ResourceId,
   permissions: Permission[]
 }
 
@@ -39,34 +26,42 @@ type RoleId = string;
 type Role = {
   id: RoleId,
   name: string,
+  description?: string,
   active: boolean,
   accessControls: AccessControl[],
 }
 
-type RoleSort = { name: SortDirection, active: SortDirection }
+type RoleSort = { 
+  name: SortDirection, 
+  active: SortDirection,
+  description: SortDirection 
+}
 
 type RoleFilter = { keyword: string }
 
 const initRole = (): Role => ({
   id: '',
   name: '',
+  description: '',
   active: true,
   accessControls: []
 });
 
 const initSort = (): RoleSort => ({
   name: 'asc',
-  active: 'none'
+  active: 'none',
+  description: 'none'
 });
 
 const initFilter = (): RoleFilter => ({ 
   keyword: '',
 });
 
+const isRoleNew = (role: Role) => !role?.id;
+
 export {
   Resource,
   Action,
-  Ownership,
   Permission,
   AccessControl,
   Role,
@@ -75,5 +70,6 @@ export {
   RoleFilter,
   initRole,
   initFilter,
-  initSort
+  initSort,
+  isRoleNew
 }

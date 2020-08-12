@@ -1,7 +1,9 @@
-import path from 'path';
+import { IncomingMessage, ServerResponse } from 'http';
+import { createLogger, format, transports } from 'winston';
+
 import { Options } from 'morgan';
 import { config } from '../config';
-import { createLogger, format, transports } from 'winston';
+import path from 'path';
 
 const production = config.environment == 'production';
 
@@ -27,7 +29,7 @@ const logger = createLogger({
   ]
 });
 
-const morganOption: Options = {
+const morganOption: Options<IncomingMessage, ServerResponse> = {
   stream: {
     write: (message: string) => {
       logger.info(message.trim());

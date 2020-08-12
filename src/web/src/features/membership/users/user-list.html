@@ -5,14 +5,14 @@
 
     <section slot="tool-section">
       <tool-bar>
-        <add-tool exec.call="add()"></add-tool>
+        <add-tool exec.call="create()"></add-tool>
         <list-tool exec.call="setView('list-view')"></list-tool>
         <tile-tool exec.call="setView('grid-view')"></tile-tool>
       </tool-bar>
     </section>
 
     <section slot="filter-section" class="filter-section">
-      <form id="filter-form" role="form" submit.trigger="dofilter()">
+      <form id="filter-form" role="form">
         <div class="field-group">
           <label class="group">
             <span class="label">Keyword</span>
@@ -23,7 +23,8 @@
           <span class="label">Roles</span>
           <div class="checkboxes">
             <label class="group" repeat.for="role of roles">
-              <input class="input form-checkbox" type="checkbox" model.bind="role.id" checked.bind="filter.data.roles" />
+              <input class="input form-checkbox" type="checkbox" model.bind="role.id"
+                checked.bind="filter.data.roles" />
               <span class="label">${role.name}</span>
             </label>
           </div>
@@ -32,7 +33,8 @@
           <span class="label">Branches</span>
           <div class="checkboxes">
             <label class="group" repeat.for="branch of branches">
-              <input class="input form-checkbox" type="checkbox" model.bind="branch.id" checked.bind="filter.data.branches" />
+              <input class="input form-checkbox" type="checkbox" model.bind="branch.id"
+                checked.bind="filter.data.branches" />
               <span class="label">${branch.name}</span>
             </label>
           </div>
@@ -40,7 +42,8 @@
         <div class="field-group">
           <label class="group">
             <span class="label">Sort</span>
-            <select class="input form-select" value.bind="sorter.selectedItem" change.delegate="sorter.propagateSelected(sorter.selectedItem)">
+            <select class="input form-select" value.bind="sorter.selectedItem"
+              change.delegate="sorter.propagateSelected(sorter.selectedItem)">
               <option repeat.for="item of sorter.items" model.bind="item">${item.label}</option>
             </select>
           </label>
@@ -49,7 +52,7 @@
 
       <div id="filter-actions">
         <input type="button" class="secondary" value="Reset" click.delegate="resetPage()" />
-        <input type="submit" class="primary" value="Apply" form="filter-form" click.delegate="paginate()" />
+        <input type="submit" class="primary" value="Apply" form="filter-form" click.delegate="filter.doFilter()" />
       </div>
     </section>
 
@@ -62,20 +65,13 @@
               <th class="action">
                 <span>Action</span>
               </th>
-              <th>
-                <span>Photo</span>
-              </th>
-              <th click.delegate="sorter.doSort('username')" class="highlightable">
-                <span>Username</span>
-                <i class="${sorter.class(sorter.data.username)}"></i>
-              </th>
               <th click.delegate="sorter.doSort('name')" class="highlightable">
                 <span>Name</span>
                 <i class="${sorter.class(sorter.data.name)}"></i>
               </th>
-              <th click.delegate="sorter.doSort('email')" class="highlightable right">
-                <span>Email</span>
-                <i class="${sorter.class(sorter.data.email)}"></i>
+              <th click.delegate="sorter.doSort('username')" class="highlightable">
+                <span>Username</span>
+                <i class="${sorter.class(sorter.data.username)}"></i>
               </th>
               <th click.delegate="sorter.doSort('branch')" class="highlightable">
                 <span>Branch</span>
@@ -89,29 +85,50 @@
           </thead>
           <tbody>
             <tr class="${ $even ? 'striped' : '' }" repeat.for="item of pager.items">
-              <td class="action"> <!-- https://github.com/tailwindcss/tailwindcss/issues/1599 -->
-                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="edit(item)">
+              <td class="action">
+                <!-- https://github.com/tailwindcss/tailwindcss/issues/1599 -->
+                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="update(item)">
                   <i class="fas fa-edit"></i>
                 </a>
                 <a href="javascript:undefined" class="warning" title="Delete" click.delegate="delete(item)">
                   <i class="fas fa-trash"></i>
                 </a>
               </td>
-              <td>    
+              <td class="px-6 py-4 whitespace-no-wrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    <img class="w-10 h-10 bg-gray-300 rounded-full flex-nogrow object-cover" src.bind="item.photo.data"
+                      alt="" />
+                    <!-- <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=60" alt=""> -->
+                  </div>
+                  <div class="ml-4">
+                    <div class="leading-5 font-medium text-gray-700">
+                      ${item.person.firstName} ${item.person.lastName}
+                    </div>
+                    <div class="leading-5 text-gray-500 text-sm">
+                      ${item.email}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- <td>    
                 <img class="w-10 h-10 bg-gray-300 rounded-full flex-nogrow object-cover"
                   src.bind="item.photo.data"
                   alt="" />
-              </td>
+              </td> -->
               <td>${item.username}</td>
-              <td>${item.person.firstName} ${item.person.lastName}</td>
-              <td class="right">${item.email}</td>
+              <!-- <td>${item.person.firstName} ${item.person.lastName}</td> -->
+              <!-- <td class="right">${item.email}</td> -->
               <td class="space-x-1">
-                <span repeat.for="branch of item.branches" class="px-2 inline-flex leading-5 rounded-full bg-green-200 text-green-800">
+                <span repeat.for="branch of item.branches"
+                  class="px-2 inline-flex leading-5 rounded-full bg-green-200 text-green-800">
                   ${branch | lookupName:branches }
                 </span>
               </td>
               <td class="space-x-1">
-                <span repeat.for="role of item.roles" class="px-2 inline-flex leading-5 rounded-full bg-green-200 text-green-800">
+                <span repeat.for="role of item.roles"
+                  class="px-2 inline-flex leading-5 rounded-full bg-green-200 text-green-800">
                   ${role | lookupName:roles }
                 </span>
               </td>
@@ -120,20 +137,21 @@
         </table>
       </div>
 
-      <div else> 
+      <div else>
         <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <li class="col-span-1 bg-white rounded-lg shadow" repeat.for="item of pager.items">
             <div class="w-full flex items-center justify-between p-6 space-x-6">
               <div class="flex-1 truncate">
                 <div class="flex items-center space-x-3">
-                  <h3 class="text-gray-900 text-sm leading-5 font-medium truncate">${item.person.firstName} ${item.person.lastName}</h3>
+                  <h3 class="text-gray-900 text-sm leading-5 font-medium truncate">${item.person.firstName}
+                    ${item.person.lastName}</h3>
                   <span repeat.for="role of item.roles"
-                    class="flex-shrink-0 inline-block px-2 py-0.5 text-teal-800 text-xs leading-4 font-medium bg-teal-100 rounded-full">${role | lookupName:roles }</span>
+                    class="flex-shrink-0 inline-block px-2 py-0.5 text-teal-800 text-xs leading-4 font-medium bg-teal-100 rounded-full">
+                    ${role | lookupName:roles }</span>
                 </div>
                 <p class="mt-1 text-gray-500 text-sm leading-5 truncate">Regional Paradigm Technician</p>
               </div>
-              <img class="w-10 h-10 bg-gray-300 rounded-full flex-nogrow object-cover"
-                src.bind="item.photo.data"
+              <img class="w-10 h-10 bg-gray-300 rounded-full flex-nogrow object-cover" src.bind="item.photo.data"
                 alt="" />
             </div>
             <div class="border-t border-gray-200">
@@ -164,7 +182,7 @@
         </ul>
       </div>
 
-      <pagination current-page.bind="pager.page" total-items.bind="pager.total"
+      <pagination current-page.bind="pager.page" total-items.bind="pager.total" page-size.bind="pager.size"
         change.delegate="pager.doPage($event)" />
     </section>
 
