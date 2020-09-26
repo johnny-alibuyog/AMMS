@@ -259,7 +259,7 @@
   @apply text-gray-700;
 }
 
-@screen md {
+@screen lg {
   .form-group {
     @apply grid grid-cols-3 gap-6;
   }

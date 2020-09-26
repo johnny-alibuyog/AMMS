@@ -56,7 +56,6 @@ const initFilter = (): UserFilter => ({
 
 const isUserNew = (user: User) => !user?.id;
 
-
 export {
   User,
   UserId,

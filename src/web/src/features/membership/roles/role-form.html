@@ -1,3 +1,142 @@
 <template>
-  ${title}
+  <require from="./role-form.css"></require>
+  <require from="./action.binder"></require>
+  <require from="./ownership.binder"></require>
+  <require from="../../common/person/gender.binder"></require>
+  <require from="../../../shell/layouts/form-layout"></require>
+  <require from="../resources/resource-name-value-converter"></require>
+  <require from="../resources/resource-group-name-value-converter"></require>
+  <require from="../resources/resource.group.binder"></require>
+
+  <form-layout title.bind="title">
+
+    <section slot="title-section">
+      <custom-breadcrumbs items.bind="breadcrumbItems"></custom-breadcrumbs>
+    </section>
+
+    <section slot="tool-section">
+      <tool-bar>
+        <add-tool exec.call="add()"></add-tool>
+        <tile-tool exec.call="add()"></tile-tool>
+        <list-tool exec.call="add()"></list-tool>
+      </tool-bar>
+
+    </section>
+
+    <!-- form section -->
+    <section slot="form-section">
+      <form id="input-form" class="form" validation-errors="errors.bind: errors; controller.bind: validator"
+        submit.delegate="save()">
+
+        <div class="form-group">
+          <div class="form-group__title">
+            <h3 class="label">Role Info</h3>
+            <p class="desc">
+              Define role based on the purpose and description.
+            </p>
+          </div>
+          <div class="form-group__content">
+
+            <div class="field-group">
+              <label class="group by-2">
+                <span class="label">Name</span>
+                <input class="input form-input" type="text" placeholder="Username" value.bind="role.name & validate"
+                  focus="true" />
+              </label>
+
+              <label class="group by-2">
+                <span class="label">Description</span>
+                <input class="input form-input" type="text" placeholder="Email"
+                  value.bind="role.description & validate" />
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group__divider"></div>
+
+        <div class="form-group">
+          <div class="form-group__title">
+            <h3 class="label">Access Controls</h3>
+            <p class="desc">
+              Select appropriate access controls for the role.
+            </p>
+
+            <form submit.delegate="paginate()">
+              <div class="bg-gray-100 mt-3 px-6 py-2">
+                <div class="field-group">
+                  <label class="group">
+                    <span class="label">Search</span>
+                    <input class="input form-input form-input-sm" type="text" placeholder="Keyword"
+                      value.bind="filter.data.keyword" keyup.delegate="filter.doFilter()" />
+                  </label>
+                </div>
+
+                <div class="field-group">
+                  <label class="group">
+                    <span class="label">Groups</span>
+                    <div class="checkboxes">
+                      <label class="flex items-center space-x-3 my-1" repeat.for="resourceGroup of ResourceGroups">
+                        <input class="form-checkbox" type="checkbox" model.bind="resourceGroup"
+                          checked.bind="$parent.filter.data.groups" change.delegate="$parent.filter.doFilter()" />
+                        <span class="text-gray-700">${resourceGroup}</span>
+                      </label>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="form-group__content">
+            <div class="responsive-table mt-0 ">
+              <table>
+                <thead>
+                  <tr>
+                    <th><span>Resource</span></th>
+                    <th repeat.for="action of Actions"><span>${action}</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- https://github.com/aurelia/templating-resources/issues/354 -->
+                  <tr repeat.for="resource of resourcePager.items" class="${ $even ? 'striped' : '' }">
+                    <td>
+                      <div class="ml-4">
+                        <div class="leading-5 font-medium text-gray-700">
+                          ${resource.id | resourceName}
+                        </div>
+                        <div class="leading-5 text-gray-500 text-sm">
+                          ${resource.id | resourceGroupName}
+                        </div>
+                      </div>
+                    </td>
+                    <td repeat.for="action of Actions">
+                      <let access-control.bind="selectAccessControl(resource)"></let>
+                      <let permission.bind="selectPermission(action, accessControl)"></let>
+                      <select if.bind="permission" class="input form-select form-input-sm"
+                        value.bind="permission.ownership & validate">
+                        <option repeat.for="ownership of Ownerships" model.bind="ownership">${ownership}</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <pagination current-page.bind="resourcePager.page" total-items.bind="resourcePager.total" page-size.bind="resourcePager.size"
+              change.delegate="resourcePager.doPage($event)" />
+
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+    <section slot="form-actions">
+      <input type="submit" class="primary" role="button" value="Save" form="input-form" />
+      <input type="button" class="secondary" role="button" value="Cancel" click.delegate="cancel()" />
+    </section>
+
+  </form-layout>
 </template>

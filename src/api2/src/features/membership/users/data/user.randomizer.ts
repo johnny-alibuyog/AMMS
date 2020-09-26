@@ -5,7 +5,7 @@ import { Person } from '../../../common/person/person.model';
 import { Role } from '../../roles/role.models';
 import { User } from '../user.models';
 import { randomAddress } from '../../../common/address/address.seed';
-import { randomPerson } from '../../../common/person/person.seed';
+import { randomPerson } from '../../../common/person/data/person.randomizer';
 
 const generateUsername = (person: Person) => faker.internet.userName(person.firstName, person.lastName); 
 

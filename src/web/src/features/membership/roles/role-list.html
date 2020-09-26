@@ -5,14 +5,14 @@
 
     <section slot="tool-section">
       <tool-bar>
-        <add-tool exec.call="add()"></add-tool>
+        <add-tool exec.call="create()"></add-tool>
         <list-tool exec.call="setView('list-view')"></list-tool>
         <tile-tool exec.call="setView('grid-view')"></tile-tool>
       </tool-bar>
     </section>
 
     <section slot="filter-section" class="filter-section">
-      <form id="filter-form" role="form" submit.trigger="dofilter()">
+      <form id="filter-form" role="form" submit.trigger="filter.doFilter()">
         <div class="field-group">
           <label class="group">
             <span class="label">Keyword</span>
@@ -31,7 +31,7 @@
 
       <div id="filter-actions">
         <input type="button" class="secondary" value="Reset" click.delegate="reset()" />
-        <input type="submit" class="primary" value="Apply" form="filter-form" click.delegate="paginate()" />
+        <input type="submit" class="primary" value="Apply" form="filter-form" />
       </div>
     </section>
 
@@ -48,12 +48,16 @@
                 <span>Name</span>
                 <i class="${sorter.class(sorter.data.name)}"></i>
               </th>
+              <th click.delegate="sorter.doSort('description')" class="highlightable">
+                <span>Description</span>
+                <i class="${sorter.class(sorter.data.description)}"></i>
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr class="${ $even ? 'striped' : '' }" repeat.for="item of pager.items">
               <td class="action"> <!-- https://github.com/tailwindcss/tailwindcss/issues/1599 -->
-                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="edit(item)">
+                <a href="javascript:undefined" class="primary" title="Edit" click.delegate="update(item)">
                   <i class="fas fa-edit"></i>
                 </a>
                 <a if.bind="item.active" href="javascript:undefined" class="toggle" title="Deactivate" click.delegate="toggleActiveStatus(item)">
@@ -64,6 +68,7 @@
                 </a>
               </td>
               <td>${item.name}</td>
+              <td>${item.description}</td>
             </tr>
           </tbody>
         </table>
@@ -112,7 +117,7 @@
         </ul>
       </div>
 
-      <pagination current-page.bind="pager.page" total-items.bind="pager.total"
+      <pagination current-page.bind="pager.page" total-items.bind="pager.total" page-size.bind="pager.size"
         change.delegate="pager.doPage($event)" />
     </section>
 

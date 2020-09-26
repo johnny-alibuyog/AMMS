@@ -1,16 +1,17 @@
-import { Action, Resource } from './role.models';
 import { Request, Response } from 'express';
 import { RoleContract, RoleIdContract, RolePageRequest, roleService } from './role.services';
 import { Route, resourceBuilder } from '../../../utils';
 
+import { Action } from './role.models';
 import { authorize } from '../../../middlewares/auth';
 import { handle } from '../../../utils/response.handlers';
+import { resources } from '../resources/data/resource.data';
 import { wrap } from '../../../utils/error.handlers';
 
 const basePath = () => resourceBuilder('roles');
 
 const guard = (action: Action) =>
-  authorize({ resource: Resource.membership_role, action: action });
+  authorize({ resource: resources.membership.role, action: action });
 
 const routes: Route[] = [
   {
@@ -30,7 +31,7 @@ const routes: Route[] = [
     handlers: [
       guard(Action.read),
       wrap(async (req: Request, res: Response) => {
-        const params = req.query as RolePageRequest;
+        const params = req.query as unknown as RolePageRequest;
         const result = await roleService.find(params);
         handle(req, res, result);
       })

@@ -1,15 +1,17 @@
-import { Request, Response, NextFunction } from 'express';
+import { ImageContract, ImageIdContract, imageService } from './image.service';
+import { Request, Response } from 'express';
 import { Route, resourceBuilder } from './../../../utils/index';
+
+import { Action } from '../../membership/roles/role.models';
 import { authorize } from '../../../middlewares/auth';
 import { handle } from '../../../utils/response.handlers';
+import { resources } from '../../membership/resources/data/resource.data';
 import { wrap } from '../../../utils/error.handlers';
-import { Action, Resource } from '../../membership/roles/role.models';
-import { imageService, ImageIdContract, ImageContract } from './image.service';
 
 const basePath = () => resourceBuilder('images')
 
 const guard = (action: Action) =>
-  authorize({ resource: Resource.common_image, action: action });
+  authorize({ resource: resources.common.image, action: action });
 
 const routes: Route[] = [
   {

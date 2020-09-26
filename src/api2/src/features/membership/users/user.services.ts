@@ -3,58 +3,30 @@ import { logger } from '../../../utils/logger';
 import { context } from '../../../utils/request.context';
 import { initDbContext } from '../../db.context';
 import { RoleIdContract } from '../roles/role.services';
-import { PageResponse, PageRequest, SortDirection, parsePageFrom, builderDef, Lookup } from '../../common/contract.models';
+import { PageResponse, PageRequest, SortDirection, parsePageFrom, Lookup } from '../../common/contract.models';
 import { BranchIdContract } from '../branches/branch.services';
+import { addEntryWhen, isNotNullOrDefault, addItemWhen, valueOrNone, sortDirectionIsNotNone, isNullOrDefault } from '../../common/helpers/query.helpers';
+import { qualifyBranch } from '../../common/ownership/ownership.helper';
 
 type UserIdContract = string;
 
 type UserContract = Omit<User, 'passwordHash' | 'passwordSalt'>;
 
-type UserFilterRequest = { keyword?: string, branches?: BranchIdContract, roles?: RoleIdContract[] }
+type UserFilterRequest = {
+  keyword?: string,
+  branches?: BranchIdContract[],
+  roles?: RoleIdContract[]
+}
 
-type UserSortRequest = { username?: SortDirection, email?: SortDirection, name?: SortDirection }
+type UserSortRequest = {
+  username?: SortDirection,
+  email?: SortDirection,
+  name?: SortDirection
+}
 
 type UserPageRequest = PageRequest<UserFilterRequest, UserSortRequest>;
 
 type UserPageResponse = PageResponse<UserContract>;
-
-const isNullOrDefault = <T>(value: T): boolean => {
-  if (value == null) {
-    return true;
-  }
-  if (value == undefined) {
-    return true;
-  }
-  if (typeof value === 'string' /* value instanceof String */) {
-    return value.trim().length === 0;
-  }
-  if (value instanceof Array) {
-    return value.length === 0;
-  }
-  if (value instanceof Object) {
-    return Object.keys(value).length > 0;
-  }
-  return false;
-}
-
-const isNotNullOrDefault = <T>(value: T): boolean => !isNullOrDefault(value);
-
-type EvalParam<T, M> = {
-  when: (item: T) => boolean,
-  map: (item: T) => M
-}
-
-const addItemWhen = <T, M>(value: T, evaluator: EvalParam<T, M>): M[] =>
-  evaluator.when(value) ? [evaluator.map(value)] : [];
-
-const addItemIf = <T>(condition: () => boolean, item: T): T[] =>
-  condition() ? [item] : [];
-
-const addEntryWhen = <T, M>(value: T, evaluator: EvalParam<T, M>): {} =>
-  evaluator.when(value) && evaluator.map(value);
-
-const addEntryIf = (condition: () => boolean, entry: {}): {} =>
-  condition() && entry;
 
 const lookup = async () => {
   const db = await initDbContext();
@@ -69,6 +41,16 @@ const find = async (request: UserPageRequest) => {
   const db = await initDbContext();
   // https://stackoverflow.com/questions/56021631/add-elements-inside-array-conditionally-in-javascript
 
+  // context.current()?.permission?.ownership
+
+  // 1. get branch from filter and validate with user branch
+
+  // const ensure = (predicate: () => boolean, errorMessage: string) => {
+  //   if (!predicate()) {
+  //     throw new Error(errorMessage);
+  //   }
+  // }
+
   const filter = {
     ...addEntryWhen(request.filter?.keyword, {
       when: isNotNullOrDefault,
@@ -82,7 +64,7 @@ const find = async (request: UserPageRequest) => {
         ]
       })
     }),
-    ...addEntryWhen(request.filter?.branches, {
+    ...addEntryWhen(await qualifyBranch(db, request.filter?.branches), {
       when: isNotNullOrDefault,
       map: (value) => ({
         branches: { $in: value }
@@ -95,11 +77,6 @@ const find = async (request: UserPageRequest) => {
       })
     })
   };
-
-  const sortDirectionIsNotNone = (dir: SortDirection = 'none') =>
-    isNotNullOrDefault(dir) && dir != 'none';
-
-    const valueOrNone = (dir?: SortDirection) => dir ? dir : 'none';
 
   const sort: string[][] = [
     ...addItemWhen(valueOrNone(request.sort?.email), {
@@ -139,7 +116,7 @@ const get = async (id: UserIdContract) => {
 
 const create = async (user: UserContract) => {
   const db = await initDbContext();
-  const newUser = await db.users.create(user);
+  const newUser = await db.users.create<any>(user); // WORK AROUND: https://github.com/typegoose/typegoose/issues/298
   return <UserIdContract>newUser.id;
 }
 

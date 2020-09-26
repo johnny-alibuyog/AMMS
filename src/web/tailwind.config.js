@@ -79,5 +79,8 @@ module.exports = {
   ],
   corePlugins: {
     placeholderColor: true,
-  }
+  },
+  future: {
+    removeDeprecatedGapUtilities: true,
+  },
 };

@@ -29,7 +29,7 @@ export class Pagination {
 
     this._config = {
       maxSize: defaultIfNull(appConfig.page.maxSize, 5),
-      pageSize: defaultIfNull(appConfig.page.pageSize, 10),
+      pageSize: defaultIfNull(appConfig.page.pageSize, 12),
       boundaryLinks: defaultIfNull(appConfig.page.boundaryLinks, true),
       directionLinks: defaultIfNull(appConfig.page.directionLinks, true),
       firstText: defaultIfNull(appConfig.page.firstText, '<<'),

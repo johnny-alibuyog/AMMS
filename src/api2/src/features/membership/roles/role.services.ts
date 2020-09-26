@@ -1,6 +1,7 @@
 import { Role } from './role.models';
-import { initDbContext } from '../../db.context';
 import { PageResponse, PageRequest, SortDirection, parsePageFrom, builderDef, Lookup } from '../../common/contract.models';
+import { addEntryWhen, isNotNullOrDefault, addItemWhen, valueOrNone, sortDirectionIsNotNone } from '../../common/helpers/query.helpers';
+import { initDbContext } from '../../db.context';
 
 type RoleIdContract = string;
 
@@ -8,7 +9,11 @@ type RoleContract = Role;
 
 type RoleFilterRequest = { keyword: string }
 
-type RoleSortRequest = { name: SortDirection }
+type RoleSortRequest = { 
+  active?: SortDirection, 
+  name?: SortDirection, 
+  description?: SortDirection 
+}
 
 type RolePageRequest = PageRequest<RoleFilterRequest, RoleSortRequest>;
 
@@ -25,11 +30,38 @@ const lookup = async () => {
 }
 
 const find = async (request: RolePageRequest) => {
+  const filter = {
+    ...addEntryWhen(request.filter?.keyword, {
+      when: isNotNullOrDefault,
+      map: (value) => ({
+        $or: [
+          { 'name': { $regex: `${value}` } },
+          { 'description': { $regex: `${value}` } }
+        ]
+      })
+    })
+  };
+
+  const sort: string[][] = [
+    ...addItemWhen(valueOrNone(request.sort?.active), {
+      when: sortDirectionIsNotNone,
+      map: (value) => ['active', value]
+    }),
+    ...addItemWhen(valueOrNone(request.sort?.name), {
+      when: sortDirectionIsNotNone,
+      map: (value) => ['name', value]
+    }),
+    ...addItemWhen(valueOrNone(request.sort?.description), {
+      when: sortDirectionIsNotNone,
+      map: (value) => ['description', value]
+    }),
+  ];
+
   const db = await initDbContext();
   const { skip, limit } = parsePageFrom(request);
   const [total, items] = await Promise.all([
-    db.roles.find({}).countDocuments().exec(),
-    db.roles.find({}).skip(skip).limit(limit).exec()
+    db.roles.find(filter).countDocuments().exec(),
+    db.roles.find(filter).sort(sort).skip(skip).limit(limit).exec()
   ]);
   const response: RolePageResponse = {
     total: total,
@@ -46,7 +78,7 @@ const get = async (id: RoleIdContract) => {
 
 const create = async (role: RoleContract) => {
   const db = await initDbContext();
-  const { id } = await db.roles.create(role);
+  const { id } = await db.roles.create<any>(role); // WORK AROUND: https://github.com/typegoose/typegoose/issues/298
   return <RoleIdContract>id;
 }
 

@@ -1,10 +1,11 @@
-import { customElement, inlineView, bindable } from "aurelia-framework";
+import { bindable, customElement, inlineView } from "aurelia-framework";
+
 import { ITool } from "./tool-bar";
 
 @customElement("add-tool")
 @inlineView(`
 <template>
-  <i class="fas fa-plus tool__img" click.delegate="notify()"></i>
+  <i class="fas fa-plus tool__img" title="Create New" click.delegate="notify()"></i>
 </template>
 `)
 export class AddTool implements ITool {

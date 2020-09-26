@@ -20,9 +20,9 @@ export class BranchList extends ListLayout<Branch, BranchFilter, BranchSort> {
     this.setOperations({
       initSort: () => initSort(),
       initFilter: () => initFilter(),
-      loadData: () => this.paginate(),
-      add: () => router.navigateToRoute('branches/role-form'),
-      edit: (item) => router.navigateToRoute('branches/role-form', { id: item.id }),
+      initData: () => this.paginate(),
+      create: () => router.navigateToRoute('branches/branch-form'),
+      update: (item) => router.navigateToRoute('branches/branch-form', { id: item.id }),
       dataSource: (request) => api.branches.find(request)
     });
   }

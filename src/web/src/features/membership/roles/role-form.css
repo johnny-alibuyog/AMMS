@@ -1,0 +1,12 @@
+.role-container {
+  @apply flex;
+  @apply justify-between;
+}
+
+.role-filter {
+
+}
+
+.role-list {
+  @apply overflow-auto;
+}

@@ -1,12 +1,14 @@
-import { AccessControl, Action, Ownership, Permission, Resource } from '../../roles/role.models';
+import { AccessControl, Action, Permission } from '../../roles/role.models';
 import { IBuilder, UserBuilderArgs, createUserBuilder } from '../../../../utils/client.data.builder';
 import { LoginRequest, LoginResponse } from '../auth.service';
 import { defineFeature, loadFeature } from 'jest-cucumber';
 
+import { Ownership } from '../../../common/ownership/ownership.model';
 import { UserContract } from '../../users/user.services';
 import { basePath } from '..';
 import { logger } from '../../../../utils/logger';
 import { request } from '../../../../client';
+import { resources } from '../../resources/data/resource.data';
 
 const feature = loadFeature('./auth.feature', { loadRelativePath: true });
 
@@ -39,7 +41,7 @@ defineFeature(feature, (test) => {
     beforeAll(async () => {
       userBuilder = await createUserBuilder();
       accessControl = new AccessControl({
-        resource: Resource.membership_user,
+        resource: resources.membership.user._id,
         permissions: [new Permission({ action: Action.update, ownership: Ownership.all })]
       })
     });
@@ -79,8 +81,8 @@ defineFeature(feature, (test) => {
     beforeAll(async () => {
       userBuilder = await createUserBuilder();
       accessControl = new AccessControl({
-        resource: Resource.all,
-        permissions: [new Permission({ action: Action.all, ownership: Ownership.own })]
+        resource: resources.all._id,
+        permissions: [new Permission({ action: Action.all, ownership: Ownership.owned })]
       })
     });
 
@@ -113,7 +115,7 @@ defineFeature(feature, (test) => {
     beforeAll(async () => {
       userBuilder = await createUserBuilder();
       accessControl = new AccessControl({
-        resource: Resource.membership_user,
+        resource: resources.membership.user,
         permissions: [new Permission({ action: Action.read, ownership: Ownership.all })]
       });
     });

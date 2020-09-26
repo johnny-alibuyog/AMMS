@@ -1,6 +1,5 @@
 import { appConfig } from '../../app-config';
 import { isNotNullOrDefault } from 'common/utils';
-import { isPropertyName } from 'typescript';
 import { camelToTitle } from 'features/utils';
 
 type Param<T> = {
@@ -126,8 +125,8 @@ export class Sorter<T> {
         value: value
       })))
       .flat();
-    const [key, value] = Object.entries(source).find(([_, value]) => value != 'none');
-    this.selectedItem = this.items.find(x => x.key == key && x.value == value);
+    const [field, value] = Object.entries(source).find(([_, value]) => value != 'none');
+    this.selectedItem = this.items.find(x => x.field == field && x.value == value);
   }
 
   private selectItem(key: keyof T, value: SortDirection): void {
@@ -167,7 +166,7 @@ export class Pager<T> {
   constructor(param: PagerParam) {
     this.set({
       page: 1,
-      size: param?.config?.pageSize
+      size: param?.config?.pageSize || appConfig.page.pageSize
     });
     this.paginate = () => param.action();
   }

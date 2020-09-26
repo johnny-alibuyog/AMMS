@@ -13,9 +13,9 @@ import { state } from "kernel/state";
 export type Operations<TModel, TFilter, TSort> = {
   initSort: () => TSort,
   initFilter: () => TFilter,
-  loadData: () => Promise<void>,
-  add?: () => Promise<void> | void | boolean,
-  edit?: (item: TModel) => Promise<void> | void | boolean,
+  initData: () => Promise<void>,
+  create?: () => Promise<void> | void | boolean,
+  update?: (item: TModel) => Promise<void> | void | boolean,
   delete?: (item: TModel) => Promise<void> | void | boolean,
   dataSource: (request: PageRequest<TFilter, TSort>) => Promise<PageResponse<TModel>>
 }
@@ -24,8 +24,8 @@ export type Operations<TModel, TFilter, TSort> = {
 export class ListLayout<TModel, TFilter, TSort> {
   private _activated: boolean = false;
   private readonly _url: UrlState
-  private readonly subscriptions: Subscription[] = [];
-  protected _operations: Operations<TModel, TFilter, TSort> = null;
+  private readonly _subscriptions: Subscription[] = [];
+  protected operations: Operations<TModel, TFilter, TSort> = null;
 
   public title: string = "";
   public settings: ListPageState;
@@ -43,14 +43,17 @@ export class ListLayout<TModel, TFilter, TSort> {
 
   // NOTE: This should be placed in the constructor. but since aurelia 
   //  doesn't allow it, we extracted a method to initialize _operations
-  protected setOperations(operations: Operations<TModel, TFilter, TSort>) : void {
-    this._operations = operations;
+  protected setOperations(operations: Operations<TModel, TFilter, TSort>): void {
+    this.operations = operations;
     this.filter = new Filter({
-      init: () => this._operations.initFilter(),
-      action: () => this.paginate()
+      init: () => this.operations.initFilter(),
+      action: async () => {
+        this.pager.page = 1;
+        await this.paginate();
+      }
     });
     this.sorter = new Sorter({
-      init: () => this._operations.initSort(),
+      init: () => this.operations.initSort(),
       action: () => this.paginate()
     });
     this.pager = new Pager({
@@ -62,23 +65,23 @@ export class ListLayout<TModel, TFilter, TSort> {
     this.filter.set(param?.filter);
     this.sorter.set(param?.sort);
     this.pager.set({ page: param.page, size: param.size });
-    await this._operations.loadData();
+    await this.operations.initData();
     this._activated = true;
   }
-  
+
   public async attached(): Promise<void> {
     this.settings = await state.listPage.current();
-    this.subscriptions.push(state.listPage.state().subscribe(value => this.settings = value));
+    this._subscriptions.push(state.listPage.state().subscribe(value => this.settings = value));
   }
 
   public detached(): void {
-    this.subscriptions.forEach(x => x.unsubscribe());
+    this._subscriptions.forEach(x => x.unsubscribe());
   }
 
-  public async resetPage() : Promise<void> {
+  public async resetPage(): Promise<void> {
     await this.activate({
-      filter: this._operations.initFilter(),
-      sort: this._operations.initSort(),
+      filter: this.operations.initFilter(),
+      sort: this.operations.initSort(),
       page: null,
       size: null
     });
@@ -91,7 +94,7 @@ export class ListLayout<TModel, TFilter, TSort> {
       page: this.pager.page,
       size: this.pager.size
     };
-    const result = await this._operations.dataSource(request);
+    const result = await this.operations.dataSource(request);
     this.pager.total = result.total;
     this.pager.items = result.items;
     if (this._activated) {
@@ -107,5 +110,26 @@ export class ListLayout<TModel, TFilter, TSort> {
   public setView(view: ListPageState['view']): void {
     this.settings.view = view;
     state.listPage.set(this.settings);
+  }
+
+  public create(): Promise<void> | void | boolean {
+    if (this.operations.create == undefined) {
+      throw new Error(`Create functionality is not yet defined for ${this.title}`);
+    }
+    return this.operations.create();
+  }
+
+  public update(item: TModel): Promise<void> | void | boolean {
+    if (this.operations.update == undefined) {
+      throw new Error(`Edit functionality is not yet defined for ${this.title}`);
+    }
+    return this.operations.update(item);
+  }
+
+  public delete(item: TModel): Promise<void> | void | boolean {
+    if (this.operations.delete == undefined) {
+      throw new Error(`Eelete functionality is not yet defined for ${this.title}`);
+    }
+    return this.operations?.delete(item);
   }
 }

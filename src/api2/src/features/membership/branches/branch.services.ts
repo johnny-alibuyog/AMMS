@@ -3,6 +3,7 @@ import { logger } from '../../../utils/logger';
 import { context } from '../../../utils/request.context';
 import { initDbContext } from '../../db.context';
 import { PageResponse, PageRequest, SortDirection, parsePageFrom, builderDef, Lookup } from '../../common/contract.models';
+import { addEntryWhen, isNotNullOrDefault, addItemWhen } from '../../common/helpers/query.helpers';
 
 type BranchIdContract = string;
 
@@ -22,44 +23,6 @@ type BranchSortRequest = {
 type BranchPageRequest = PageRequest<BranchFilterRequest, BranchSortRequest>;
 
 type BranchPageResponse = PageResponse<BranchContract>;
-
-const isNullOrDefault = <T>(value: T): boolean => {
-  if (value == null) {
-    return true;
-  }
-  if (value == undefined) {
-    return true;
-  }
-  if (typeof value === 'string' /* value instanceof String */) {
-    return value.trim().length === 0;
-  }
-  if (value instanceof Array) {
-    return value.length === 0;
-  }
-  if (value instanceof Object) {
-    return Object.keys(value).length > 0;
-  }
-  return false;
-}
-
-const isNotNullOrDefault = <T>(value: T): boolean => !isNullOrDefault(value);
-
-type EvalParam<T, M> = {
-  when: (item: T) => boolean,
-  map: (item: T) => M
-}
-
-const addItemWhen = <T, M>(value: T, evaluator: EvalParam<T, M>): M[] =>
-  evaluator.when(value) ? [evaluator.map(value)] : [];
-
-const addItemIf = <T>(condition: () => boolean, item: T): T[] =>
-  condition() ? [item] : [];
-
-const addEntryWhen = <T, M>(value: T, evaluator: EvalParam<T, M>): {} =>
-  evaluator.when(value) && evaluator.map(value);
-
-const addEntryIf = (condition: () => boolean, entry: {}): {} =>
-  condition() && entry;
 
 const lookup = async () => {
   const db = await initDbContext();

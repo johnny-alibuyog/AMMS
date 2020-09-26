@@ -1,17 +1,8 @@
 import { Entity, ValueObject } from '../../common/kernel';
+import { Ref, prop } from "@typegoose/typegoose";
 
-import { prop } from "@typegoose/typegoose";
-
-enum Resource {
-  all = 'All',
-  common_image = 'Common:Images',
-  membership_tenant = 'Membership:Tenants',
-  membership_tenant_user_settings = 'Membership:Tenants.Users.Settings',
-  membership_branch = 'Membership:Branches',
-  membership_role = 'Membership:Role',
-  membership_user = 'Membership:Users',
-  membership_user_password = 'Membership:Users.Password',
-}
+import { Ownership } from '../../common/ownership/ownership.model';
+import { Resource } from '../resources/resource.model';
 
 enum Action {
   all = 'All',
@@ -19,12 +10,6 @@ enum Action {
   create = 'Create',
   update = 'Update',
   delete = 'Delete',
-}
-
-enum Ownership {
-  own = 'Own',
-  managed = 'Managed',
-  all = 'All'
 }
 
 class Permission extends ValueObject {
@@ -41,14 +26,11 @@ class Permission extends ValueObject {
 }
 
 class AccessControl extends ValueObject {
-  @prop({ _id: false, enum: Resource, required: true })
-  public resource!: Resource;
+  @prop({ ref: () => Resource })
+  public resource!: Ref<Resource>;
 
   @prop({ _id: false, type: () => Permission})
   public permissions!: Permission[];
-
-  // @mapProp({ of: Action, enum: Ownership, required: true })
-  // public permissions!: Map<Action, Ownership>;
 
   constructor(init?: AccessControl) {
     super();
@@ -62,6 +44,9 @@ class Role extends Entity {
   public name!: string;
 
   @prop()
+  public description?: string;
+
+  @prop()
   public active!: boolean;
 
   @prop({  _id: false, type: () => AccessControl})
@@ -72,11 +57,10 @@ class Role extends Entity {
     Object.assign(this, init);
   }
 }
+
 export {
   Role,
   AccessControl,
-  Resource,
   Permission,
-  Action,
-  Ownership,
+  Action
 }

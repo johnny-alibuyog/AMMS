@@ -1,7 +1,6 @@
-import { Ref, pre, prop } from '@typegoose/typegoose';
-
 import { Address } from '../../common/address/address.model';
 import { Entity } from '../../common/kernel';
+import { prop } from '@typegoose/typegoose';
 
 class Branch extends Entity {
   @prop({ required: true })

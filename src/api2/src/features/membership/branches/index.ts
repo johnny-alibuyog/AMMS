@@ -1,16 +1,17 @@
-import { Action, Resource } from '../roles/role.models';
 import { BranchContract, BranchIdContract, BranchPageRequest, branchService } from './branch.services';
 import { Request, Response } from 'express';
 import { Route, resourceBuilder } from './../../../utils/index';
 
+import { Action } from '../roles/role.models';
 import { authorize } from '../../../middlewares/auth';
 import { handle } from '../../../utils/response.handlers';
+import { resources } from '../resources/data/resource.data';
 import { wrap } from '../../../utils/error.handlers';
 
 const basePath = () => resourceBuilder('branches');
 
 const guard = (action: Action) =>
-  authorize({ resource: Resource.membership_branch, action: action });
+  authorize({ resource: resources.membership.branch, action: action });
 
 const routes: Route[] = [
   {
@@ -30,7 +31,7 @@ const routes: Route[] = [
     handlers: [
       guard(Action.read),
       wrap(async (req: Request, res: Response) => {
-        const params = req.query as BranchPageRequest;
+        const params = req.query as unknown as BranchPageRequest;
         const result = await branchService.find(params);
         handle(req, res, result);
       })
