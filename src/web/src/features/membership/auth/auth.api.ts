@@ -1,17 +1,18 @@
+import { SigninCredential, SigninResponse } from "./auth.models";
+
 import { client } from "kernel/api-builder/http-client-facade";
-import { LoginCredential, LoginResponse } from "./auth.models";
 
 const apiBuilder = (resource: string) => {
 
-  const login = (credentials: LoginCredential) : Promise<LoginResponse> =>
-    client.post(`${resource}/login`, credentials);
+  const signin = (credentials: SigninCredential) : Promise<SigninResponse> =>
+    client.post(`${resource}/signin`, credentials);
 
-  const logout = () : Promise<void> =>
-    client.post(`${resource}/logout`, {});
+  const signout = () : Promise<void> =>
+    client.post(`${resource}/signout`, {});
 
   return {
-    login,
-    logout
+    signin,
+    signout
   }
 }
 

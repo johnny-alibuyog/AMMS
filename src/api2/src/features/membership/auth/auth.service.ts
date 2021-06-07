@@ -5,19 +5,19 @@ import { initDbContext } from "../../db.context";
 import { jwtService } from "../../../middlewares/auth"
 import { logger } from "../../../utils/logger";
 
-type LoginCredential = {
+type SigninCredential = {
   username: string,
   password: string
 }
 
-type LoginRequest = LoginCredential;
+type SigninRequest = SigninCredential;
 
-type LoginResponse = {
+type SigninResponse = {
   token: string,
   user: UserContract
 }
 
-const login = async (request: LoginRequest): Promise<LoginResponse> => {
+const signin = async (request: SigninRequest): Promise<SigninResponse> => {
   const db = await initDbContext();
   const user = await db.users.findOne({ username: request.username }).exec();
   if (!user) {
@@ -31,7 +31,7 @@ const login = async (request: LoginRequest): Promise<LoginResponse> => {
   return { token: token, user: user };
 }
 
-const logout = async (): Promise<void> => {
+const signout = async (): Promise<void> => {
   logger.info('THIS IS LOGOUT METHOD!');
   return Promise.resolve();
 }
@@ -42,14 +42,14 @@ const secure = (): Promise<void> => {
 }
 
 const authService = {
-  login,
-  logout,
+  signin,
+  signout,
   secure
 }
 
 export {
   authService,
-  LoginCredential,
-  LoginRequest,
-  LoginResponse
+  SigninCredential,
+  SigninRequest,
+  SigninResponse
 }

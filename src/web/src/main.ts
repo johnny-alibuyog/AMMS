@@ -1,17 +1,21 @@
-import { Container } from 'aurelia-framework';
-// import 'assets/css/tailwind.css';
-
 /// <reference types="aurelia-loader-webpack/src/webpack-hot-interface"/>
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'croppie/croppie.css';
-import environment from './environment';
+// import './modules/WebSdk';
+
 import * as Bluebird from 'bluebird';
+
 import { Aurelia } from 'aurelia-framework';
-import { PLATFORM } from 'aurelia-pal';
+import { Container } from 'aurelia-framework';
 import { DialogConfiguration } from 'aurelia-dialog';
-import { initialState } from './kernel/state/models';
+import { PLATFORM } from 'aurelia-pal';
 import { auth } from 'features/membership/auth';
+import environment from './environment';
+import { initialState } from './kernel/state/models';
+
+// import 'assets/css/tailwind.css';
+
 
 // remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
 Bluebird.config({ warnings: { wForgottenReturn: false } });

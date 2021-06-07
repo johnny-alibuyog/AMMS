@@ -1,7 +1,7 @@
 import { Aurelia, Container, PLATFORM } from 'aurelia-framework';
 
 import { AuthState } from '../../../kernel/state/models';
-import { LoginCredential } from './auth.models';
+import { SigninCredential } from './auth.models';
 import { api } from 'features/api';
 import { fullName } from 'features/common/person/person.model';
 import { state } from '../../../kernel/state';
@@ -12,15 +12,18 @@ const getState = (): Promise<AuthState> => {
   return state.auth.current();
 }
 
-const signin = async (credential: LoginCredential): Promise<void> => {
-  const { token, user } = await api.auth.login(credential);
+const signin = async (credential: SigninCredential): Promise<void> => {
+  const { token, user } = await api.auth.signin(credential);
+  console.log('Credentials man');
+  console.log('===================================================');
+  console.log(JSON.stringify(user, null, 2));
   state.auth.set({ token: token, signedIn: true, remember: false });
   state.user.set({ id: user.id, name: fullName(user.person) });
   changeRoot('dashboard');
 }
 
 const signout = async (): Promise<void> => {
-  await api.auth.logout();
+  await api.auth.signout();
   state.auth.reset();
   state.user.reset();
   changeRoot('signin');

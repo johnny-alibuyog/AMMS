@@ -1,6 +1,7 @@
 import { NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration } from 'aurelia-router';
 import { PLATFORM, autoinject } from 'aurelia-framework';
 
+import { Resource } from 'features/membership/resources/resource.model';
 import { resources } from 'features/membership/resources/resource.data';
 
 @autoinject()
@@ -55,8 +56,12 @@ export class App {
   }
 }
 
-class AuthorizeStep implements PipelineStep {
+class AuthorizationStep implements PipelineStep {
   public run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {
+    const resources = navigationInstruction.getAllInstructions()
+      .flatMap(i => i.config.settings.resources as Resource[]);
+
+
     if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('admin') !== -1)) {
       var isAdmin = /* insert magic here */false;
       if (!isAdmin) {

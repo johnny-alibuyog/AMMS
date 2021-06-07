@@ -1,6 +1,6 @@
-import { LoginRequest, authService } from "./auth.service";
 import { Request, Response } from 'express';
 import { Route, resourceBuilder } from "../../../utils";
+import { SigninRequest, authService } from "./auth.service";
 
 import { Action } from '../roles/role.models';
 import { authorize } from '../../../middlewares/auth';
@@ -15,22 +15,22 @@ authorize({ resource: resources.membership.user, action: action });
 
 const routes: Route[] = [
   {
-    path: basePath().resource('login').build(),
+    path: basePath().resource('signin').build(),
     method: 'post',
     handlers: [
       wrap(async (req: Request, res: Response) => {
-        const credentials = req.body as LoginRequest;
-        const token = await authService.login(credentials);
+        const credentials = req.body as SigninRequest;
+        const token = await authService.signin(credentials);
         handle(req, res, token, 200);
       })
     ]
   },
   {
-    path: basePath().resource('logout').build(),
+    path: basePath().resource('signout').build(),
     method: 'post',
     handlers: [
       wrap(async (req: Request, res: Response) => {
-        await authService.logout();
+        await authService.signout();
         handle(req, res, {}, 200);
       })
     ]

@@ -12,7 +12,7 @@ import { basePath as authBasePath } from '../features/membership/auth';
 import { basePath as roleBasePath } from '../features/membership/roles';
 import { basePath as branchBasePath } from '../features/membership/branches';
 import { basePath as userBasePath } from '../features/membership/users';
-import { LoginRequest, LoginResponse } from "../features/membership/auth/auth.service";
+import { SigninRequest, SigninResponse } from "../features/membership/auth/auth.service";
 import { BranchIdContract, BranchContract } from '../features/membership/branches/branch.services';
 import { randomizeBranches } from '../features/membership/branches/data/branch.randomizer';
 
@@ -121,14 +121,14 @@ const createRoleBuilder = (token?: string) => {
 
 }
 
-const getToken = async (credentials?: LoginRequest): Promise<string> => {
-  const loginUrl = authBasePath().resource('login').build();
-  const login = credentials ?? config.tenant.superUser;
-  const response = await request.post(loginUrl).send(login);
+const getToken = async (credentials?: SigninRequest): Promise<string> => {
+  const loginUrl = authBasePath().resource('signin').build();
+  const signin = credentials ?? config.tenant.superUser;
+  const response = await request.post(loginUrl).send(signin);
   if (!response) {
-    throw new Error(`Credentials ${login.username} doesn't exists.`);
+    throw new Error(`Credentials ${signin.username} doesn't exists.`);
   }
-  const auth = response.body as LoginResponse;
+  const auth = response.body as SigninResponse;
   return auth.token;
 };
 
@@ -166,7 +166,7 @@ export {
 
 // async function createUser(
 //   client: IClient<UserIdContract, UserContract>,
-//   { username, password, role }: LoginCredential & { role: Role }
+//   { username, password, role }: SigninCredential & { role: Role }
 // ): Promise<UserContract> {
 //   const userToCreate = {
 //     ...userSeed.randomUsersFn(() => [role])(1)[0],

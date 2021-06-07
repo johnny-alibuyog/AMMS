@@ -1,4 +1,5 @@
 import { Router, RouterConfiguration } from "aurelia-router";
+
 import { PLATFORM } from "aurelia-framework";
 
 export class Index {
@@ -29,7 +30,7 @@ export class Index {
       },
       {
         route: ["membership"],
-        name: "login",
+        name: "signin",
         moduleId: PLATFORM.moduleName("../accounts/profile")
         // nav: true,
         // main: true,

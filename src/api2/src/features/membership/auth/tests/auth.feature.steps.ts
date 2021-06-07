@@ -1,6 +1,6 @@
 import { AccessControl, Action, Permission } from '../../roles/role.models';
 import { IBuilder, UserBuilderArgs, createUserBuilder } from '../../../../utils/client.data.builder';
-import { LoginRequest, LoginResponse } from '../auth.service';
+import { SigninRequest, SigninResponse } from '../auth.service';
 import { defineFeature, loadFeature } from 'jest-cucumber';
 
 import { Ownership } from '../../../common/ownership/ownership.model';
@@ -21,8 +21,8 @@ defineFeature(feature, (test) => {
     });
 
     when(/^credentials (.*) and password (.*) is submitted$/, async (username: string, password: string) => {
-      const loginUrl = basePath().resource('login').build();
-      const credentials: LoginRequest = { username, password };
+      const loginUrl = basePath().resource('signin').build();
+      const credentials: SigninRequest = { username, password };
       const response = await request.post(loginUrl).send(credentials);
       actualStatusCode = response.status;
     });
@@ -55,10 +55,10 @@ defineFeature(feature, (test) => {
     });
 
     when(/^credentials (.*) and password (.*) is submitted$/, async (username: string, password: string) => {
-      const loginUrl = basePath().resource('login').build();
-      const credentials: LoginRequest = { username, password };
+      const loginUrl = basePath().resource('signin').build();
+      const credentials: SigninRequest = { username, password };
       const response = await request.post(loginUrl).send(credentials);
-      const result: LoginResponse = response.body;
+      const result: SigninResponse = response.body;
       token = result.token;
     });
 
@@ -95,8 +95,8 @@ defineFeature(feature, (test) => {
     });
 
     when(/^credentials (.*) and password (.*) is submitted$/, async (username: string, password: string) => {
-      const loginUrl = basePath().resource('login').build();
-      const credentials: LoginRequest = { username, password };
+      const loginUrl = basePath().resource('signin').build();
+      const credentials: SigninRequest = { username, password };
       const response = await request.post(loginUrl).send(credentials);
       actualStatusCode = response.status;
     });
@@ -129,10 +129,10 @@ defineFeature(feature, (test) => {
     });
 
     when(/^credentials (.*) and password (.*) is submitted$/, async (username: string, password: string) => {
-      const loginUrl = basePath().resource('login').build();
-      const credentials: LoginRequest = { username, password };
+      const loginUrl = basePath().resource('signin').build();
+      const credentials: SigninRequest = { username, password };
       const response = await request.post(loginUrl).send(credentials);
-      const result: LoginResponse = response.body;
+      const result: SigninResponse = response.body;
       userToken = result.token;
     });
 
