@@ -1,4 +1,5 @@
 import { SortDirection } from "../contract.models";
+import { Types } from "mongoose";
 
 const isNullOrDefault = <T>(value: T): boolean => {
   if (value == null) {
@@ -12,6 +13,9 @@ const isNullOrDefault = <T>(value: T): boolean => {
   }
   if (value instanceof Array) {
     return value.length === 0;
+  }
+  if (value instanceof Types.ObjectId) {
+    return value.toHexString() == null || value.toHexString() == undefined || value.toHexString() == ''; 
   }
   if (value instanceof Object) {
     return Object.keys(value).length == 0;

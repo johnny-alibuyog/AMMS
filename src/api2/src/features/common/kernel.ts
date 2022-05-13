@@ -1,8 +1,8 @@
-import { ObjectId } from "mongodb";
 import { Ref } from "@typegoose/typegoose";
+import { Types } from "mongoose";
 
 abstract class Entity {
-  public _id?: ObjectId;
+  public _id?: Types.ObjectId;
 
   public id?: string = '';
 
@@ -23,13 +23,15 @@ const functor = <T>(value: T): Mappable<T> => ({
   valueOf: () => value,
 });
 
-const getObjectId = (value: Ref<Entity>): ObjectId =>  {
-  if (value instanceof Entity && value._id) {
-    return value._id;
-  }
-  else {
-    return value as ObjectId;
-  }
+const getObjectId = (value: Ref<Entity, Types.ObjectId | undefined>): Types.ObjectId =>  {
+  return value?._id ?? value as Types.ObjectId;
+
+  // if (value instanceof Entity && value?._id) {
+  //   return value?._id;
+  // }
+  // else {
+  //   return value as Types.ObjectId;
+  // }
 }
 
 export {

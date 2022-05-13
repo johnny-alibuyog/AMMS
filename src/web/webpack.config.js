@@ -95,12 +95,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
         test: /\.css$/i,
         issuer: [{ not: [{ test: /\.html$/i }] }],
         use: extractCss
-          ? [
-              {
-                loader: MiniCssExtractPlugin.loader
-              },
-              "css-loader"
-            ]
+          ? [{ loader: MiniCssExtractPlugin.loader }, ...cssRules(production)]
           : ["style-loader", ...cssRules(production)]
       },
       {
@@ -186,9 +181,9 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       template: "index.ejs",
       minify: production
         ? {
-            removeComments: true,
-            collapseWhitespace: true
-          }
+          removeComments: true,
+          collapseWhitespace: true
+        }
         : undefined,
       metadata: {
         // available in index.ejs //

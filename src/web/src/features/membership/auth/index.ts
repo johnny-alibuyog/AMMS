@@ -14,9 +14,9 @@ const getState = (): Promise<AuthState> => {
 
 const signin = async (credential: SigninCredential): Promise<void> => {
   const { token, user } = await api.auth.signin(credential);
-  console.log('Credentials man');
-  console.log('===================================================');
-  console.log(JSON.stringify(user, null, 2));
+  // console.log('Credentials man');
+  // console.log('===================================================');
+  // console.log(JSON.stringify(user, null, 2));
   state.auth.set({ token: token, signedIn: true, remember: false });
   state.user.set({ id: user.id, name: fullName(user.person) });
   changeRoot('dashboard');

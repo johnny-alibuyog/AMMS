@@ -2,15 +2,15 @@ import * as storage from 'cls-hooked';
 
 import { NextFunction, Request, Response } from 'express';
 
-import { ObjectId } from 'mongodb';
+import { Types } from 'mongoose';
 import { Permission } from '../features/membership/roles/role.models';
 import { config } from '../config';
 
 type RequestContext = {
   path: string,
   time: Date,
-  userId?: ObjectId,
-  branchIds?: ObjectId[],
+  userId?: Types.ObjectId,
+  branchIds?: Types.ObjectId[],
   permission?: Permission,
 }
 
@@ -42,16 +42,22 @@ const currentContext = (): RequestContext | undefined => {
 }
 
 const setContextUser = (
-  userId: RequestContext['userId'], 
+  userId: RequestContext['userId'],
   branchIds: RequestContext['branchIds'],
   permission: RequestContext['permission']): void => {
 
   const context = currentContext();
   if (context) {
     context.userId = userId;
-    context.branchIds = branchIds,
+    context.branchIds = branchIds;
     context.permission = permission;
+    console.error("=================================================");
+    console.error("Context Man:");
+    console.error(JSON.stringify(userId, null, 2));
+    console.error(JSON.stringify(branchIds, null, 2));
+    console.error(JSON.stringify(permission, null, 2));
   }
+
 }
 
 const context = {

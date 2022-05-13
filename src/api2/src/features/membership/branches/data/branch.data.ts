@@ -1,10 +1,10 @@
 import { Address } from "../../../common/address/address.model";
 import { Branch } from "../branch.models";
-import { ObjectId } from 'mongodb';
+import { Types } from 'mongoose';
 
 const branches = {
   cubaoBranch: new Branch({
-    _id: new ObjectId('5f246116fb9e00fefed5bc0d'),
+    _id: new Types.ObjectId('5f246116fb9e00fefed5bc0d'),
     name: 'Cubao Branch',
     active: true,
     mobile: '0998392403',
@@ -18,7 +18,7 @@ const branches = {
     })
   }),
   marikinaBranch: new Branch({
-    _id: new ObjectId('5f24614fa4bd0f17bb4b6ea9'),
+    _id: new Types.ObjectId('5f24614fa4bd0f17bb4b6ea9'),
     name: 'Marikina Branch',
     active: true,
     mobile: '0998392403',

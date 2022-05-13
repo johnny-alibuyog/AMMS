@@ -3,7 +3,7 @@ import { User, userModelOptions } from './membership/users/user.models';
 import { getModelForClass, mongoose } from '@typegoose/typegoose';
 
 import { Branch } from './membership/branches/branch.models';
-import { ConnectionOptions } from 'mongoose';
+import { ConnectOptions } from 'mongoose';
 import { Image } from './common/images/image.models';
 import { Resource } from './membership/resources/resource.model';
 import { Role } from './membership/roles/role.models';
@@ -40,11 +40,11 @@ const defaultModelOption: IModelOptions = {
 };
 
 const initConnection = ({ successFn, errorFn }: Args = {}) => {
-  const options: ConnectionOptions = {
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true,
+  const options: ConnectOptions = {
+    // useFindAndModify: false,
+    // useUnifiedTopology: true,
+    // useNewUrlParser: true,
+    // useCreateIndex: true,
     dbName: config.db.name,
   };
 
@@ -54,7 +54,7 @@ const initConnection = ({ successFn, errorFn }: Args = {}) => {
       if (successFn) {
         successFn();
       }
-      resolve();
+      resolve({});
     });
     mongoose.connection.on('error', (error) => {
       if (errorFn) {

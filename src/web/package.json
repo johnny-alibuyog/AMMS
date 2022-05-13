@@ -92,7 +92,8 @@
     "node": ">= 6.0.0"
   },
   "scripts": {
-    "start": "nps",
+    "dev": "npx au run --watch --hmr",
+    "build": "npx au build --env prod",
     "test": "nps test"
   },
   "main": "dist/app.bundle.js"

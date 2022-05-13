@@ -1,14 +1,14 @@
 import { AccessControl, Action, Permission, Role } from "../role.models";
 
-import { ObjectId } from 'mongodb';
 import { Ownership } from "../../../common/ownership/ownership.model";
+import { Types } from "mongoose";
 import { config } from "../../../../config";
 import { resources } from "../../resources/data/resource.data";
 
 const roles = {
 
   superRole: new Role({
-    _id: new ObjectId('5f23d6a506fd041e7fc210d3'),
+    _id: new Types.ObjectId('5f23d6a506fd041e7fc210d3'),
     active: true,
     name: config.tenant.superRole.name,
     description: config.tenant.superRole.name,
@@ -23,7 +23,7 @@ const roles = {
   }),
 
   sysAdmin: new Role({
-    _id: new ObjectId('5f23d862280be05226e556e1'),
+    _id: new Types.ObjectId('5f23d862280be05226e556e1'),
     active: true,
     name: 'SysAdmin',
     description: 'System Administrator',
@@ -95,7 +95,7 @@ const roles = {
   }),
 
   manager: new Role({
-    _id: new ObjectId('5f23d878fdb967f538a2fe13'),
+    _id: new Types.ObjectId('5f23d878fdb967f538a2fe13'),
     active: true,
     name: 'Manager',
     description: 'Manager',
@@ -110,7 +110,7 @@ const roles = {
   }),
 
   technician: new Role({
-    _id: new ObjectId('5f23d87e00799b9e229a57b6'),
+    _id: new Types.ObjectId('5f23d87e00799b9e229a57b6'),
     active: true,
     name: 'Technician',
     description: 'Technician',
@@ -125,7 +125,7 @@ const roles = {
   }),
 
   partsman: new Role({
-    _id: new ObjectId('5f23d8883845e2fee41f4625'),
+    _id: new Types.ObjectId('5f23d8883845e2fee41f4625'),
     active: true,
     name: 'Partsman',
     description: 'Partsman',
@@ -140,7 +140,7 @@ const roles = {
   }),
 
   accounting1: new Role({
-    _id: new ObjectId('5f23d88df3ad56faa11a233b'),
+    _id: new Types.ObjectId('5f23d88df3ad56faa11a233b'),
     active: true,
     name: 'Accounting 1',
     description: 'Accounting 1',
@@ -155,7 +155,7 @@ const roles = {
   }),
 
   accounting2: new Role({
-    _id: new ObjectId('5f23d8953f0413c612e3bd63'),
+    _id: new Types.ObjectId('5f23d8953f0413c612e3bd63'),
     name: 'Accounting 2',
     description: 'Accounting 2',
     active: true,

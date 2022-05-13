@@ -17,24 +17,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.Json;
 using static AMMS.Domain.Membership.Messages.Users.UserCreate;
 
 namespace AMMS.Service.Host
 {
     public class Startup
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly ILogger _logger;
 
-        public Startup(IHostingEnvironment env, IConfiguration config, ILogger logger = null)
+        public Startup(IWebHostEnvironment env, IConfiguration config, ILogger logger = null)
         {
             this._env = env;
             this._config = config;
@@ -56,7 +57,7 @@ namespace AMMS.Service.Host
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             this._logger.Information("Logged in Configure");
 
@@ -78,8 +79,8 @@ namespace AMMS.Service.Host
 
             services.AddMvc()
                 .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<TenantValidator>())
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(o => o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddJsonOptions(o => o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();

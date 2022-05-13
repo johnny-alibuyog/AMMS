@@ -11,9 +11,9 @@ import { Resource } from '../features/membership/resources/resource.model';
 import { resources } from '../features/membership/resources/data/resource.data';
 import { Branch } from '../features/membership/branches/branch.models';
 import { Ref } from '@typegoose/typegoose';
-import { ObjectId } from "mongodb";
 import { isNotNullOrDefault } from '../features/common/helpers/query.helpers';
 import { getObjectId } from '../features/common/kernel';
+import { User } from '../features/membership/users/user.models';
  
 /* resource:  
  * https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/
@@ -57,6 +57,7 @@ const authorize = ({ resource, action }: AuthParam) => {
     const db = await initDbContext();
     const user = await db.users
       .findById(payload.userId)
+      .populate('branches')
       .populate({ /* https://mongoosejs.com/docs/populate.html */
         path: 'roles',
         match: {
@@ -72,7 +73,7 @@ const authorize = ({ resource, action }: AuthParam) => {
           ]
         },
       })
-      .exec();
+      .exec() as User;
     // logger.warn(JSON.stringify(user, null, 2));
     // const logMe = <T>(value: T, message?: string) => {
     //   if (message) {
@@ -103,6 +104,8 @@ const authorize = ({ resource, action }: AuthParam) => {
     if (!permission) {
       throw new HTTP403Error();
     }
+    // console.info("JSON.stringify(branchIds, null, 2)");
+    // console.info(JSON.stringify(user?.branches, null, 2));
     const branchIds = user?.branches?.map(getObjectId).filter(isNotNullOrDefault);
     context.setUser(user?._id, branchIds, permission);
     if (next) {
