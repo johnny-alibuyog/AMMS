@@ -10,48 +10,47 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Membership.Messages.Users
+namespace AMMS.Domain.Membership.Messages.Users;
+
+public class UserCreate
 {
-    public class UserCreate
+    public class Request : Dtos.User, IRequest<Response> { }
+
+    public class Response : WithStringId { }
+
+    public class Auth : AccessControl<Request>
     {
-        public class Request : Dtos.User, IRequest<Response> { }
+        public Auth() => With(Permission.To(Area.User, Access.Create));
+    }
 
-        public class Response : WithStringId { }
-
-        public class Auth : AccessControl<Request>
+    public class TransformProfile : Profile
+    {
+        public TransformProfile()
         {
-            public Auth() => With(Permission.To(Area.User, Access.Create));
+            CreateMap<Models.User, Response>().ReverseMap();
+
+            CreateMap<Models.User, Request>().ReverseMap();
         }
+    }
 
-        public class TransformProfile : Profile
+    public class Handler : AbstractRequestHandler<Request, Response>
+    {
+        public Handler(IHandlerDependencyHolder holder) : base(holder) { }
+
+        public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            public TransformProfile()
-            {
-                CreateMap<Models.User, Response>().ReverseMap();
+            var user = Mapper.Map<User>(request);
 
-                CreateMap<Models.User, Request>().ReverseMap();
-            }
-        }
+            user.SetTenant(Context.TenantId);
 
-        public class Handler : AbstractRequestHandler<Request, Response>
-        {
-            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
+            var settings = await Db.Common.Settings.AsQueryable().OfType<TenantUserSettings>()
+                .FirstOrDefaultAsync(x => x.TenantId == Context.TenantId, cancellationToken);
 
-            public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-            {
-                var user = Mapper.Map<User>(request);
+            user.SetPassword(settings.DefaultPassword);
 
-                user.SetTenant(Context.TenantId);
+            await Db.Membership.Users.InsertOneAsync(user);
 
-                var settings = await Db.Common.Settings.AsQueryable().OfType<TenantUserSettings>()
-                    .FirstOrDefaultAsync(x => x.TenantId == Context.TenantId, cancellationToken);
-
-                user.SetPassword(settings.DefaultPassword);
-
-                await Db.Membership.Users.InsertOneAsync(user);
-
-                return Mapper.Map<Response>(user);
-            }
+            return Mapper.Map<Response>(user);
         }
     }
 }

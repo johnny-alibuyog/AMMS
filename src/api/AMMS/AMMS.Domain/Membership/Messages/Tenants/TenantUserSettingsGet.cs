@@ -9,43 +9,42 @@ using MongoDB.Driver.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Membership.Messages.Tenants
+namespace AMMS.Domain.Membership.Messages.Tenants;
+
+public class TenantUserSettingsGet
 {
-    public class TenantUserSettingsGet
+    public class Request : IRequest<Response>
     {
-        public class Request : IRequest<Response>
+        public string TenantId { get; set; }
+    }
+
+    public class Response : Dtos.TenantUserSettings { }
+
+    public class Auth : AccessControl<Request>
+    {
+        public Auth() => With(Permission.To(Area.TenantUserSettings, Access.Read));
+    }
+
+    public class TransformProfile : Profile
+    {
+        public TransformProfile() => CreateMap<Models.TenantUserSettings, Response>().ReverseMap();
+    }
+
+    public class Handler : AbstractRequestHandler<Request, Response>
+    {
+        public Handler(IHandlerDependencyHolder holder) : base(holder) { }
+
+        public override async Task<Response> Handle(Request request, CancellationToken cancellationtoken)
         {
-            public string TenantId { get; set; }
-        }
+            var settings = await Db.Common.Settings.OfType<TenantUserSettings>().AsQueryable()
+                .FirstOrDefaultAsync(x => x.TenantId == request.TenantId, cancellationtoken);
 
-        public class Response : Dtos.TenantUserSettings { }
-
-        public class Auth : AccessControl<Request>
-        {
-            public Auth() => With(Permission.To(Area.TenantUserSettings, Access.Read));
-        }
-
-        public class TransformProfile : Profile
-        {
-            public TransformProfile() => CreateMap<Models.TenantUserSettings, Response>().ReverseMap();
-        }
-
-        public class Handler : AbstractRequestHandler<Request, Response>
-        {
-            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
-
-            public override async Task<Response> Handle(Request request, CancellationToken cancellationtoken)
+            if (settings == null)
             {
-                var settings = await Db.Common.Settings.OfType<TenantUserSettings>().AsQueryable()
-                    .FirstOrDefaultAsync(x => x.TenantId == request.TenantId, cancellationtoken);
-
-                if (settings == null)
-                {
-                    settings = new TenantUserSettings(Context.TenantId, "temp@123");
-                }
-
-                return Mapper.Map<Response>(settings);
+                settings = new TenantUserSettings(Context.TenantId, "temp@123");
             }
+
+            return Mapper.Map<Response>(settings);
         }
     }
 }

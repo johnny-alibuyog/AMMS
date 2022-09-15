@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AMMS.Domain.Common.Pipes.Generics
 {
-    public class GenericPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class GenericPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly ILogger _logger;
 

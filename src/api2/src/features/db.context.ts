@@ -30,6 +30,7 @@ const defaultModelOption: IModelOptions = {
     toJSON: {
       virtuals: true,
       versionKey: false,
+      // transform: (doc, ret, options) => {
       transform: (doc, ret, options) => {
         // ret['id'] = ret['_id'];
         // delete ret['_id'];
@@ -41,11 +42,9 @@ const defaultModelOption: IModelOptions = {
 
 const initConnection = ({ successFn, errorFn }: Args = {}) => {
   const options: ConnectOptions = {
-    // useFindAndModify: false,
-    // useUnifiedTopology: true,
-    // useNewUrlParser: true,
-    // useCreateIndex: true,
     dbName: config.db.name,
+    user: config.db.username,
+    pass: config.db.password
   };
 
   return new Promise((resolve, reject) => {

@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+ api:
+  container_name: amms-api-instance
+  image: amms-api-image
+  restart: always
+  build: 
+    context: ./api2
+    dockerfile: Dockerfile.dev
+    args:
+      environment: dev
+      status: stable    
+  ports:
+    - "8081:8081"
+  environment:
+    TENANT_NAME: Rapide
+    TENANT_SUPER_ROLE_NAME: Super Role
+    TENANT_SUPER_USER_EMAIL: super_user@rapide.com
+    TENANT_SUPER_USER_USERNAME: super_user@rapide
+    TENANT_SUPER_USER_PASSWORD: 0Al}._bYf3G-@XN
+    DB_NAME: ammsdb
+    DB_USERNAME:
+    DB_PASSWORD:
+    DB_HOST: mongodb://amms-db-instance:27017
+    PORT: 8081
+    NODE_ENV: development
+    ACCESS_TOKEN_SECRET: q53!Q~o{#4Y0ZXoY=>Ig>]qbqfHVZc    
+  links:
+    - db
+ web:
+  container_name: amms-web-instance
+  image: amms-web-image
+  restart: always
+  build: 
+    context: ./web
+    dockerfile: Dockerfile.dev
+    args:
+      environment: dev
+      status: stable    
+  ports:
+    - "8080:8080"
+  links:
+    - api
+ db:
+  container_name: amms-db-instance
+  image: mongo
+  command: mongod --port 27017
+  volumes:
+    - amms-data:/data/db
+  ports:
+    - '27017:27017'
+  # environment:
+  #   MONGO_INITDB_ROOT_DATABASE: ammsdb
+  #   MONGO_INITDB_ROOT_USERNAME: root
+  #   MONGO_INITDB_ROOT_PASSWORD: example  
+volumes:
+  amms-data:

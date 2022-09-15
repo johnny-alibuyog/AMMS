@@ -19,13 +19,13 @@ namespace AMMS.Service.Host.Common.Client
                    numericResponse < statusCodeBadRequest;
         }
 
-        public static bool IsSuccessful(this IRestResponse response)
+        public static bool IsSuccessful(this RestResponse response)
         {
             return response.StatusCode.IsScuccessStatusCode()
                 && response.ResponseStatus == ResponseStatus.Completed;
         }
 
-        public static void EnsureResponseWasSuccessful(this IRestClient client, IRestRequest request, IRestResponse response)
+        public static void EnsureResponseWasSuccessful(this RestClient client, RestRequest request, RestResponse response)
         {
             if (response.IsSuccessful())
             {
@@ -59,22 +59,22 @@ namespace AMMS.Service.Host.Common.Client
             Content = content;
         }
 
-        public static RestException CreateException(Uri requestUri, IRestResponse response)
+        public static RestException CreateException(Uri requestUri, RestResponse response)
         {
             Exception innerException = null;
 
             var messageBuilder = new StringBuilder();
 
-            messageBuilder.AppendLine(string.Format("Processing request [{0}] resulted with following errors:", requestUri));
+            messageBuilder.AppendLine($"Processing request [{requestUri}] resulted with following errors:");
 
             if (response.StatusCode.IsScuccessStatusCode() == false)
             {
-                messageBuilder.AppendLine("- Server responded with unsuccessfult status code: " + response.StatusDescription);
+                messageBuilder.AppendLine($"- Server responded with unsuccessfult status code: {response.StatusDescription}");
             }
 
             if (response.ErrorException != null)
             {
-                messageBuilder.AppendLine("- An exception occurred while processing request: " + response.ErrorMessage);
+                messageBuilder.AppendLine($"- An exception occurred while processing request: {response.ErrorMessage}");
 
                 innerException = response.ErrorException;
             }

@@ -17,13 +17,15 @@ const title = "Rapide";
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, "src");
 const nodeModulesDir = path.resolve(__dirname, "node_modules");
-const baseUrl = (production) => production ? "./" : "/";
+// const baseUrl = (production) => production ? "./" : "/";
+const baseUrl = (production) => "/";
 
 const purgecss = require("@fullhuman/postcss-purgecss")({
   // Specify the paths to all of the template files in your project
   content: [
     path.resolve(srcDir, "/**/*.html"),
     path.resolve(srcDir, "/**/*.css"),
+    path.resolve(srcDir, "/**/*.js"),
     path.resolve(srcDir, "/**/*.ts")
     // etc.
   ],
@@ -33,7 +35,12 @@ const purgecss = require("@fullhuman/postcss-purgecss")({
 });
 
 const cssRules = production => [
-  { loader: "css-loader" },
+  {
+    loader: "css-loader",
+    options: {
+      importLoaders: 1,
+    }
+  },
   {
     loader: "postcss-loader",
     options: {
@@ -43,9 +50,9 @@ const cssRules = production => [
         require("postcss-nested"),
         require("postcss-custom-properties"),
         require("tailwindcss")("tailwind.config.js"),
-        require("autoprefixer"),
-        ...when(production, purgecss),
-        ...when(production, require("cssnano")()) //https://github.com/postcss/postcss/issues/1161
+        require("autoprefixer")({ browsers: ['last 2 versions'] }),
+        // ...when(production, purgecss),
+        // ...when(production, require("cssnano")()) //https://github.com/postcss/postcss/issues/1161
       ]
     }
   }
@@ -69,15 +76,18 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
   output: {
     path: outDir,
     publicPath: baseUrl(production),
-    filename: production
-      ? "[name].[chunkhash].bundle.js"
-      : "[name].[hash].bundle.js",
-    sourceMapFilename: production
-      ? "[name].[chunkhash].bundle.map"
-      : "[name].[hash].bundle.map",
-    chunkFilename: production
-      ? "[name].[chunkhash].chunk.js"
-      : "[name].[hash].chunk.js"
+    filename: "[name].[hash].bundle.js",
+    sourceMapFilename: "[name].[hash].bundle.map",
+    chunkFilename: "[name].[hash].chunk.js"
+    // filename: production
+    //   ? "[name].[chunkhash].bundle.js"
+    //   : "[name].[hash].bundle.js",
+    // sourceMapFilename: production
+    //   ? "[name].[chunkhash].bundle.map"
+    //   : "[name].[hash].bundle.map",
+    // chunkFilename: production
+    //   ? "[name].[chunkhash].chunk.js"
+    //   : "[name].[hash].chunk.js"
   },
   performance: { hints: false },
   devServer: {
@@ -96,7 +106,8 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
         issuer: [{ not: [{ test: /\.html$/i }] }],
         use: extractCss
           ? [{ loader: MiniCssExtractPlugin.loader }, ...cssRules(production)]
-          : ["style-loader", ...cssRules(production)]
+          : [{ loader: "style-loader" }, ...cssRules(production)]
+        // : ["style-loader", ...cssRules(production)]
       },
       {
         test: /\.css$/i,
@@ -196,6 +207,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       extractCss,
       new MiniCssExtractPlugin({
         filename: production ? "[contenthash].css" : "[id].css",
+        // filename: "[id].css",
         allChunks: true
       })
     ),

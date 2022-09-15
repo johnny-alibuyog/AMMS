@@ -2,6 +2,8 @@ module.exports = {
   // https://www.meidev.co/blog/visual-studio-code-css-linting-with-tailwind/
   // https://stackoverflow.com/questions/47607602/how-to-add-a-tailwind-css-rule-to-css-checker
 
+  // purge: ['./dist/*.html'],
+
   theme: {
     extend: {
       spacing: {

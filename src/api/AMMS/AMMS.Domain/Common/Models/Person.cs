@@ -1,6 +1,7 @@
 ﻿using AMMS.Domain.Common.Kernel;
 using MongoDB.Bson.Serialization;
 using System;
+using System.Collections.Generic;
 
 namespace AMMS.Domain.Common.Models
 {
@@ -10,7 +11,7 @@ namespace AMMS.Domain.Common.Models
         Female
     }
 
-    public class Person : ValueObject<Person>
+    public class Person : ValueObject
     {
         public string FirstName { get; protected set; }
 
@@ -36,6 +37,15 @@ namespace AMMS.Domain.Common.Models
             MiddleName = middleName;
             Gender = gender;
             BirthDate = birthDate;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return FirstName;
+            yield return LastName;
+            yield return MiddleName;
+            yield return Gender;
+            yield return BirthDate;
         }
     }
 

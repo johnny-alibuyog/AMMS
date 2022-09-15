@@ -23,7 +23,7 @@ namespace AMMS.Domain.Common.Pipes.Auth
 
         public static IHashProvider New() => new HashProvider();
 
-        public HashProvider() : this(new SHA256Managed(), 4) { }
+        public HashProvider() : this(SHA256.Create(), 4) { }
 
         public HashProvider(HashAlgorithm hashAlgorithm, int saltLength)
         {
@@ -42,7 +42,8 @@ namespace AMMS.Domain.Common.Pipes.Auth
         public (byte[] hash, byte[] salt) GenerateHashAndSalt(byte[] data)
         {
             var salt = new byte[_salthLength];
-            new RNGCryptoServiceProvider().GetNonZeroBytes(salt);
+            using var rnd = RandomNumberGenerator.Create();
+            rnd.GetNonZeroBytes(salt);
             var hash = ComputeHash(data, salt);
             return (hash, salt);
         }

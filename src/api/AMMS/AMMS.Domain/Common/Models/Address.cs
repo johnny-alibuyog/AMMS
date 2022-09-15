@@ -1,12 +1,13 @@
 ﻿using AMMS.Domain.Common.Kernel;
 using MongoDB.Bson.Serialization;
+using System.Collections.Generic;
 
 namespace AMMS.Domain.Common.Models
 {
     /// <summary>
     /// https://en.wikipedia.org/wiki/Postal_addresses_in_the_Philippines
     /// </summary>
-    public class Address : ValueObject<Address>
+    public class Address : ValueObject
     {
         /// <summary>
         /// Unit Number + House/Building/Street Number
@@ -66,6 +67,18 @@ namespace AMMS.Domain.Common.Models
             Province = province;
             Country = country;
             ZipCode = zipCode;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Unit;
+            yield return Street;
+            yield return Subdivision;
+            yield return District;
+            yield return Municipality;
+            yield return Province;
+            yield return Country;
+            yield return ZipCode;
         }
     }
 

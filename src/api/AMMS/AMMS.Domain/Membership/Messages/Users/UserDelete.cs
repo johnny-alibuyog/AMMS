@@ -7,29 +7,28 @@ using MongoDB.Driver;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Membership.Messages.Users
+namespace AMMS.Domain.Membership.Messages.Users;
+
+public class UserDelete
 {
-    public class UserDelete
+    public class Request : WithStringId, IRequest<Response> { }
+
+    public class Response { }
+
+    public class Auth : AccessControl<Request>
     {
-        public class Request : WithStringId, IRequest<Response> { }
+        public Auth() => With(Permission.To(Area.User, Access.Delete));
+    }
 
-        public class Response { }
+    public class Handler : AbstractRequestHandler<Request, Response>
+    {
+        public Handler(IHandlerDependencyHolder holder) : base(holder) { }
 
-        public class Auth : AccessControl<Request>
+        public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            public Auth() => With(Permission.To(Area.User, Access.Delete));
-        }
+            await Db.Membership.Users.DeleteOneAsync(x => x.Id == request.Id, cancellationToken);
 
-        public class Handler : AbstractRequestHandler<Request, Response>
-        {
-            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
-
-            public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-            {
-                await Db.Membership.Users.DeleteOneAsync(x => x.Id == request.Id, cancellationToken);
-
-                return new Response();
-            }
+            return new Response();
         }
     }
 }

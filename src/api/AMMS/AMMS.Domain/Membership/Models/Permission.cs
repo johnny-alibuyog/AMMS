@@ -8,6 +8,8 @@ using System.Linq;
 
 namespace AMMS.Domain.Membership.Models
 {
+
+    [Flags]
     public enum Area
     {
         All,
@@ -28,7 +30,7 @@ namespace AMMS.Domain.Membership.Models
         Super,
     }
 
-    public class Permission : ValueObject<Permission>
+    public class Permission : ValueObject
     {
         public Area Area { get; protected set; }
 
@@ -58,6 +60,12 @@ namespace AMMS.Domain.Membership.Models
         }
 
         public static (Area area, Access access) To(Area area, Access access) => (area, access);
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Area;
+            yield return AccessRights.Aggregate((x, y) => x | y);
+        }
 
         public static readonly Permission Super = new Permission(Area.All, new Access[] { Access.Super });
 

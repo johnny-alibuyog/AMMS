@@ -3,12 +3,8 @@ import { PageConfig } from './common/elements/pagination/pagination';
 
 const apiHosts = {
   'localhost': 'http://localhost:8081/api/v1',
-  'server-pc': 'http://server-pc/ampbiz/api/',
-  'DBDC-SERVER': 'http://DBDC-SERVER/ampbiz/api/',
-  'nicont130server': 'http://nicont130server/ampbiz/api/',
-  'ampbiz': 'http://ampbiz/api',
-  'ampbiz.local': 'http://ampbiz-api.local',
-  'ampbiz.gear.host': 'http://ampbiz-api.gear.host',
+  // 'localhost': 'http://localhost:3000/api/v1',
+  'amms': 'http://amms/api',
 };
 
 export const appConfig = {

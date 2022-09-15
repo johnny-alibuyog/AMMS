@@ -1,10 +1,9 @@
-﻿namespace AMMS.Domain.Common.Kernel
+﻿namespace AMMS.Domain.Common.Kernel;
+
+public interface IHasTenant
 {
-    public interface IHasTenant
-    {
-        string TenantId { get; }
+    string TenantId { get; }
 
-        void SetTenant(string tenantId);
-    }
-
+    void SetTenant(string tenantId);
 }
+

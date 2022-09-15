@@ -17,4 +17,9 @@ bin
 dist
 /src/api2/coverage
 /src/api2/node_modules
+/src/api2/dist
 /src/api2/src/logs
+/src/data
+/src/web/dist
+/src/web/node_modules
+/src/web2

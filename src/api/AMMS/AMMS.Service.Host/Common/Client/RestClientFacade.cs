@@ -6,145 +6,114 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Serialization;
+using RestSharp.Serializers.NewtonsoftJson;
 using System;
 using System.Threading.Tasks;
 
-namespace AMMS.Service.Host.Common.Client
+namespace AMMS.Service.Host.Common.Client;
+
+// https://github.com/restsharp/RestSharp
+// https://stackoverflow.com/questions/43849892/can-i-set-a-custom-jsonserializer-to-restsharp-restclient
+// https://gist.github.com/alexeyzimarev/c00b79c11c8cce6f6208454f7933ad24
+public class RestClientFacade
 {
-    // https://github.com/restsharp/RestSharp
-    // https://stackoverflow.com/questions/43849892/can-i-set-a-custom-jsonserializer-to-restsharp-restclient
-    // https://gist.github.com/alexeyzimarev/c00b79c11c8cce6f6208454f7933ad24
-    public class RestClientFacade
+    private readonly RestClient _client;
+
+    public RestClientFacade(string endpoint, UserLogin.Request credentials)
     {
-        private readonly IRestClient _client;
+        _client = new RestClient(new RestClientOptions(endpoint));
+        _client.Authenticator = new Authenticator(credentials);
+        _client.UseNewtonsoftJson(ConfigureSettings());
 
-        public RestClientFacade(string endpoint, UserLogin.Request credentials)
+        JsonSerializerSettings ConfigureSettings()
         {
-            _client = new RestClient(endpoint);
-            _client.Authenticator = new Authenticator(credentials);
-        }
-
-        private IRestRequest CreateRestRequest(string resource, Method method)
-        {
-            return new RestRequest(resource, method)
+            var value = new JsonSerializerSettings()
             {
-                JsonSerializer = new JsonNetSerializer()
+                Formatting = Formatting.None,
+                TypeNameHandling = TypeNameHandling.None,
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Include,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
             };
+            value.Converters.Add(new StringEnumConverter());
+            return value;
+        };
+
+    }
+
+    private RestRequest CreateRestRequest(string resource, Method method)
+    {
+        return new RestRequest(resource, method);
+    }
+
+    public async Task<TResponse> Get<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
+    {
+        var restRequest = CreateRestRequest(resource, Method.Get);
+
+        restRequest.AddObject(request);
+
+        return await _client.GetAsync<TResponse>(restRequest);
+    }
+
+    public async Task<TResponse> Post<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
+    {
+        var restRequest = CreateRestRequest(resource, Method.Post);
+
+        restRequest.AddJsonBody(request);
+
+        return await _client.PostAsync<TResponse>(restRequest);
+    }
+
+    public async Task<TResponse> Put<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
+    {
+        var restRequest = CreateRestRequest(resource, Method.Put);
+
+        restRequest.AddJsonBody(request);
+
+        return await _client.PutAsync<TResponse>(restRequest);
+    }
+
+    public async Task<TResponse> Delete<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
+    {
+        var restRequest = CreateRestRequest(resource, Method.Delete);
+
+        restRequest.AddJsonBody(request);
+
+        return await _client.DeleteAsync<TResponse>(restRequest);
+    }
+
+    public class Authenticator : IAuthenticator
+    {
+        private Token _authToken;
+        private UserLogin.Request _credentials;
+
+        public Authenticator(UserLogin.Request credentials)
+        {
+            _credentials = credentials;
         }
 
-        public async Task<TResponse> Get<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
+        public ValueTask Authenticate(RestClient client, RestRequest request)
         {
-            var restRequest = CreateRestRequest(resource, Method.GET);
+            _authToken ??= GetToken(client.Options.BaseUrl);
 
-            restRequest.AddObject(request);
+            request.AddHeader("Authorization", $"Bearer {_authToken.Value}");
 
-            return await _client.GetAsync<TResponse>(restRequest);
+            return ValueTask.CompletedTask;
         }
 
-        public async Task<TResponse> Post<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
+        private Token GetToken(Uri baseUrl)
         {
-            var restRequest = CreateRestRequest(resource, Method.POST);
+            var client = new RestClient(baseUrl);
 
-            restRequest.AddJsonBody(request);
+            var request = new RestRequest("login/", Method.Post);
 
-            return await _client.PostAsync<TResponse>(restRequest);
-        }
+            request.AddJsonBody(_credentials);
 
-        public async Task<TResponse> Put<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
-        {
-            var restRequest = CreateRestRequest(resource, Method.PUT);
+            var response = client.Post<UserLogin.Response>(request);
 
-            restRequest.AddJsonBody(request);
-
-            return await _client.PutAsync<TResponse>(restRequest);
-        }
-
-        public async Task<TResponse> Delete<TResponse>(string resource, IRequest<TResponse> request) where TResponse : new()
-        {
-            var restRequest = CreateRestRequest(resource, Method.DELETE);
-
-            restRequest.AddJsonBody(request);
-
-            return await _client.DeleteAsync<TResponse>(restRequest);
-        }
-
-        public class JsonNetSerializer : IRestSerializer
-        {
-            static JsonNetSerializer()
-            {
-                JsonConvert.DefaultSettings = () =>
-                {
-                    var settings = new JsonSerializerSettings()
-                    {
-                        Formatting = Formatting.Indented,
-                        NullValueHandling = NullValueHandling.Ignore,
-                        DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                        ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    };
-                    settings.Converters.Add(new StringEnumConverter());
-                    return settings;
-                };
-            }
-
-            public string Serialize(object obj) =>
-                JsonConvert.SerializeObject(obj);
-
-            public string Serialize(Parameter bodyParameter) =>
-               JsonConvert.SerializeObject(bodyParameter.Value);
-
-            public T Deserialize<T>(IRestResponse response) =>
-               JsonConvert.DeserializeObject<T>(response.Content);
-
-            public string[] SupportedContentTypes { get; } =
-            {
-                "application/json",
-                "text/json",
-                "text/x-json",
-                "text/javascript",
-                "*+json"
-            };
-
-            public string ContentType { get; set; } = "application/json";
-
-            public DataFormat DataFormat { get; } = DataFormat.Json;
-        }
-
-        public class Authenticator : IAuthenticator
-        {
-            private Token _authToken;
-            private UserLogin.Request _credentials;
-
-            public Authenticator(UserLogin.Request credentials)
-            {
-                _credentials = credentials;
-            }
-
-            public void Authenticate(IRestClient client, IRestRequest request)
-            {
-                if (_authToken == null)
-                {
-                    _authToken = GetToken(client.BaseUrl);
-                }
-
-                request.AddHeader("Authorization", $"Bearer {_authToken.Value}");
-            }
-
-            private Token GetToken(Uri baseUrl)
-            {
-                var client = new RestClient(baseUrl);
-
-                var request = new RestRequest("login/", Method.POST)
-                {
-                    JsonSerializer = new JsonNetSerializer()
-                };
-
-                request.AddJsonBody(_credentials);
-
-                var response = client.Post<UserLogin.Response>(request);
-
-                return response.Data.Token;
-            }
+            return response.Token;
         }
     }
 }

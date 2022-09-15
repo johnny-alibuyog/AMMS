@@ -8,43 +8,42 @@ using MongoDB.Driver;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Membership.Messages.Branches
+namespace AMMS.Domain.Membership.Messages.Branches;
+
+public class BranchCreate
 {
-    public class BranchCreate
+    public class Request : Dtos.Branch, IRequest<Response> { }
+
+    public class Response : WithStringId { }
+
+    public class Auth : AccessControl<Request>
     {
-        public class Request : Dtos.Branch, IRequest<Response> { }
+        public Auth() => With(Permission.To(Area.Branch, Access.Create));
+    }
 
-        public class Response : WithStringId { }
-
-        public class Auth : AccessControl<Request>
+    public class TransformProfile : Profile
+    {
+        public TransformProfile()
         {
-            public Auth() => With(Permission.To(Area.Branch, Access.Create));
+            CreateMap<Models.Branch, Response>().ReverseMap();
+
+            CreateMap<Models.Branch, Request>().ReverseMap();
         }
+    }
 
-        public class TransformProfile : Profile
+    public class Handler : AbstractRequestHandler<Request, Response>
+    {
+        public Handler(IHandlerDependencyHolder holder) : base(holder) { }
+
+        public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            public TransformProfile()
-            {
-                CreateMap<Models.Branch, Response>().ReverseMap();
+            var branch = Mapper.Map<Branch>(request);
 
-                CreateMap<Models.Branch, Request>().ReverseMap();
-            }
-        }
+            branch.SetTenant(Context.TenantId);
 
-        public class Handler : AbstractRequestHandler<Request, Response>
-        {
-            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
+            await Db.Membership.Branches.InsertOneAsync(branch, new InsertOneOptions(), cancellationToken);
 
-            public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-            {
-                var branch = Mapper.Map<Branch>(request);
-
-                branch.SetTenant(Context.TenantId);
-
-                await Db.Membership.Branches.InsertOneAsync(branch, new InsertOneOptions(), cancellationToken);
-
-                return Mapper.Map<Response>(branch);
-            }
+            return Mapper.Map<Response>(branch);
         }
     }
 }

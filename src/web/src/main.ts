@@ -2,6 +2,13 @@
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'croppie/croppie.css';
+// import '../src/assets/css/tailwind.css';
+// import '../src/assets/css/tailwind.css';
+// import '../src/assets/css/styles.css';
+// import '../src/assets/css/table.css';
+// import '../src/assets/css/dialog.css';
+// import '../src/app.css';
+
 // import './modules/WebSdk';
 
 import * as Bluebird from 'bluebird';

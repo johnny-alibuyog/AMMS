@@ -6,62 +6,61 @@ using FluentValidation;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AMMS.Domain.Membership.Messages.Dtos
+namespace AMMS.Domain.Membership.Messages.Dtos;
+
+public class Role : Equatable<Role>
 {
-    public class Role : Equatable<Role>
+    public string Id { get; set; }
+
+    public string TenantId { get; set; }
+
+    public string Name { get; set; }
+
+    public List<Permission> Permissions { get; set; }
+}
+
+public class RoleValidator : AbstractValidator<Role>
+{
+    public RoleValidator()
     {
-        public string Id { get; set; }
+        RuleFor(x => x.TenantId);
 
-        public string TenantId { get; set; }
+        RuleFor(x => x.Name)
+            .NotNull().NotEmpty();
 
-        public string Name { get; set; }
+        RuleFor(x => x.Permissions)
+            .NotNull().NotEmpty();
+    }
+}
 
-        public List<Permission> Permissions { get; set; }
+public class RoleFaker : Faker<Role>
+{
+    private readonly PermissionFaker _permissionFaker;
+
+    public RoleFaker(PermissionFaker permissionFaker)
+    {
+        _permissionFaker = permissionFaker;
     }
 
-    public class RoleValidator : AbstractValidator<Role>
+    public RoleFaker()
     {
-        public RoleValidator()
-        {
-            RuleFor(x => x.TenantId);
+        RuleFor(x => x.Name, (x, y) => x.Name.JobType());
 
-            RuleFor(x => x.Name)
-                .NotNull().NotEmpty();
-
-            RuleFor(x => x.Permissions)
-                .NotNull().NotEmpty();
-        }
+        RuleFor(x => x.Permissions, (x, y) => Enumerable
+            .Range(1, x.Random.Int(1, EnumEx.GetList<Area>().Count()))
+            .Select(_ => _permissionFaker.Generate())
+        );
     }
+}
 
-    public class RoleFaker : Faker<Role>
+public class RoletProfile : Profile
+{
+    public RoletProfile()
     {
-        private readonly PermissionFaker _permissionFaker;
+        CreateMap<Models.Area, Dtos.Area>().ReverseMap();
 
-        public RoleFaker(PermissionFaker permissionFaker)
-        {
-            _permissionFaker = permissionFaker;
-        }
+        CreateMap<Models.Access, Dtos.Access>().ReverseMap();
 
-        public RoleFaker()
-        {
-            RuleFor(x => x.Name, (x, y) => x.Name.JobType());
-
-            RuleFor(x => x.Permissions, (x, y) => Enumerable
-                .Range(1, x.Random.Int(1, EnumEx.GetList<Area>().Count()))
-                .Select(_ => _permissionFaker.Generate())
-            );
-        }
-    }
-
-    public class RoletProfile : Profile
-    {
-        public RoletProfile()
-        {
-            CreateMap<Models.Area, Dtos.Area>().ReverseMap();
-
-            CreateMap<Models.Access, Dtos.Access>().ReverseMap();
-
-            CreateMap<Models.Role, Dtos.Role>().ReverseMap();
-        }
+        CreateMap<Models.Role, Dtos.Role>().ReverseMap();
     }
 }

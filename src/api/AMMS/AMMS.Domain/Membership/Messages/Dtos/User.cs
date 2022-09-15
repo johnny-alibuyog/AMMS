@@ -3,68 +3,67 @@ using AutoMapper;
 using FluentValidation;
 using System.Collections.Generic;
 
-namespace AMMS.Domain.Membership.Messages.Dtos
+namespace AMMS.Domain.Membership.Messages.Dtos;
+
+public class User : Equatable<User>
 {
-    public class User : Equatable<User>
+    public string Id { get; set; }
+
+    public string TenantId { get; set; }
+
+    public string Username { get; set; }
+
+    public Person Person { get; set; }
+
+    public Address HomeAddress { get; set; }
+
+    public List<string> RoleIds { get; set; }
+
+    public List<string> BranchIds { get; set; }
+}
+
+public class UserValidator : AbstractValidator<User>
+{
+    public UserValidator(PersonValidator personValidator, AddressValidator addressValidator)
     {
-        public string Id { get; set; }
+        RuleFor(x => x.Id);
 
-        public string TenantId { get; set; }
+        RuleFor(x => x.TenantId);
 
-        public string Username { get; set; }
+        RuleFor(x => x.Username)
+            .NotNull().NotEmpty();
 
-        public Person Person { get; set; }
+        RuleFor(x => x.Person)
+            .NotNull().SetValidator(personValidator);
 
-        public Address HomeAddress { get; set; }
+        RuleFor(x => x.HomeAddress)
+            .NotNull().SetValidator(addressValidator);
 
-        public List<string> RoleIds { get; set; }
+        RuleFor(x => x.RoleIds);
 
-        public List<string> BranchIds { get; set; }
+        RuleFor(x => x.BranchIds);
     }
+}
 
-    public class UserValidator : AbstractValidator<User>
+public class UserFaker : Bogus.Faker<User>
+{
+    public UserFaker(PersonFaker personFaker, AddressFaker addressFaker)
     {
-        public UserValidator(PersonValidator personValidator, AddressValidator addressValidator)
-        {
-            RuleFor(x => x.Id);
+        RuleFor(x => x.Username, (x, y) => x.Person.UserName);
 
-            RuleFor(x => x.TenantId);
+        RuleFor(x => x.Person, (x, y) => personFaker.Generate());
 
-            RuleFor(x => x.Username)
-                .NotNull().NotEmpty();
-
-            RuleFor(x => x.Person)
-                .NotNull().SetValidator(personValidator);
-
-            RuleFor(x => x.HomeAddress)
-                .NotNull().SetValidator(addressValidator);
-
-            RuleFor(x => x.RoleIds);
-
-            RuleFor(x => x.BranchIds);
-        }
+        RuleFor(x => x.HomeAddress, (x, y) => addressFaker.Generate());
     }
+}
 
-    public class UserFaker : Bogus.Faker<User>
+public class UserProfile : Profile
+{
+    public UserProfile()
     {
-        public UserFaker(PersonFaker personFaker, AddressFaker addressFaker)
-        {
-            RuleFor(x => x.Username, (x, y) => x.Person.UserName);
-
-            RuleFor(x => x.Person, (x, y) => personFaker.Generate());
-
-            RuleFor(x => x.HomeAddress, (x, y) => addressFaker.Generate());
-        }
-    }
-
-    public class UserProfile : Profile
-    {
-        public UserProfile()
-        {
-            CreateMap<Dtos.User, Models.User>()
-                .ForMember(x => x.PasswordHash, x => x.Ignore())
-                .ForMember(x => x.PasswordSalt, x => x.Ignore())
-                .ReverseMap();
-        }
+        CreateMap<Dtos.User, Models.User>()
+            .ForMember(x => x.PasswordHash, x => x.Ignore())
+            .ForMember(x => x.PasswordSalt, x => x.Ignore())
+            .ReverseMap();
     }
 }

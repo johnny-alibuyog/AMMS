@@ -71,7 +71,7 @@ namespace AMMS.Domain.Common.Pipes.Auth
             var randomBytes = new byte[4];
 
             // Generate 4 random bytes.
-            var rng = new RNGCryptoServiceProvider();
+            using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomBytes);
 
             // Convert 4 bytes into a 32-bit integer value.

@@ -30,6 +30,7 @@
 
 .form-layout__content {
   /* @apply z-10; */
+  @apply flex-auto;
   @apply flex;
   @apply overflow-auto;
 }
@@ -156,8 +157,9 @@
   @apply max-h-full;
   @apply py-3;
   @apply px-4;
+  @apply flex-none;
   @apply flex;
-  @apply flex-wrap;
+  /* @apply flex-wrap; */
   @apply content-center;
   @apply w-full; 
   @apply border-t;

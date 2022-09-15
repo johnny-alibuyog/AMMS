@@ -8,43 +8,42 @@ using MongoDB.Driver;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AMMS.Domain.Membership.Messages.Roles
+namespace AMMS.Domain.Membership.Messages.Roles;
+
+public class RoleCreate
 {
-    public class RoleCreate
+    public class Request : Dtos.Role, IRequest<Response> { }
+
+    public class Response : WithStringId { }
+
+    public class Auth : AccessControl<Request>
     {
-        public class Request : Dtos.Role, IRequest<Response> { }
+        public Auth() => With(Permission.To(Area.Role, Access.Create));
+    }
 
-        public class Response : WithStringId { }
-
-        public class Auth : AccessControl<Request>
+    public class TransformProfile : Profile
+    {
+        public TransformProfile()
         {
-            public Auth() => With(Permission.To(Area.Role, Access.Create));
+            CreateMap<Models.Role, Response>().ReverseMap();
+
+            CreateMap<Models.Role, Request>().ReverseMap();
         }
+    }
 
-        public class TransformProfile : Profile
+    public class Handler : AbstractRequestHandler<Request, Response>
+    {
+        public Handler(IHandlerDependencyHolder holder) : base(holder) { }
+
+        public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            public TransformProfile()
-            {
-                CreateMap<Models.Role, Response>().ReverseMap();
+            var role = Mapper.Map<Role>(request);
 
-                CreateMap<Models.Role, Request>().ReverseMap();
-            }
-        }
+            role.SetTenant(Context.TenantId);
 
-        public class Handler : AbstractRequestHandler<Request, Response>
-        {
-            public Handler(IHandlerDependencyHolder holder) : base(holder) { }
+            await Db.Membership.Roles.InsertOneAsync(role, new InsertOneOptions(), cancellationToken);
 
-            public override async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-            {
-                var role = Mapper.Map<Role>(request);
-
-                role.SetTenant(Context.TenantId);
-
-                await Db.Membership.Roles.InsertOneAsync(role, new InsertOneOptions(), cancellationToken);
-
-                return Mapper.Map<Response>(role);
-            }
+            return Mapper.Map<Response>(role);
         }
     }
 }

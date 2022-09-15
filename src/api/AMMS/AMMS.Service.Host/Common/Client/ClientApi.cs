@@ -1,52 +1,51 @@
 ﻿using AMMS.Domain.Membership.Messages.Users;
 using AMMS.Service.Host.Controllers.Membership;
 
-namespace AMMS.Service.Host.Common.Client
+namespace AMMS.Service.Host.Common.Client;
+
+public class ClientApi
 {
-    public class ClientApi
+    public CommonApi Common { get; }
+
+    public MembershipApi Membership { get; }
+
+    public ClientApi(string endpoint, UserLogin.Request loginCredentials)
     {
-        public CommonApi Common { get; }
+        var restClient = new RestClientFacade(endpoint, loginCredentials);
 
-        public MembershipApi Membership { get; }
+        Common = new CommonApi(restClient);
 
-        public ClientApi(string endpoint, UserLogin.Request loginCredentials)
+        Membership = new MembershipApi(restClient);
+    }
+
+
+    public class CommonApi
+    {
+        public CommonApi(RestClientFacade restClient)
         {
-            var restClient = new RestClientFacade(endpoint, loginCredentials);
 
-            Common = new CommonApi(restClient);
-
-            Membership = new MembershipApi(restClient);
         }
+    }
 
+    public class MembershipApi
+    {
+        public TenantClient Tenants { get; }
 
-        public class CommonApi
+        public BranchClient Branches { get; }
+
+        public RoleClient Roles { get; }
+
+        public UserClient Users { get; }
+
+        public MembershipApi(RestClientFacade restClient)
         {
-            public CommonApi(RestClientFacade restClient)
-            {
+            Tenants = new TenantClient(restClient);
 
-            }
-        }
+            Branches = new BranchClient(restClient);
 
-        public class MembershipApi
-        {
-            public TenantClient Tenants { get; }
+            Roles = new RoleClient(restClient);
 
-            public BranchClient Branches { get; }
-
-            public RoleClient Roles { get; }
-
-            public UserClient Users { get; }
-
-            public MembershipApi(RestClientFacade restClient)
-            {
-                Tenants = new TenantClient(restClient);
-
-                Branches = new BranchClient(restClient);
-
-                Roles = new RoleClient(restClient);
-
-                Users = new UserClient(restClient);
-            }
+            Users = new UserClient(restClient);
         }
     }
 }

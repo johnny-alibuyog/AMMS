@@ -24,7 +24,7 @@ namespace AMMS.Domain.Common.Pipes.Validation
         {
             _log.Warning("**Validating**");
 
-            var context = new ValidationContext(request);
+            var context = new ValidationContext<TRequest>(request);
 
             var failures = _validators
                 .Select(x => x.Validate(context))

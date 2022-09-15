@@ -1,4 +1,3 @@
-﻿namespace AMMS.Domain.Common.Kernel
-{
-    public interface IAggregateRoot { }
-}
+﻿namespace AMMS.Domain.Common.Kernel;
+
+public interface IAggregateRoot { }

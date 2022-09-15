@@ -1,15 +1,31 @@
 <template>
-  <require from="./assets/css/tailwind.css"></require>
-  <require from="./assets/css/styles.css"></require>
-  <require from="./assets/css/table.css"></require>
-  <require from="./assets/css/dialog.css"></require>
+  
+  <require from="./assets/css/tailwind.css" as="scoped"></require>
+  <require from="./assets/css/styles.css" as="scoped"></require>
+  <require from="./assets/css/table.css" as="scoped"></require>
+  <require from="./assets/css/dialog.css" as="scoped"></require>
+  <require from="./app.css" as="scoped"></require> 
+
+  <!--  
+  <style>@import './assets/css/tailwind.css';</style>
+  <style>@import './assets/css/styles.css';</style>
+  <style>@import './assets/css/table.css';</style>
+  <style>@import './assets/css/dialog.css';</style>
+  <style>@import './app.css';</style>  -->
+
+  <!-- 
+  <link rel="stylesheet" type="text/css" href="./assets/css/tailwind.css" />
+  <link rel="stylesheet" type="text/css" href="./assets/css/styles.css" />
+  <link rel="stylesheet" type="text/css" href="./assets/css/table.css" />
+  <link rel="stylesheet" type="text/css" href="./assets/css/dialog.css" />
+  <link rel="stylesheet" type="text/css" href="./app.css" /> 
+  -->
+
   <require from="./assets/img/icons.html"></require>
-  <!-- <require from="./assets/css/dialog.css"></require> -->
   <require from="./common/elements/spinner/spinner"></require>
   <require from="./shell/header/page-header"></require>
   <require from="./shell/content/page-content"></require>
   <require from="./shell/footer/page-footer"></require>
-  <require from="./app.css"></require>
 
   <!-- <object type="image/svg+xml" data="/assets/img/icons.svg"></object> -->
   <icons></icons>
