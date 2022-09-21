@@ -8,6 +8,7 @@
 /src/api/AMMS/AMMS.Service.Host/bin
 /src/api/AMMS/AMMS.Test.Integration/obj
 /src/api/AMMS/AMMS.Test.Integration/bin
+/src/api/AMMS/.vs
 /third_party
 /src/api/AMMS/AMMS.Seeder/bin
 obj
